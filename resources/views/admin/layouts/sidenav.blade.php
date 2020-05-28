@@ -3,7 +3,7 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link {{ (request()->is('dashboard')) ? 'active' : '' }}" href="index.html">
+                <a class="nav-link {{ (request()->is('dashboard')) ? 'active' : '' }}" href="{{url('/dashboard')}}">
                   <i class="fas fa-tachometer-alt"></i>
                     Dashboard</a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
@@ -14,11 +14,11 @@
                 </a>
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="layout-static.html">
+                      <a class="nav-link" href="{{url('productos/index')}}">
                         <i class="menu-bullet menu-bullet-dot"><span></span></i>Productos</a>
-                      <a class="nav-link" href="layout-sidenav-light.html">
+                      <a class="nav-link" href="{{url('productos/proveedores')}}">
                         <i class="menu-bullet menu-bullet-dot"><span></span></i>Proveedores</a>
-                      <a class="nav-link" href="layout-sidenav-light.html">
+                      <a class="nav-link" href="{{url('productos/categorias')}}">
                         <i class="menu-bullet menu-bullet-dot"><span></span></i>Categorías</a>
                     </nav>
                 </div>

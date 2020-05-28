@@ -14,21 +14,30 @@
         <!-- Favicon -->
         @include('admin.layouts.favicon')
     </head>
-    <body class="sb-nav-fixed">
+    <body class="sb-nav-fixed sb-sidenav-toggled">
         <!-- Navbar -->
         @include('admin.layouts.navbar')
         <div id="layoutSidenav">
             <!-- SideNav -->
             @include('admin.layouts.sidenav')
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
-                        <h1 class="mt-4">@yield('title')</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">@yield('title')</li>
-                        </ol>
-                        <!-- Content -->
-                        @yield('content')
+                <main class="content d-flex flex-column flex-column-fluid">
+                    <div class="container">
+                      <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap mb-1">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                          <div class="d-flex align-items-baseline">
+                            <h2 class="subheader-title text-dark font-weight-bold my-2 mr-3">@yield('title')</h2>
+                            <ol class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
+                                <li class="breadcrumb-item text-muted active">@yield('title')</li>
+                            </ol>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                          @yield('toolkit')
+                        </div>
+                      </div>
+                      <!-- Content -->
+                      @yield('content')
                     </div>
                 </main>
                 <!-- Footer -->

@@ -25,4 +25,8 @@ Auth::routes(['verify' => true]);
 // # Admin Views
 Route::middleware(['auth','role.admin'])->group(function () {
   Route::get('/dashboard', 'HomeController@index')->name('home');
+  //* Productos */
+  Route::prefix('productos')->group(function () {
+    Route::resource('index', 'Admin\ProductController');
+  });
 });
