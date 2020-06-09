@@ -7,7 +7,7 @@
                   <i class="fas fa-tachometer-alt"></i>
                     Dashboard</a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                <a class="nav-link collapsed {{ (request()->is('productos/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                   <i class="fas fa-box-open"></i>
                   Productos
                   <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>

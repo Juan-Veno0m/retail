@@ -27,6 +27,9 @@ Route::middleware(['auth','role.admin'])->group(function () {
   Route::get('/dashboard', 'HomeController@index')->name('home');
   //* Productos */
   Route::prefix('productos')->group(function () {
-    Route::resource('index', 'Admin\ProductController');
+    Route::get('index', 'Admin\ProductController@index');
+    Route::post('create','Admin\ProductController@create');
+    Route::post('read','Admin\ProductController@read');
+    Route::post('update','Admin\ProductController@update');
   });
 });
