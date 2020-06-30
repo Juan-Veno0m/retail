@@ -8,31 +8,21 @@
         <div class="carousel-inner vh-100">
             <div class="carousel-item active">
                 <div class="overlay">
-                    <img src="https://colorlib.com/preview/theme/vegefoods/images/bg_1.jpg" class="d-block w-100 vh-100" alt="description">
+                    <img src="{{asset('/carousel/home-clean.jpg')}}" class="d-block w-100 vh-100" alt="description">
                     <div class="carousel-caption d-md-block">
-                        <h2 class="carousel-title">First slide label</h5>
-                        <p class="carousel-subtitle">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        <p><a href="#" class="btn btn-light">View Details</a></p>
+                        <h2 class="carousel-title">Yolkan</h2>
+                        <p class="carousel-subtitle">¡Cuidate, Ayuda y Gana!</p>
+                        <p><a href="#" class="btn btn-outline-green">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="overlay">
-                    <img src="https://colorlib.com/preview/theme/vegefoods/images/bg_2.jpg" class="d-block w-100 vh-100" alt="description">
+                    <img data-src="{{asset('/carousel/home-barries.jpg')}}" class="d-block w-100 vh-100 lazyload" alt="description">
                     <div class="carousel-caption d-md-block">
-                        <h2 class="carousel-title">First slide label</h5>
-                        <p class="carousel-subtitle">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        <p><a href="#" class="btn btn-light">View Details</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="overlay">
-                    <img src="https://colorlib.com/preview/theme/vegefoods/images/bg_3.jpg" class="d-block w-100 vh-100" alt="description">
-                    <div class="carousel-caption d-md-block">
-                        <h2 class="carousel-title">First slide label</h5>
-                        <p class="carousel-subtitle">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                        <p><a href="#" class="btn btn-light">View Details</a></p>
+                        <h2 class="carousel-title">100% Natural</h2>
+                        <p class="carousel-subtitle">Tienda organica.</p>
+                        <p><a href="#" class="btn btn-outline-green">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>

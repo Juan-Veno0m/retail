@@ -28,3 +28,11 @@
     @endforeach
   </tbody>
 </table>
+<div class="d-flex">
+  <div class="col-xl-10">{{ $productos->links() }}</div>
+  <div class="col-xl-2">
+    <nav>
+      <span class="navbar-text">Registros: {{$productos->total()}}</span>
+    </nav>
+  </div>
+</div>

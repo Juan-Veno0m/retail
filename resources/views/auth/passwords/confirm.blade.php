@@ -51,5 +51,4 @@
     </section>
 @endsection
 @section('scripts')
-    <script src="{{mix('/js/all.js')}}"></script>
 @endsection

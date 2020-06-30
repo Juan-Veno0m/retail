@@ -1,6 +1,6 @@
 <div class="py-1 bg-corporate">
-    <div class="container">
-        <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+    <div class="container-fluid px-4">
+        <div class="row no-gutters d-flex align-items-start align-items-center px-md-2">
             <div class="col-lg-12 d-block">
                 <div class="row d-flex">
                     <div class="col-md pr-4 d-flex topper align-items-center">
@@ -9,14 +9,14 @@
                         </div>
                         <span class="text">+ 1235 2355 98</span>
                     </div>
-                    <div class="col-md pr-4 d-flex topper align-items-center">
+                    <div class="col-md d-flex topper align-items-center">
                         <div class="icon mr-2 d-flex justify-content-center align-items-center">
                             <span class="fas fa-paper-plane"></span>
                         </div>
                         <span class="text">youremail@email.com</span>
                     </div>
-                    <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-                        <span class="text">3-5 Business days delivery &amp; Free Returns</span>
+                    <div class="col-md-5 d-flex topper align-items-center text-lg-right">
+                        <span class="text">Work time: Monday - Friday: 08AM-06PM</span>
                     </div>
                 </div>
             </div>

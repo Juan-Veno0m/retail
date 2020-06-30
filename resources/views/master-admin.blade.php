@@ -23,7 +23,7 @@
             <div id="layoutSidenav_content">
                 <main class="content d-flex flex-column flex-column-fluid">
                     <div class="container">
-                      <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap mb-1">
+                      <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap mb-3">
                         <div class="d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                           <div class="d-flex align-items-baseline">
                             <h2 class="subheader-title text-dark font-weight-bold my-2 mr-3">@yield('title')</h2>
