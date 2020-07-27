@@ -189,7 +189,6 @@ img {
   vertical-align: middle;
   border-style: none;
 }
-
 svg {
   overflow: hidden;
   vertical-align: middle;
@@ -7462,6 +7461,9 @@ button.bg-dark:focus {
   left: 0;
   z-index: 1030;
 }
+.sb-sidenav-menu .nav-link i {
+    font-size: 16px;
+}
 
 .fixed-bottom {
   position: fixed;
@@ -10352,7 +10354,7 @@ body {
     border-radius: 100%;
     background-color: #B5B5C3;
 }
-.nav-link > svg {
+.nav-link > i {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 35px;
     flex: 0 0 35px;

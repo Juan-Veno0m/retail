@@ -3,7 +3,7 @@
     <div class="row mb-5">
       <div class="col-md-4">
         <div class="ftco-footer-widget mb-4">
-          <h2 class="ftco-heading-2"><img src="http://localhost:8000/img/label-yolkan@56.png" height="56px" alt="Logo Yolkan"></h2>
+          <h2 class="ftco-heading-2"><img src="{{asset('/img/label-yolkan.webp')}}" height="56px" alt="Logo Yolkan"></h2>
           <p>Welcome to Organik. Our products are freshly harvested, washed ready for box and finally delivered from our family farm right to your doorstep.</p>
           <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
             <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Twitter"><span class="fab fa-twitter"></span></a></li>
@@ -56,19 +56,14 @@
     <div class="row">
       <div class="mouse">
         <a href="#" class="mouse-icon" title="back to top">
-          <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="127px" height="37px" viewBox="0 0 127 37" preserveAspectRatio="xMidYMid meet">
-            <g transform="translate(0.000000,37.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-              <path d="M543 356 c-93 -30 -181 -104 -259 -216 -36 -53 -115 -103 -194 -124
-              -50 -13 0 -15 555 -15 555 0 605 2 555 15 -79 21 -158 71 -194 124 -59 86
-              -137 159 -203 192 -76 37 -188 48 -260 24z"></path>
-            </g>
-          </svg>
+          <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="chevron-double-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-chevron-double-up fa-w-14"><path fill="currentColor" d="M6.1 422.3l209.4-209.4c4.7-4.7 12.3-4.7 17 0l209.4 209.4c4.7 4.7 4.7 12.3 0 17l-19.8 19.8c-4.7 4.7-12.3 4.7-17 0L224 278.4 42.9 459.1c-4.7 4.7-12.3 4.7-17 0L6.1 439.3c-4.7-4.7-4.7-12.3 0-17zm0-143l19.8 19.8c4.7 4.7 12.3 4.7 17 0L224 118.4l181.1 180.7c4.7 4.7 12.3 4.7 17 0l19.8-19.8c4.7-4.7 4.7-12.3 0-17L232.5 52.9c-4.7-4.7-12.3-4.7-17 0L6.1 262.3c-4.7 4.7-4.7 12.3 0 17z" class=""></path></svg>
         </a>
       </div>
     </div>
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-xl-8 text-left d-table">
-        <p class="d-table-cell">Copyright ©<?php echo date("Y"); ?> All rights reserved | Development by Dimensión Digital</a>
+        <p class="d-table-cell">Copyright ©<?php echo date("Y"); ?> All rights reserved | Development by
+          <a href="https://dimensiondigital.net" target="_blank">Dimensión Digital</a>
         </p>
       </div>
       <div class="col-md-4 copyright_payment_img">

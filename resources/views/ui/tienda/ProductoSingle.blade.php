@@ -1,6 +1,14 @@
 @extends('master-ui')
 @section('title', 'Producto')
-@section('description','Tienda en linea Yolkan') <!-- Meta Description -->
+@section('description',$producto->Descripcion) <!-- Meta Description -->
+@section('opg')
+  <meta property="og:type" content="og:product" />
+  <meta property="og:title" content="{{$producto->ProductosNombre}}" />
+  <meta property="og:url" content="{{URL::current()}}" />
+  <meta property="og:image" content="{{asset('uploads/'.$producto->img)}}" />
+  <meta property="product:price:amount" content="{{number_format($producto->PrecioUnitario*2,2)}}"/>
+  <meta property="product:price:currency" content="MXN"/>
+@endsection
 @section('content')
   <style>
     input[type=number]::-webkit-inner-spin-button,
@@ -70,13 +78,12 @@
       height: 50%;
     }
   </style>
-  <div class="breadcrumb">@include('ui.parts.breadcrumbs')</div>
-  <div class="container my-3">
+  <div class="container pt-lg-5">
     <div class="row">
       <!-- Col Slider -->
-      <div class="col-xl-6">@include('ui.parts.product-slider')</div>
+      <div class="col-xl-6 my-4 px-0">@include('ui.parts.product-slider')</div>
       <!-- Col Description -->
-      <div class="col-xl-6 my-4">@include('ui.parts.product-description')</div>
+      <div class="col-xl-6 my-4 px-0">@include('ui.parts.product-description')</div>
     </div>
   </div>
   <div class="container my-4">

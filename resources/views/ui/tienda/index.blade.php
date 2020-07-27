@@ -1,6 +1,12 @@
 @extends('master-ui')
 @section('title', 'Inicio')
 @section('description','Tienda en linea Yolkan')
+@section('opg')
+  <meta property="og:title" content="Tienda organica Yolkan" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{url('/')}}" />
+  <meta property="og:image" content="{{url('/img/label-yolkan.webp')}}" />
+@endsection
 @section('content')
     <style>
       .insight-title--title {
@@ -37,17 +43,19 @@
         border-right: solid 1px #7fca8f;
         margin: 8px 0px;
       }
+      .cover-grid {
+        width: 100%;
+        height: 350px !important;
+      }
     </style>
     <!-- Section Carousel -->
     @include('ui.parts.main-carousel')
-    <!-- Welcome -->
-    @include('ui.parts.welcome-shop')
+    <!-- Grid -->
+    @include('ui.parts.grid')
     <!-- Section Services -->
     @include('ui.parts.services-shop')
     <!-- Section Features Products -->
     @include('ui.parts.featured-products')
-    <!-- Section Subcribe Newsletter -->
-    @include('ui.parts.subcribe-newsletter')
 @endsection
 @section('scripts')
 @endsection

@@ -51,6 +51,6 @@
           </li>
         </ul>
     </div>
-    <button type="button" name="previous" class="previous btn btn-dark btn-lg" value="Previous"> Atrás</button>
-    <button type="button" name="next" class="next btn btn-success btn-lg"> Siguiente </button>
+    <button type="button" name="previous" class="previous btn btn-default btn-lg" value="Previous"> Atrás</button>
+    <button type="button" name="next" class="next btn btn-primary btn-lg"> Siguiente </button>
 </fieldset>

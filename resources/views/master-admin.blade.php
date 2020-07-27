@@ -27,9 +27,10 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                           <div class="d-flex align-items-baseline">
                             <h2 class="subheader-title text-dark font-weight-bold my-2 mr-3">@yield('title')</h2>
+                            <!--
                             <ol class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
                                 <li class="breadcrumb-item text-muted active">@yield('title')</li>
-                            </ol>
+                            </ol> -->
                           </div>
                         </div>
                         <div class="d-flex align-items-center">

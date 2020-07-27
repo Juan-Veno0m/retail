@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html prefix="og: http://ogp.me/ns#" lang="es">
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -8,11 +8,70 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title') - Yolkan</title>
         <meta name="description" content="@yield('description')">
+        <!--  Open Graph -->
+        @yield('opg')
         <meta name="author" content="Veno0M" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="{{url('/')}}" />
+        <link rel="canonical" href="{{url()->current()}}" />
         <!-- styles -->
         <style>
+          /* cyrillic-ext */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNa7lqDY.woff2) format('woff2');
+          unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+          }
+          /* cyrillic */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qPK7lqDY.woff2) format('woff2');
+          unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+          }
+          /* greek-ext */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNK7lqDY.woff2) format('woff2');
+          unicode-range: U+1F00-1FFF;
+          }
+          /* greek */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qO67lqDY.woff2) format('woff2');
+          unicode-range: U+0370-03FF;
+          }
+          /* vietnamese */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qN67lqDY.woff2) format('woff2');
+          unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+          }
+          /* latin-ext */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7lqDY.woff2) format('woff2');
+          unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+          }
+          /* latin */
+          @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7l.woff2) format('woff2');
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+          }/* sans pro */
+          @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
           /* devanagari */
           @font-face {
             font-family: 'Poppins';
@@ -63,6 +122,15 @@
             height: 264px !important;
           }
           .main-content {min-height: 60vh;}
+          @media only screen and (max-width: 600px){
+            .cover {height: 160px !important;}
+          }
+          .navbar-toggler svg {
+            height: 16px;
+            width: 16px;
+            margin-right: 12px;
+          }
+          .navbar-nav .nav-item svg {height: 18px;}
         </style>
         @include('ui.layouts.styles-main')
     </head>
@@ -94,55 +162,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
         <script src="{{asset('js/lazysizes.min.js')}}" async=""></script>
-        <script>
-          // Global
-          let path = $('.main-content').data('path');
-          /* Read Cart Number */
-          $.get(path+"/carrito/read", function(data) {
-            if (data.cart!= null) {
-              $('.cart-items').html(Object.keys(data.cart).length);
-            }
-          });
-          // click add to cart from feactured // produts view
-          $('.product').on('click', '#add-cart', function(event) {
-            event.preventDefault();
-            /* Act on the event */
-            let btn = $(this);
-            add_cart(btn.data('id'),null);
-          });
-          // click add to cart from product single
-          $('.summary').on('click', '.btn-cart', function(event) {
-            event.preventDefault();
-            /* Act on the event */
-            let btn = $(this);
-            let quantity = $('.summary .quantity :input[type="number"]').val();
-            add_cart(btn.data('id'),quantity);
-          });
-          // Function add to cart
-          function add_cart(id,quantity){
-            /* ajax */
-            $.ajax({
-              url: path+'/carrito/create',
-              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              type: 'POST',
-              dataType: 'json',
-              data: {id: id,quantity:quantity}
-            })
-            .done(function(data) {
-              if (data.tipo == 'success') {
-                let alert = $('.notification-cart');
-                let src = path+'/uploads/'+data.cart[data.id]['photo'];
-                //
-                alert.find('.img').attr('src',src);
-                alert.find('.title-producto').html(data.cart[data.id]['name']);
-                alert.find('.price').html('$'+data.cart[data.id]['price']);
-                $('.cart-items').html(Object.keys(data.cart).length);
-                alert.css("display", "flex").hide().fadeIn();
-                alert.delay(1500).fadeOut("slow");
-              }
-            });
-          }
-        </script>
+        <script src="{{asset('js/ui/main.js')}}" defer></script>
         @yield('scripts')
     </body>
 </html>

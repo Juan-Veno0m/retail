@@ -1,4 +1,5 @@
 <div class="row summary">
+  <div class="col-xl-12">@include('ui.parts.breadcrumbs')</div>
   <div class="col-xl-12"><h2 class="product-tittle">{{$producto->ProductosNombre}}</h2></div>
   <div class="product-seperator-line"></div>
   <div class="col-xl-12">

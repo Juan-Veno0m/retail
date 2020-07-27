@@ -234,11 +234,12 @@
           // append
           modalimages.find('#container-imagenes').append('<div class="col my-2"><h6 class="text-center"><i class="far fa-frown"></i> Producto sin imagenes</h6></div>');
         }else{
-          let html_images='';
+          let html_images=''; let regenerate=1;
           $.each(data.imagenes,function(index, el) {let featured='';
             if (el.ImagenesPID == data.featured['Featured']) { featured='featured'}
+            if (el.img.includes('original')) {regenerate=0;}
             html_images+='<div class="col-xl-4 my-2 col-img '+featured+'">'+
-              '<img src="'+path+'/uploads/'+el.img+'" data-src="'+el.img+'" class="img-fluid img-thumbnail cover" data-id="'+el.ImagenesPID+'">'+
+              '<img src="'+path+'/uploads/'+el.img+'" data-src="'+el.img+'" data-regenerate="'+regenerate+'" class="img-fluid img-thumbnail cover" data-id="'+el.ImagenesPID+'">'+
             '</div>';
           });
           // append

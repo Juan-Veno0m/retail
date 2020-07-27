@@ -42,7 +42,7 @@ class CartController extends Controller
                     $id => [
                         "name" => $product->ProductosNombre,
                         "quantity" => 1,
-                        "price" => $product->PrecioUnitario,
+                        "price" => $product->PrecioUnitario*2,
                         "photo" => $product->img,
                         "keygen" => $keygen
                     ]
@@ -61,7 +61,7 @@ class CartController extends Controller
         $cart[$id] = [
             "name" => $product->ProductosNombre,
             "quantity" => 1,
-            "price" => $product->PrecioUnitario,
+            "price" => $product->PrecioUnitario*2,
             "photo" => $product->img,
             "keygen" => $keygen
         ];

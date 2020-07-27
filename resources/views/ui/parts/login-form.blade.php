@@ -10,7 +10,7 @@
                   @csrf
                   <div class="form-group row">
                     <div class="col text-center">
-                      <img src="http://localhost:8000/img/label-yolkan@74.png" height="74px" alt="Logo Yolkan">
+                      <img src="{{asset('/img/label-yolkan@74.png')}}" height="74px" alt="Logo Yolkan">
                     </div>
                     <div class="col-1">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">

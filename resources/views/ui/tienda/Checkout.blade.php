@@ -103,23 +103,24 @@
       font-size: 12px;
       width: 25%;
       float: left;
-      position: relative
+      position: relative;
+      color:#918c8c;
     }
 
     #progressbar #account:before {
-      content: "1"
+      content: "\f48b";
     }
 
     #progressbar #personal:before {
-      content: "2"
+      content: "\f06e";
     }
 
     #progressbar #payment:before {
-      content: "3"
+      content: "\f155";
     }
 
     #progressbar #confirm:before {
-      content: "4"
+      content: "\f00c";
     }
 
     #progressbar li:before {
@@ -129,7 +130,7 @@
       display: block;
       font-size: 18px;
       color: #ffffff;
-      background: lightgray;
+      background: #918c8c;
       border-radius: 50%;
       margin: 0 auto 10px auto;
       padding: 2px
@@ -148,7 +149,7 @@
 
     #progressbar li.active:before,
     #progressbar li.active:after {
-      background: #5fbd74;
+      background: #1464a5;
     }
 
     .radio-group {
@@ -174,6 +175,11 @@
 
     .radio.selected {
       box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1)
+    }
+    #progressbar span {
+      font-family: "Poppins", Arial, sans-serif;
+      line-height: 18px;
+      font-weight: 400;
     }
   </style>
   <?php $estadosmx = [
@@ -221,23 +227,26 @@
                         <form id="msform">
                             <!-- progressbar -->
                             <ul id="progressbar" class="pl-0">
-                                <li class="active" id="account"><strong>Envío</strong></li>
-                                <li id="personal"><strong>Revisar</strong></li>
-                                <li id="payment"><strong>Pago</strong></li>
-                                <li id="confirm"><strong>Confirmación</strong></li>
+                                <li class="active fas" id="account">
+                                  <span>Envío</span></li>
+                                <li id="personal" class="fas">
+                                  <span>Revisar</span></li>
+                                <li id="payment" class="fas">
+                                  <span>Pago</span></li>
+                                <li id="confirm" class="fas">
+                                  <span>Confirmación</span></li>
                             </ul>
                             <!-- fieldsets -->
                             @include('ui.parts.checkout-shipping')
                             @include('ui.parts.checkout-review')
                             <fieldset>
-                                <div class="card-body">
+                                <div class="card-body px-0">
                                     <h2 class="fs-title">Método de pago</h2>
                                     <div class="custom-control custom-radio text-left">
                                       <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked>
-                                      <label class="custom-control-label" for="customRadio1">Pago en efectivo</label>
-                                      <div class="alert alert-secondary" role="alert">
-                                        Paga cuando recibas tu pedido.
-                                      </div>
+                                      <label class="custom-control-label" for="customRadio1">Transferencia / Deposito</label>
+                                      <!-- Transfer -->
+                                      @include('ui.parts.transferpayment')
                                     </div>
                                     <div class="custom-control custom-radio text-left">
                                       <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" disabled>
@@ -247,8 +256,8 @@
                                       </div>
                                     </div>
                                 </div>
-                                <button type="button" name="previous" class="previous btn btn-dark btn-lg" value="Previous"> Atrás</button>
-                                <button type="button" name="next" class="next btn btn-success btn-lg submit"> Enviar Pedido </button>
+                                <button type="button" name="previous" class="previous btn btn-default btn-lg" value="Previous"> Atrás</button>
+                                <button type="button" name="next" class="next btn btn-primary btn-lg submit"> Enviar Pedido </button>
                             </fieldset>
                             <fieldset class="parent-finish">
                                 <div class="card-body">
@@ -341,19 +350,20 @@
       }).get();
       //
       if (arraydata!=null) {
+        sub = $('.review').find('.sub').data('sub'); // get subtotal
         if (arraydata['delegacion'].toLowerCase() === 'puebla') {
-          sub = $('.review').find('.sub').data('sub');
-          if (sub<500) { envio = 100; total = parseFloat(sub) + parseFloat(envio);
-            $('.review').find('.envio').html('$'+envio); $('.review').find('.total').html('$'+total);
-          }else{$('.review').find('.envio').html('$0.00');}
-        }
+          if (sub<500) { envio = 100;}
+          total = parseFloat(sub) + parseFloat(envio);
+        }else{envio=null; total = parseFloat(sub);}
+        // print values
+        $('.review').find('.envio').html('$'+envio); $('.review').find('.total').html('$'+total);
       }
       if (error>0) {
         console.log(error);
       }
       else{
         // if is Form Ready
-        if (cont == 3) {
+        if (cont >= 3 && btn.hasClass('submit')) {
           // ready for send ajax
           if (flag == false) {
             // true
@@ -371,7 +381,7 @@
                   $.when(store()).done(function(a2){
                     next(btn);
                     finish.find('.fs-title').html(a2.tipo);
-                    finish.find('.message').html(a2.mensaje+' '+a2.OrdenID);
+                    finish.find('.message').html(a2.mensaje+' <a href="'+path+'/Cuenta/MisPedidos/'+a2.OrdenID+'">'+a2.OrdenID+'</a>');
                   });
                 }
               });
@@ -380,7 +390,7 @@
               $.when(store()).done(function(a2){
                 next(btn);
                 finish.find('.fs-title').html(a2.tipo);
-                finish.find('.message').html(a2.mensaje+' '+a2.OrdenID);
+                finish.find('.message').html(a2.mensaje+' <a href="'+path+'/Cuenta/MisPedidos/'+a2.OrdenID+'">'+a2.OrdenID+'</a>');
               });
             }
           }
@@ -457,6 +467,19 @@
         checkparent.find('.update').addClass('d-none');
         checkparent.find('.next').removeClass('d-none');
       }
+    });
+    // format phone number
+    $("input[name='telefono']").on('keyup', function() {
+      //
+      let inpt = $(this);
+      let inputval = inpt.parents('.parent').find("input[name='telefono']");
+      if (inpt[0].value.length==3 || inpt[0].value.length == 7) { inputval.val(inputval.val()+'-');}
+    });
+    // only numbers
+    $("input[name='telefono']").keypress(function(event){
+       if(event.which != 8 && isNaN(String.fromCharCode(event.which))|| $(this)[0].value.length>=12){
+           event.preventDefault(); //stop character from entering input
+       }
     });
   });
 </script>

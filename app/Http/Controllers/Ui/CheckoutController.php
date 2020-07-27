@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Ui;
 
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Mail\ConfirmacionPedido;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use app\User;
 use DB;
 
 class CheckoutController extends Controller
@@ -20,6 +22,7 @@ class CheckoutController extends Controller
   public function store(Request $req)
   {
     $id = Auth::id();
+    $user = User::find($id);
     // insert orden
     $OrdenID = DB::table('orden')->insertGetId([
       'ClienteID'=>$id,
@@ -52,7 +55,7 @@ class CheckoutController extends Controller
     // insert orden pago
     $PagoID = DB::table('orden_pago')->insertGetId([
       'OrdenID'=>$OrdenID,
-      'Metodo'=>1, // efectivo
+      'Metodo'=>3, // Deposito / Transferencia
       'Cantidad'=>$req->total,
       'Moneda'=>1, // mxn
       'created_at'=>now()
@@ -65,7 +68,10 @@ class CheckoutController extends Controller
       'created_at'=>now()
     ]);
     $OrdenID = $OrdenID + 9249582;
+    $event = ['OrdenID'=>$OrdenID];
+    $user->notify(new ConfirmacionPedido($event));
     session()->forget('cart'); // cart empty
     return (['tipo' => 'Completado', 'mensaje' => 'Orden de pedido','OrdenID'=>$OrdenID]);
   }
+
 }

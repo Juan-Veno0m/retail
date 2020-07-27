@@ -3,26 +3,25 @@
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner vh-100">
             <div class="carousel-item active">
                 <div class="overlay">
-                    <img src="{{asset('/carousel/home-clean.jpg')}}" class="d-block w-100 vh-100" alt="description">
+                    <img src="{{asset('/carousel/home-clean.webp')}}" class="d-block w-100 vh-100" alt="description">
                     <div class="carousel-caption d-md-block">
                         <h2 class="carousel-title">Yolkan</h2>
                         <p class="carousel-subtitle">¡Cuidate, Ayuda y Gana!</p>
-                        <p><a href="#" class="btn btn-outline-green">¡Comprar ahora!</a></p>
+                        <p><a href="{{url('/tienda')}}" class="btn btn-outline-green">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="overlay">
-                    <img data-src="{{asset('/carousel/home-barries.jpg')}}" class="d-block w-100 vh-100 lazyload" alt="description">
+                    <img data-src="{{asset('/carousel/home-barries.webp')}}" class="d-block w-100 vh-100 lazyload" alt="description">
                     <div class="carousel-caption d-md-block">
                         <h2 class="carousel-title">100% Natural</h2>
                         <p class="carousel-subtitle">Tienda organica.</p>
-                        <p><a href="#" class="btn btn-outline-green">¡Comprar ahora!</a></p>
+                        <p><a href="{{url('/tienda')}}" class="btn btn-outline-green">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>

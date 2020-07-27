@@ -81,5 +81,5 @@
         </div>
     </div>
     <button type="button" name="update" class="update btn btn-success btn-lg d-none">Actualizar información de envío</button>
-    <button type="button" name="next" class="next btn btn-success btn-lg"> Siguiente </button>
+    <button type="button" name="next" class="next btn btn-primary btn-lg"> Siguiente </button>
 </fieldset>

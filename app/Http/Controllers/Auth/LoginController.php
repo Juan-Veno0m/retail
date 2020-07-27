@@ -45,6 +45,7 @@ class LoginController extends Controller
             return redirect()->intended('/');
           }
       }
+      return Redirect::to("login")->withErrors(['email' => ['Correo y/o contraseña inválida.']]);
     }
     // Login Form View GET
     public function showLoginForm()

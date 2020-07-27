@@ -2,7 +2,11 @@
     <div class="row">
         <div class="col-12">
             <div id="main-picture" class="picture">
-                <img src="{{asset('/uploads/'.$producto->img)}}" alt="{{$producto->ProductosNombre}}" class="img-fluid rounded">
+                <?php $imagen = asset('uploads/'.$producto->img); if (is_null($producto->img)) { $imagen = asset('img/default-img.png');}
+                if(strpos($producto->img, 'original') !== false){
+                  $separate = explode('/', $producto->img); $base= '/uploads'.'/'.$separate[0];  $filename = $separate[2];
+                }?>
+                <img src="{{$imagen}}" alt="{{$producto->ProductosNombre}}" class="img-fluid rounded">
             </div>
         </div>
     </div>

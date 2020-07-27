@@ -9,7 +9,7 @@
       height: 34px;
       width: 34px;
       text-align: center;
-      display: inline;
+      display: inline-table;
       border-radius: 20px;
       color: #fff;
       margin-right: 10px;

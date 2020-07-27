@@ -7,16 +7,16 @@
                         <div class="icon mr-2 d-flex justify-content-center align-items-center">
                             <span  class="fas fa-phone-alt"></span >
                         </div>
-                        <span class="text">+ 1235 2355 98</span>
+                        <span class="text">222-257-6431</span>
                     </div>
                     <div class="col-md d-flex topper align-items-center">
                         <div class="icon mr-2 d-flex justify-content-center align-items-center">
                             <span class="fas fa-paper-plane"></span>
                         </div>
-                        <span class="text">youremail@email.com</span>
+                        <span class="text">contacto@yolkan.net</span>
                     </div>
                     <div class="col-md-5 d-flex topper align-items-center text-lg-right">
-                        <span class="text">Work time: Monday - Friday: 08AM-06PM</span>
+                        <span class="text">Horario: Lunes - Sábado: 09AM-07PM</span>
                     </div>
                 </div>
             </div>

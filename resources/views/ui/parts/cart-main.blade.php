@@ -61,14 +61,14 @@
         <div class="col sub text-right">${{ $total }}</div>
       </div>
       <div class="row my-2 px-1">
-        <?php $costo_envio=0; if($total<500){$costo_envio=100.00;} ?>
+        <?php $costo_envio=0; if($total<500 && $total>0){$costo_envio=100.00;} ?>
         <div class="col"><p>*Gastos de envío:</p></div>
         <div class="col envio text-right">${{$costo_envio}}</div>
       </div>
       <hr>
       <div class="row my-2 px-1 align-items-center">
         <div class="col">Total:</div>
-        <div class="col total text-right"><b>${{ $total }}</b></div>
+        <div class="col total text-right"><b>${{ $total + $costo_envio }}</b></div>
       </div>
       <hr>
       <div class="row my-1 mx-2">

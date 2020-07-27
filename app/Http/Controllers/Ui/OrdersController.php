@@ -20,8 +20,9 @@ class OrdersController extends Controller
               ->join('metodo_pago as mp','mp.MetodoID','=','p.Metodo')
               ->join('envio_usuarios as u','u.EnvioID','=','e.EnvioUID')
               ->where('o.ClienteID','=',$id)
+              ->orderBy('o.OrdenID','desc')
               ->select('o.OrdenID','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-              'p.Cantidad as Total','s.status','u.*')
+              'p.Cantidad as Total','s.status','s.attribute','u.*')
               ->paginate(15);
     $data = ['pedidos'=>$pedidos];
     return view('ui.tienda.MisPedidos',$data);
@@ -44,7 +45,7 @@ class OrdersController extends Controller
               ->join('metodo_pago as mp','mp.MetodoID','=','op.Metodo')
               ->join('orden_envio as oe','oe.OrdenID','op.OrdenID')
               ->where('op.OrdenID','=',$OrdenID)
-              ->select('op.Cantidad as Total','mp.Tipo','oe.Costo as CostoEnvio')
+              ->select('mp.MetodoID','op.Cantidad as Total','mp.Tipo','oe.Costo as CostoEnvio')
               ->first();
     $orden_envio = DB::table('orden_envio as oe')
               ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')

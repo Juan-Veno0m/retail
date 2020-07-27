@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Ui;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Mail\Contacto;
+use App\User;
 use DB;
 
 class StoreController extends Controller
 {
-
+    // Index
     public function index(Request $request)
     {
       $productos = DB::table('productos as p')
@@ -17,11 +19,13 @@ class StoreController extends Controller
         ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre')
+        ->orderBy('p.ProductosID','desc')
         ->take(8)->get();
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
       $data = ['productos'=>$productos];
       return view('ui.tienda.index', $data);
     }
+    // Producto view
     public function Producto($ProductosNombre,$ProductosID)
     {
       // Get Product info
@@ -39,6 +43,7 @@ class StoreController extends Controller
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->select('p.ProductosID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre')
         ->whereNotIn('p.ProductosID',[$id])
+        ->orderBy('p.ProductosID','desc')
         ->take(4)->get();
       $imagenes = DB::table('productos_imagenes')
           ->where('ProductosID','=',$id)->take(4)->get();
@@ -47,4 +52,35 @@ class StoreController extends Controller
       'related'=>$related,'breadcrumb'=>$producto->ProductosNombre,'id'=>$id];
       return view('ui.tienda.ProductoSingle', $data);
     }
+    // Tienda Route
+    public function Tienda(Request $request)
+    {
+      $q = \Request::get('q');
+      $productos = DB::table('productos as p')
+        ->join('proveedores as prov','prov.ProveedorID','=','p.ProveedorID')
+        ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
+        ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
+        ->where('p.ProductosNombre', 'LIKE','%'.$q.'%')
+        ->where('prov.Flag','=',0)
+        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre')
+        ->orderBy('p.ProductosID','desc')
+        ->simplePaginate(16)->appends(request()->except('page'));
+      foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
+      $data = ['productos'=>$productos,'q'=>$q];
+      return view('ui.tienda.Tienda', $data);
+    }
+    // Email Contacto
+    public function Contacto(Request $req)
+    {
+      $user = User::find(2);
+      $event = ['nombre'=>$req->arraydata['nombre'],'correo'=>$req->arraydata['correo'],'telefono'=>$req->arraydata['telefono']
+      ,'asunto'=>$req->arraydata['asunto'],'mensaje'=>$req->arraydata['mensaje']];
+      $user->notify(new Contacto($event));
+      return (['tipo' => 'Completado', 'mensaje' => 'ok']);
+    }
+    /* SQL Departamentos 3 Niveles
+    SELECT c1.CategoriaNombre as Departamento ,c2.CategoriaNombre as Sub,c3.CategoriaNombre as Categoría FROM categorias as c3
+    LEFT JOIN categorias as c2 on c2.CategoriaID= c3.Parent
+    LEFT JOIN categorias as c1 ON c1.CategoriaID = c2.Parent WHERE c3.CategoriaID=12
+    */
 }
