@@ -2,7 +2,7 @@
     <div class="card-body review">
         <h2 class="fs-title">Tú pedido</h2>
         <ul class="list-group list-group-flush" id="cart-products">
-          <?php $total = 0 ?>
+          <?php $total = 0; $descuento = 0.2; ?>
           @if(session('cart'))
             @foreach(session('cart') as $id => $details)
               <?php $total += $details['price'] * $details['quantity'] ?>
@@ -23,7 +23,7 @@
             <div class="row align-items-center">
               <div class="col-xl-10">
                 <div class="row">
-                  <div class="col-xl-6 text-left">Subtotal:</div>
+                  <div class="col-xl-6 text-left">Costo de los productos:</div>
                   <div class="col-xl-6 sub text-right" data-sub="{{ $total }}">${{ $total }}</div>
                 </div>
               </div>
@@ -33,7 +33,7 @@
             <div class="row align-items-center">
               <div class="col-xl-10">
                 <div class="row">
-                  <div class="col-xl-4 text-left">Gastos de envío:</div>
+                  <div class="col-xl-4 text-left">Costo de envío:</div>
                   <div class="col-xl-8 envio text-right">Pendiente</div>
                 </div>
               </div>
@@ -43,8 +43,30 @@
             <div class="row align-items-center">
               <div class="col-xl-10">
                 <div class="row">
+                  <div class="col-xl-4 text-left">Descuentos <small class="porcentaje">(20%)</small>:</div>
+                  <div class="col-xl-8 money text-right text-danger">${{$total*$descuento}}</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          @if (!Auth::user()->cont>0)
+            <li class="list-group-item cupon">
+              <div class="row align-items-center">
+                <div class="col-xl-10">
+                  <div class="row">
+                    <div class="col-xl-4 text-left">Cupón de descuento:</div>
+                    <div class="col-xl-8 money text-right text-danger">- $1,500</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          @endif
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-xl-10">
+                <div class="row">
                   <div class="col text-left">Total:</div>
-                  <div class="col total text-right"><b>${{ $total }}</b></div>
+                  <div class="col total text-right"><b>${{ number_format($total-($total*$descuento), 2, '.', '') }}</b></div>
                 </div>
               </div>
             </div>

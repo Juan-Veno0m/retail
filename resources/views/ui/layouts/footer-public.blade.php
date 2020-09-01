@@ -3,8 +3,8 @@
     <div class="row mb-5">
       <div class="col-md-4">
         <div class="ftco-footer-widget mb-4">
-          <h2 class="ftco-heading-2"><img src="{{asset('/img/label-yolkan.webp')}}" height="56px" alt="Logo Yolkan"></h2>
-          <p>Welcome to Organik. Our products are freshly harvested, washed ready for box and finally delivered from our family farm right to your doorstep.</p>
+          <h2 class="ftco-heading-2"><img src="{{asset('/img/label-yolkan.webp')}}" class="img-fluid" alt="Tienda Yolkan"></h2>
+          <p>Bienvenido a Yolkan, tú tienda orgánica. Nuestros productos son frescos y 100% naturales, listos para ser entregados a la puerta de tu casa.</p>
           <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
             <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Twitter"><span class="fab fa-twitter"></span></a></li>
             <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Facebook"><span class="fab fa-facebook-f"></span></a></li>
@@ -38,12 +38,12 @@
       </div>
       <div class="col-md">
         <div class="ftco-footer-widget mb-4">
-          <h2 class="ftco-heading-2">Have a Questions?</h2>
+          <h2 class="ftco-heading-2">¿Tienes dudas?</h2>
           <div class="block-23 mb-3">
             <ul>
-              <li><span class="icon fas fa-map-marker-alt"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-              <li><a href="#"><span class="icon fas fa-phone-alt"></span><span class="text">+2 392 3929 210</span></a></li>
-              <li><a href="#"><span class="icon fas fa-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+              <li><span class="icon fas fa-map-marker-alt"></span><span class="text">Puebla de Zaragoza, México.</span></li>
+              <li><span class="icon fas fa-phone-alt"></span><span class="text">222-960-1999</span></li>
+              <li><span class="icon fas fa-envelope"></span><span class="text">contacto@yolkan.net</span></li>
             </ul>
           </div>
         </div>
@@ -63,7 +63,7 @@
     <div class="row align-items-center">
       <div class="col-xl-8 text-left d-table">
         <p class="d-table-cell">Copyright ©<?php echo date("Y"); ?> All rights reserved | Development by
-          <a href="https://dimensiondigital.net" target="_blank">Dimensión Digital</a>
+          <a href="https://dimensiondigital.net" rel="noopener" target="_blank" title="Dimensión Digital">Dimensión Digital</a>
         </p>
       </div>
       <div class="col-md-4 copyright_payment_img">

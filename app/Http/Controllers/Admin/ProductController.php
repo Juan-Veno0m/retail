@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
@@ -24,11 +25,12 @@ class ProductController extends Controller
           ->where('p.CategoriaID','LIKE','%'.$c.'%') // Filtro Categoria
           ->where('p.ProveedorID','LIKE','%'.$p.'%') // Filtro Proveedor
           ->wherenull('p.deleted_at')
-          ->select('p.ProductosID','p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock')
-          ->paginate(5);
+          ->select('p.ProductosID','p.ProductosID as uk','p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock',
+          'p.Cantidad','p.Unidad')
+          ->paginate(15);
         foreach ($productos as $key => $value) {$value->ProductosID = encrypt($value->ProductosID);}
         // categorias
-        $categorias = DB::table('categorias')->get();
+        $categorias = DB::table('categorias')->wherenull('Parent')->get();
         // Proveedores
         $proveedores = DB::table('proveedores')->get();
         // data array
@@ -85,8 +87,25 @@ class ProductController extends Controller
         return (['tipo' => 'success','mensaje'=>'Producto actualizado correctamente']);
     }
 
-    public function destroy($id)
+    public function delete(Request $req)
     {
-        //
+      // decrypt
+      try {
+          $decrypted = decrypt($req->id);
+      } catch (DecryptException $e) {
+          //
+          return (['tipo' => 'error', 'mensaje' => $e]);
+      }
+      // then check images product stored
+      $files = DB::table('productos_imagenes')->where('ProductosID',$decrypted)->first();
+      if (isset($files)) {
+        $separate = explode('/', $files->img); $base= $separate[0];  $filename = $separate[2];
+        Storage::disk('public')->deleteDirectory($base); // delete Directory
+        // delete record database
+        DB::table('productos_imagenes')->where('ProductosID','=',$decrypted)->delete();
+      }
+      DB::table('productos')->where('ProductosID','=',$decrypted)->delete();
+      return (['tipo' => 'ok', 'mensaje' => 'borrado correctamente']);
+
     }
 }

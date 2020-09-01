@@ -4,9 +4,13 @@
     <div class="row">
       <div class="col">
         <h2 class="text-center">
-          <div class="insight-title--title">Una Amigable</div>
+          <div class="insight-title--title">Yolkan</div>
           <div class="insight-title--subtitle">Tienda Organica</div>
         </h2>
+        <p class="text-center font-md px-lg-5 pt-3">Yolkan es una red que conecta agricultores locales y consumidores responsables.
+          Con el proposito de ayudar a los agricultores, consumiendo sus productos orgánicos, libres de quimicos, 100% naturales.<br>
+          Del campo a tu mesa, cuidando tu cuerpo, alimentandote de manera saludable. Fomentando el beneficio mutúo.
+          Además de conocer como se lleva a cabo el proceso de elaboracion de cada producto, una experiencia enriquecedora.</p>
       </div>
     </div>
     <div class="row justify-content-center mb-5 icon-separetor">
@@ -19,12 +23,12 @@
     <div class="row pb-5">
       <div class="col-lg-4">
         <div class="row mx-2">
-          <div class="insight-special-title--title">Always Fresh</div>
-          <p>Cur tantas regiones barbarorum peat dibus obiit, tregiones barbarorum peat dibus obiit, tot mariata</p>
+          <h3 class="insight-special-title--title">Siempre fresco</h3>
+          <p>Entregamos el producto fresco, lo más reciente posible y en excelentes condiciones para su consumo.</p>
         </div>
         <div class="row mt-3 mx-2">
-          <div class="insight-special-title--title">Keep You Healthy</div>
-          <p>Cur tantas regiones barbarorum peat dibus obiit, tregiones barbarorum peat dibus obiit, tot mariata</p>
+          <h3 class="insight-special-title--title">Cuidando tu salud</h3>
+          <p>Consumiendo productos orgánicos y artesanales, 100% naturales del campo a tu mesa.</p>
         </div>
       </div>
       <div class="col-lg-4">
@@ -32,12 +36,12 @@
       </div>
       <div class="col-lg-4">
         <div class="row mx-2">
-          <div class="insight-special-title--title">Safe From Pesticides</div>
-          <p>Cur tantas regiones barbarorum peat dibus obiit, tregiones barbarorum peat dibus obiit, tot mariata</p>
+          <div class="insight-special-title--title">Libre de pesticidas</div>
+          <p>Productos libres de pesticidas, herbicidas y residuos quimicos, aplicando controles de sanidad.</p>
         </div>
         <div class="row mt-3 mx-2">
-          <div class="insight-special-title--title">Keep You Healthy</div>
-          <p>Cur tantas regiones barbarorum peat dibus obiit, tregiones barbarorum peat dibus obiit, tot mariata</p>
+          <div class="insight-special-title--title">Consumiendo local</div>
+          <p>Apoyando la economía local, ayudando a los productores de manera justa y responsable.</p>
         </div>
       </div>
     </div>
@@ -48,8 +52,8 @@
             <span class="flat-icon fas fa-shipping-fast fa-3x"></span>
           </div>
           <div class="media-body">
-            <h3 class="heading">Free Shipping</h3>
-            <span>On order over $100</span>
+            <h3 class="heading">Entregas grátis</h3>
+            <span>En pedidos locales > $500</span>
           </div>
         </div>
       </div>
@@ -59,8 +63,8 @@
             <span class="flat-icon fas fa-apple-alt fa-3x"></span>
           </div>
           <div class="media-body">
-            <h3 class="heading">Always Fresh</h3>
-            <span>Product well package</span>
+            <h3 class="heading">Siempre fresco</h3>
+            <span>Productos bien conservados</span>
           </div>
         </div>
       </div>
@@ -70,8 +74,8 @@
             <span class="flat-icon fas fa-award fa-3x"></span>
           </div>
           <div class="media-body">
-            <h3 class="heading">Superior Quality</h3>
-            <span>Quality Products</span>
+            <h3 class="heading">Productos orgánicos</h3>
+            <span>Calidad superior</span>
           </div>
         </div>
       </div>
@@ -81,8 +85,8 @@
             <span class="flat-icon fas fa-headset fa-3x"></span>
           </div>
           <div class="media-body">
-            <h3 class="heading">Support</h3>
-            <span>24/7 Support</span>
+            <h3 class="heading">Atención al cliente</h3>
+            <span>Soporte 24/7</span>
           </div>
         </div>
       </div>

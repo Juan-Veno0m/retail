@@ -1,0 +1,50 @@
+.insight-title--title {
+  font-family: 'Great Vibes', cursive;
+  text-transform: capitalize;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 46px;
+  color: #5fbd74;
+}
+.insight-title--subtitle {
+  text-transform: capitalize;
+  font-size: 40px;
+  letter-spacing: .1em;
+  color: #392a25;
+  font-weight: 900;
+  line-height: 1.6;
+  margin-top: -10px;
+}
+.insight-special-title--title{
+  font-family: 'Great Vibes', cursive;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 34px;
+  color: #5fbd74;
+}
+.style-default-left {
+  margin-left: -120px;
+}
+.ftco-services {
+  background: #5fbd74;
+  border-radius: 6px;
+}
+.ftco-services .media {
+  border-right: solid 1px #7fca8f;
+  margin: 8px 0px;
+}
+.page-item {display: none;}
+.page-item:first-child,
+    .page-item:nth-child( 2 ),
+    .page-item:nth-child( 3 ),
+    .page-item:nth-last-child( 2 ),
+    .page-item:last-child,
+    .page-item.active,
+    .page-item.disabled {
+    display: block;
+}
+.categoria > h2 {
+    font-size: 24px;
+    font-family: sans-serif;
+    font-weight: 700;
+}

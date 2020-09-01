@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class LoginController extends Controller
 {
@@ -41,18 +42,39 @@ class LoginController extends Controller
                       ? abort(403, 'Correo electronico no verificado')
                       : Redirect::route($redirectToRoute ?: 'verification.notice');
           } else {
-            if (url()->current()!='/login') {return back();}
+            if (Auth::user()->hasAnyRole('admin')) {return redirect('/dashboard');}
+            if (url()->current()!='/login') {return redirect('/carrito');}
             return redirect()->intended('/');
           }
       }
       return Redirect::to("login")->withErrors(['email' => ['Correo y/o contraseña inválida.']]);
     }
-    // Login Form View GET
+    // Post Ajax Login
+    public function AjaxLogin(Request $req)
+    {
+      // first get the email
+      $user = DB::table('asociados_usuario as s')
+                ->join('asociados as a','a.AsociadosID','=','s.AsociadosID')
+                ->join('users','users.id','=','s.UsuarioID')
+                ->where('a.NoEmpresario',$req->NoEmpresario)->first();
+      if (Auth::attempt(['email' => $user->email, 'password' => $req->Password])) {
+        // The user is active, not suspended, and exists.
+        return response()->json(['tipo' => 200,'mensaje'=>'ok.']);
+      }return response()->json(['tipo' => 500,'mensaje'=>'La contraseña es inválida.']);
+    }
+    // Login Form View GET (UI)
     public function showLoginForm()
     {
 
         session(['url.intended' => url()->previous()]);
         return view('auth.login');
+    }
+    // Login Form View GET (Admin)
+    public function AdminLogin()
+    {
+
+        session(['url.intended' => url()->previous()]);
+        return view('auth.acceso');
     }
     // Logout
     public function logout()

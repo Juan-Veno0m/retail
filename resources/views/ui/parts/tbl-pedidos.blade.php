@@ -8,7 +8,8 @@
           <span>No. Pedido: {{$v->OrdenID+9249582}}</span>
           <span class="badge badge-light badge-pill">{{iconv('ISO-8859-1', 'UTF-8', strftime('%A %d de %B de %Y',strtotime($newDate) ))}}</span>
         </div>
-        <div class="col-xl-4"><span class="{{$v->attribute}}">{{$v->status}}</span></div>
+        <div class="col-xl-2"><span>$ {{$v->Total}}</span></div>
+        <div class="col-xl-2"><span class="{{$v->attribute}}">{{$v->status}}</span></div>
         <div class="col-xl-2">
           <a href="{{url('/Cuenta/MisPedidos/'.($v->OrdenID+9249582))}}" title="ver detalles" class="btn btn-secondary btn-block btn-sm"><i class="fas fa-eye"></i></a>
         </div>

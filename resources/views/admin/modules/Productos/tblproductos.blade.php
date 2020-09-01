@@ -12,8 +12,8 @@
   <tbody>
     @foreach ($productos as $key =>$p)
       <tr data-id="{{$p->ProductosID}}" data-index="{{$loop->index+1}}">
-        <th scope="row">{{$loop->index+1}}</th>
-        <td name="producto">{{$p->ProductosNombre}}</td>
+        <th scope="row">{{$p->uk+3303}}</th>
+        <td name="producto">{{$p->ProductosNombre.' '.$p->Cantidad.' '.$p->Unidad}}</td>
         <td name="categoria">{{$p->CategoriaNombre}}</td>
         <td name="precio">{{$p->PrecioUnitario}}</td>
         <td name="stock">{{$p->UnidadesEnStock}}</td>

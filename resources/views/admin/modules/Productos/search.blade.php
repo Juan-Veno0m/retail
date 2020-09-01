@@ -1,4 +1,4 @@
-<form role="search" method="GET" action="{{url('productos/index')}}" class="search row align-items-center mb-3 mr-1">
+<form role="search" method="GET" class="search row align-items-center mb-3 mr-1">
   <div class="input-group icon-search col-xl-5 my-2 my-md-0">
     <span><i class="fas fa-search"></i></span>
     <input type="search" name="q" value="{{$q}}" class="form-control" placeholder="Ingrese su busqueda">

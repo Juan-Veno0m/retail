@@ -31,7 +31,7 @@
                     <td name="cliente">{{$p->name}}</td>
                     <td name="status"><span class="{{$p->attribute}}">{{$p->status}}</span></td>
                     <td name="mpago">{{$p->MetodoPago}}</td>
-                    <td name="total">${{$p->Total}}</td>
+                    <td name="total">${{$p->TotalProductos}}</td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                         <a type="button" href="{{url('ordenes/pedidos/'.($p->OrdenID+9249582))}}" name="editar" class="btn btn-sm btn-light mr-3"><i class="fas fa-info"></i> Detalles</a>

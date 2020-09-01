@@ -1,30 +1,57 @@
 <nav class="navbar navbar-expand-lg ftco_navbar ftco-navbar-light px-lg-4 sleep border-nav-bottom" id="ftco-navbar" itemtype="https://schema.org/SiteNavigationElement" itemscope="">
     <a class="navbar-brand mr-0 mx-md-2" href="{{url('/')}}" aria-label="Yolkan.net" data-label="Yolkan.net" title="Yolkan.net" rel="home">
-      <img src="{{asset('/img/label-yolkan.webp')}}" height="48px" alt="Logo Yolkan" class="lazyloaded">
+      <img srcset="{{asset('/img/label-yolkan-xs.webp')}} 2x,
+                   {{asset('/img/label-yolkan.webp')}} 1x"
+                   src="{{asset('/img/label-yolkan.webp')}}" data-sizes="auto" height="48px" alt="Logo Yolkan" class="lazyload">
     </a>
     <ul class="navbar-nav ml-md-auto nav-custom">
       @if (Auth::check())
-        <li class="nav-item mobile">
-          <a href="{{url('/Cuenta')}}" class="nav-link">
-            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-fw fa-lg"><path fill="currentColor" d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z" class=""></path></svg>
-          </a>
-        </li>
-        <li class="nav-item dropdown {{ (request()->is('MisPedidos')) ? 'active' : '' }}">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdowperfil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-fw fa-lg"><path fill="currentColor" d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z" class=""></path></svg>{{Auth::user()->name}}
+        @if(Auth::user()->isAsociado())
+          <li class="nav-item mobile">
+            <a href="{{url('/Cuenta')}}" class="nav-link" title="mi cuenta">
+              <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="gem" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-gem fa-w-18 fa-lg"><g class="fa-group"><path fill="currentColor" d="M100.7 192H0l218.7 255a3 3 0 0 0 5-3.3zm374.6 0l-123 251.7a3 3 0 0 0 5 3.2L576 192zm-327.1 0l137.1 318.2a3 3 0 0 0 5.5 0l137-318.2z" class="fa-secondary"></path>
+                <path fill="currentColor" d="M90.5 0L0 160h101.1L170.3 0zm395 0h-79.8l69.2 160H576zm-267 0l-69.2 160h277.4L357.5 0z" class="fa-primary"></path></g>
+              </svg>
             </a>
-            <div class="dropdown-menu" aria-labelledby="dropdowperfil">
-                <a class="dropdown-item" href="{{url('/Cuenta')}}">Mi Cuenta</a>
-                <a class="dropdown-item {{ (request()->is('MisPedidos')) ? 'active' : '' }}" href="{{url('/Cuenta/MisPedidos')}}">Mis Pedidos</a>
-                <form id="logout-form" action="{{ url('logout') }}" method="POST">
-                  {{ csrf_field() }}
-                  <button class="dropdown-item" type="submit">Cerrar Sesión</button>
-                </form>
-            </div>
-        </li>
+          </li>
+          <li class="nav-item dropdown {{ (request()->is('MisPedidos')) ? 'active' : '' }}">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdowperfil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="gem" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="svg-inline--fa fa-gem fa-w-18 fa-lg"><g class="fa-group"><path fill="currentColor" d="M100.7 192H0l218.7 255a3 3 0 0 0 5-3.3zm374.6 0l-123 251.7a3 3 0 0 0 5 3.2L576 192zm-327.1 0l137.1 318.2a3 3 0 0 0 5.5 0l137-318.2z" class="fa-secondary"></path>
+                  <path fill="currentColor" d="M90.5 0L0 160h101.1L170.3 0zm395 0h-79.8l69.2 160H576zm-267 0l-69.2 160h277.4L357.5 0z" class="fa-primary"></path></g>
+                </svg> {{Auth::user()->name}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdowperfil">
+                  <a class="dropdown-item" href="{{url('/Cuenta')}}">Mi Cuenta</a>
+                  <a class="dropdown-item {{ (request()->is('MisPedidos')) ? 'active' : '' }}" href="{{url('/Cuenta/MisPedidos')}}">Mis Pedidos</a>
+                  <form id="logout-form" action="{{ url('logout') }}" method="POST">
+                    {{ csrf_field() }}
+                    <button class="dropdown-item" type="submit">Cerrar Sesión</button>
+                  </form>
+              </div>
+          </li>
+        @else
+          <li class="nav-item mobile">
+            <a href="{{url('/Cuenta')}}" class="nav-link" title="mi cuenta">
+              <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-fw fa-lg"><path fill="currentColor" d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z" class=""></path></svg>
+            </a>
+          </li>
+          <li class="nav-item dropdown {{ (request()->is('MisPedidos')) ? 'active' : '' }}">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdowperfil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-fw fa-lg"><path fill="currentColor" d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z" class=""></path></svg>{{Auth::user()->name}}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdowperfil">
+                  <a class="dropdown-item" href="{{url('/Cuenta')}}">Mi Cuenta</a>
+                  <a class="dropdown-item {{ (request()->is('MisPedidos')) ? 'active' : '' }}" href="{{url('/Cuenta/MisPedidos')}}">Mis Pedidos</a>
+                  <form id="logout-form" action="{{ url('logout') }}" method="POST">
+                    {{ csrf_field() }}
+                    <button class="dropdown-item" type="submit">Cerrar Sesión</button>
+                  </form>
+              </div>
+          </li>
+        @endif
       @else
         <li class="nav-item">
-          <a href="{{url('/login')}}" class="nav-link">
+          <a href="{{url('/login')}}" class="nav-link" title="iniciar sesión">
             <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" class="svg-inline--fa fa-user-circle fa-w-16 fa-fw fa-lg"><path fill="currentColor" d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z" class=""></path></svg>
           </a>
         </li>
@@ -46,25 +73,39 @@
     </button>
     <div class="collapse navbar-collapse" id="ftco-nav">
         <ul class="navbar-nav custom-font">
-            <li class="nav-item {{ (request()->is('/')) ? 'active' : '' }}"><a href="{{url('/')}}" aria-label="Menú de inicio" title="Menú de inicio" class="nav-link">Inicio</a></li>
-            <li class="nav-item dropdown {{ (request()->is('tienda')) ? 'active' : '' }}">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="tienda menu">Tienda</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown04">
-                    <a class="dropdown-item {{ (request()->is('tienda')) ? 'active' : '' }}" href="{{url('/tienda')}}" title="tienda">Tienda</a>
-                </div>
+            <li class="nav-item {{ (request()->is('/')) ? 'active' : '' }}">
+              <a href="{{url('/')}}" title="pestaña principal" class="nav-link">Principal</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="submenú tienda">
+                Tienda
+              </a>
+              <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+                <a class="dropdown-item {{ (request()->is('tienda')) ? 'active' : '' }}" title="Menú de la tienda principal" href="{{url('/tienda')}}">Tienda</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{url('/despensa/node1')}}" title="Menú categoría despensa">Despensa</a>
+                <a class="dropdown-item" href="{{url('/lacteos/node46')}}" title="Menú categoría lácteos">Lácteos</a>
+                <a class="dropdown-item" href="{{url('/higiene-y-belleza/node65')}}" title="Menú categoría higiene y belleza">Higiene y Belleza</a>
+                <a class="dropdown-item" href="{{url('/panaderia-y-tortilleria/node59')}}" title="Menú categoría panadería y tortillería">Panadería y Tortillería</a>
+              </div>
             </li>
-            <li class="nav-item"><a href="#" class="nav-link" title="acerca de">Acerca de</a></li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" title="acerca de">Acerca de</a></li>
             <li class="nav-item {{ (request()->is('contacto')) ? 'active' : '' }}"><a href="{{url('contacto')}}" class="nav-link" title="contacto">Contacto</a></li>
         </ul>
     </div>
+    <!-- search -->
+    <form class="navbar-collapse my-2 my-lg-0 form-suggestions" tabindex="-1">
+      <input class="form-control mr-sm-2" type="search" placeholder="¿Qué estás buscando?" aria-label="buscar" id="search">
+      <ul class="list-group list-ajax list-group-flush" style="display:none;"></ul>
+    </form>
     <!-- notification -->
     <div class="notification-cart">
       <div class="card">
         <div class="card-body">
           <div class="col px-0 pb-2">
-            <span class="badge badge-success"><i class="fas fa-check"></i></span>
+            <span class="title"></span>
             <span class="message">Agregado correctamente a la bolsa</span>
-          </div>
+          </div> <!--
           <div class="media">
             <img src="" class="img mr-3" width="150px" alt="...">
             <div class="media-body text-dark">
@@ -74,8 +115,8 @@
           </div>
           <div class="col mt-3">
             <a href="{{url('/carrito')}}" class="btn btn-outline-dark">Ver la Bolsa</a>
-            <a href="#" class="btn btn-dark">Realizar Pedido</a>
-          </div>
+            <a href="{{url('/checkout')}}" class="btn btn-dark">Realizar Pedido</a>
+          </div>-->
         </div>
       </div>
     </div>

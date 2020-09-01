@@ -179,11 +179,38 @@
     let trpadre = btn.parents('tr');
     //
     Swal.fire({
-      title:"Under development ... <php>",
-      icon: "info",
-      timer: 1500,
-      onDestroy: () => { }
+      title: 'Esta seguro de eliminar?',
+      text: "Esta acción no se podrá revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'si, borrar!',
+      cancelButtonText:'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        /* send ajax */
+        $.ajax({
+          url: path+'/productos/delete',
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          type: 'POST',
+          dataType: 'json',
+          data: {id: trpadre.data('id')}
+        })
+        .done(function(data) {
+          if (data.tipo=='ok') {
+            trpadre.remove();
+            Swal.fire(
+              'Borrado!',
+              'El producto ha sido eliminado',
+              'success'
+            )
+          }
+        });
+
+      }
     });
+
   });
   // Jquery click gallery
   tblproductos.on('click', 'button[name="imagenes"]', function(event) {

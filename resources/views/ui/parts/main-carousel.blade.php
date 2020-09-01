@@ -9,9 +9,9 @@
                 <div class="overlay">
                     <img src="{{asset('/carousel/home-clean.webp')}}" class="d-block w-100 vh-100" alt="description">
                     <div class="carousel-caption d-md-block">
-                        <h2 class="carousel-title">Yolkan</h2>
+                        <h1 class="carousel-title">Yolkan</h1>
                         <p class="carousel-subtitle">¡Cuidate, Ayuda y Gana!</p>
-                        <p><a href="{{url('/tienda')}}" class="btn btn-outline-green">¡Comprar ahora!</a></p>
+                        <p><a href="{{url('/tienda')}}" class="btn btn-dark">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                     <div class="carousel-caption d-md-block">
                         <h2 class="carousel-title">100% Natural</h2>
                         <p class="carousel-subtitle">Tienda organica.</p>
-                        <p><a href="{{url('/tienda')}}" class="btn btn-outline-green">¡Comprar ahora!</a></p>
+                        <p><a href="{{url('/tienda')}}" class="btn btn-dark">¡Comprar ahora!</a></p>
                     </div>
                 </div>
             </div>

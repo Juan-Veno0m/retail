@@ -5,16 +5,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5fbd74">
 <meta name="msapplication-TileColor" content="#5fbd74">
 <meta name="theme-color" content="#444">
-<link href="{{asset('/css/app.css?x=5')}}" rel="stylesheet">
-<!-- Icon Fonts -->
-<link href="{{asset('/fontawesome/css/regular.min.css')}}" rel="stylesheet">
-<link href="{{asset('/fontawesome/css/solid.min.css')}}" rel="stylesheet">
-<link href="{{asset('/fontawesome/css/brands.min.css')}}" rel="stylesheet">
-<link href="{{asset('/fontawesome/css/fontawesome.min.css')}}" rel="stylesheet">
+<link href="{{asset('/css/app.css?x=7')}}" rel="stylesheet">
 <!-- preconnect third-party -->
-<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link href="https://www.googletagmanager.com" rel="preconnect" crossorigin>
 <link href="https://fonts.gstatic.com/" rel="preconnect"  crossorigin>
-<link href="https://www.bootstrapcdn.com/"  rel="preconnect"  crossorigin>
-<link href="https://code.jquery.com/" rel="preconnect"  crossorigin>
-<link href="https://www.jsdelivr.com/" rel="preconnect"  crossorigin>
+<!-- tag manager -->

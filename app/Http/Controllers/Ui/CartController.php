@@ -29,41 +29,28 @@ class CartController extends Controller
       $product = DB::table('productos as p')
             ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
             ->where('p.ProductosID','=',$decrypted)
-            ->select('p.ProductosID as keygen','p.ProductosNombre','p.PrecioUnitario','pi.img')
+            ->select('p.ProductosID as keygen','p.ProductosNombre','p.PrecioUnitario','pi.img','p.Cantidad','p.Unidad')
             ->first();
       if(!$product) {
             abort(404);
         }
+        $price = $product->PrecioUnitario*2; $unidad = $product->Cantidad.' '.$product->Unidad;
         $cart = session()->get('cart');
         $keygen = encrypt($product->keygen);
-        // if cart is empty then this the first product
-        if(!$cart) {
-            $cart = [
-                    $id => [
-                        "name" => $product->ProductosNombre,
-                        "quantity" => 1,
-                        "price" => $product->PrecioUnitario*2,
-                        "photo" => $product->img,
-                        "keygen" => $keygen
-                    ]
-            ];
-            session()->put('cart', $cart);
-            return (['tipo' => 'success', 'mensaje' => 'Product added to cart successfully!','cart'=>$cart,'id'=>$id]);
-        }
         // if cart not empty then check if this product exist then increment quantity
         if(isset($cart[$id])) {
-            if ($req->quantity>1) {$cart[$id]['quantity'] = $cart[$id]['quantity'] + $req->quantity;}
-            else{$cart[$id]['quantity']++;}
+            $cart[$id]['quantity'] = $cart[$id]['quantity'] + $req->quantity;
             session()->put('cart', $cart);
             return (['tipo' => 'success', 'mensaje' => 'Product added to cart successfully!','cart'=>$cart,'id'=>$id]);
         }
-        // if item not exist in cart then add to cart with quantity = 1
+        // if item not exist in cart then add to cart with quantity required
         $cart[$id] = [
             "name" => $product->ProductosNombre,
-            "quantity" => 1,
-            "price" => $product->PrecioUnitario*2,
+            "quantity" => $req->quantity,
+            "price" => $price,
             "photo" => $product->img,
-            "keygen" => $keygen
+            "keygen" => $keygen,
+            "unidad"=>$unidad
         ];
         session()->put('cart', $cart);
         return (['tipo' => 'success', 'mensaje' => 'Product added to cart successfully!','cart'=>$cart,'id'=>$id]);

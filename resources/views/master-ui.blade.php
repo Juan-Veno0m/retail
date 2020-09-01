@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>@yield('title') - Yolkan</title>
+        <title>@yield('title') - Yolkan tienda orgánica en línea</title>
         <meta name="description" content="@yield('description')">
         <!--  Open Graph -->
         @yield('opg')
@@ -18,6 +18,7 @@
           /* cyrillic-ext */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNa7lqDY.woff2) format('woff2');
@@ -26,6 +27,7 @@
           /* cyrillic */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qPK7lqDY.woff2) format('woff2');
@@ -34,6 +36,7 @@
           /* greek-ext */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNK7lqDY.woff2) format('woff2');
@@ -42,6 +45,7 @@
           /* greek */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qO67lqDY.woff2) format('woff2');
@@ -50,6 +54,7 @@
           /* vietnamese */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qN67lqDY.woff2) format('woff2');
@@ -58,6 +63,7 @@
           /* latin-ext */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7lqDY.woff2) format('woff2');
@@ -66,6 +72,7 @@
           /* latin */
           @font-face {
           font-family: 'Source Sans Pro';
+          font-display: swap;
           font-style: normal;
           font-weight: 400;
           src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7l.woff2) format('woff2');
@@ -75,6 +82,7 @@
           /* devanagari */
           @font-face {
             font-family: 'Poppins';
+            font-display: swap;
             font-style: normal;
             font-weight: 400;
             font-display: swap;
@@ -84,6 +92,7 @@
           /* latin-ext */
           @font-face {
             font-family: 'Poppins';
+            font-display: swap;
             font-style: normal;
             font-weight: 400;
             font-display: swap;
@@ -93,44 +102,13 @@
           /* latin */
           @font-face {
             font-family: 'Poppins';
+            font-display: swap;
             font-style: normal;
             font-weight: 400;
             font-display: swap;
             src: local('Poppins Regular'), local('Poppins-Regular'), url(https://fonts.gstatic.com/s/poppins/v9/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
           }
-          /* latin-ext */
-          @font-face {
-            font-family: 'Great Vibes';
-            font-style: normal;
-            font-weight: 400;
-            font-display: swap;
-            src: local('Great Vibes'), local('GreatVibes-Regular'), url(https://fonts.gstatic.com/s/greatvibes/v7/RWmMoKWR9v4ksMfaWd_JN9XLiaQoDmlrMlY.woff2) format('woff2');
-            unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-          }
-          /* latin */
-          @font-face {
-            font-family: 'Great Vibes';
-            font-style: normal;
-            font-weight: 400;
-            font-display: swap;
-            src: local('Great Vibes'), local('GreatVibes-Regular'), url(https://fonts.gstatic.com/s/greatvibes/v7/RWmMoKWR9v4ksMfaWd_JN9XFiaQoDmlr.woff2) format('woff2');
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-          }
-          .cover {
-            object-fit: cover;
-            height: 264px !important;
-          }
-          .main-content {min-height: 60vh;}
-          @media only screen and (max-width: 600px){
-            .cover {height: 160px !important;}
-          }
-          .navbar-toggler svg {
-            height: 16px;
-            width: 16px;
-            margin-right: 12px;
-          }
-          .navbar-nav .nav-item svg {height: 18px;}
         </style>
         @include('ui.layouts.styles-main')
     </head>
@@ -151,17 +129,9 @@
         <!-- Footer -->
         @include('ui.layouts.footer-public')
         <!-- Scripts -->
-        <script
-			  src="https://code.jquery.com/jquery-3.5.1.min.js"
-			  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-			  crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-        <script src="{{asset('js/lazysizes.min.js')}}" async=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" defer></script>
+        <script src="{{asset('js/lazysizes.min.js')}}" async></script>
         <script src="{{asset('js/ui/main.js')}}" defer></script>
         @yield('scripts')
     </body>

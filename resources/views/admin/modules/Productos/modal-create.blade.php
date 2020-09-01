@@ -67,8 +67,9 @@
                     <option value="" selected>-- seleccione unidad --</option>
                     <option value="kg">kg</option>
                     <option value="gr">gr</option>
-                    <option value="l">l</option>
+                    <option value="Lt">Lt</option>
                     <option value="ml">ml</option>
+                    <option value="Pza">Pieza</option>
                   </select>
                 </div>
               </div>

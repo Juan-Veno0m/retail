@@ -20,17 +20,19 @@
       <!-- each product -->
       @foreach ($productos as $key => $p)
         <?php $imagen = asset('uploads/'.$p->img); if (is_null($p->img)) { $imagen = asset('img/default-img.png'); $small =asset('img/default-img.png');}
-        $str = ['/',' '];
-        if(strpos($p->img, 'large') !== false){
+        $str = ['/',' ']; $especial = ['%',')','(','.'];
+        $slug = str_replace($str, '-', $p->ProductosNombre.'-'.$p->Cantidad.'-'.$p->Unidad);
+        $slug = str_replace($especial, '', $slug);
+        if(strpos($p->img, 'large') !== false || strpos($p->img, 'original') !== false){
           $separate = explode('/', $p->img); $base= '/uploads'.'/'.$separate[0];  $filename = $separate[2];
           $imagen = $base.'/mobile'.'/'.$filename.' 2x, '.
                     $base.'/medium'.'/'.$filename.' 1x';
-          $small = $base.'/medium'.'/'.$filename;
+          $small = $base.'/large'.'/'.$filename;
         }
         ?>
-        <div class="col-lg-3 col-md-4 col-6 ftco-animate fadeInUp ftco-animated">
+        <div class="col-lg-3 col-md-4 ftco-animate fadeInUp ftco-animated">
           <div class="product">
-            <a href="{{url('/producto/'.str_replace($str, '-', $p->ProductosNombre).'/'.($p->ProductosID+3301))}}" class="img-prod">
+            <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod">
               <img class="img-fluid cover lazyload" alt="{{$p->ProductosNombre}}"
               data-sizes="auto"
               data-srcset="{{$imagen}}"

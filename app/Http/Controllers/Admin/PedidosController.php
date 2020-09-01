@@ -25,7 +25,7 @@ class PedidosController extends Controller
                   ->join('envio_usuarios as u','u.EnvioID','=','e.EnvioUID')
                   ->join('users','users.id','=','o.ClienteID')
                   ->select('o.OrdenID','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-                  'p.Cantidad as Total','s.status','u.*','users.name','s.attribute')
+                  'p.TotalProductos','s.status','u.*','users.name','s.attribute')
                   ->paginate(15);
         $data = ['pedidos'=>$pedidos];
         return view('admin.modules.Ordenes.Pedidos.index',$data);
@@ -48,7 +48,7 @@ class PedidosController extends Controller
                 ->join('metodo_pago as mp','mp.MetodoID','=','op.Metodo')
                 ->join('orden_envio as oe','oe.OrdenID','op.OrdenID')
                 ->where('op.OrdenID','=',$OrdenID)
-                ->select('op.Cantidad as Total','mp.Tipo','oe.Costo as CostoEnvio')
+                ->select('op.TotalProductos','op.Descuento','mp.Tipo','oe.Costo as CostoEnvio')
                 ->first();
       $orden_envio = DB::table('orden_envio as oe')
                 ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')

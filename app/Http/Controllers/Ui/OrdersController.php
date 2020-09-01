@@ -22,7 +22,7 @@ class OrdersController extends Controller
               ->where('o.ClienteID','=',$id)
               ->orderBy('o.OrdenID','desc')
               ->select('o.OrdenID','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-              'p.Cantidad as Total','s.status','s.attribute','u.*')
+              'p.TotalProductos','p.Total','s.status','s.attribute','u.*')
               ->paginate(15);
     $data = ['pedidos'=>$pedidos];
     return view('ui.tienda.MisPedidos',$data);
@@ -38,14 +38,15 @@ class OrdersController extends Controller
               ->get();
     $orden = DB::table('orden as o')
               ->join('orden_status as os','os.id','=','o.Orden_estatus')
+              ->leftjoin('asociados_cupon as ac','ac.OrdenID','=','o.OrdenID')
               ->where('o.OrdenID','=',$OrdenID)
-              ->select('o.Fecha_requerida','os.status')
+              ->select('o.Fecha_requerida','os.status','ac.CuponID')
               ->first();
     $pago = DB::table('orden_pago as op')
               ->join('metodo_pago as mp','mp.MetodoID','=','op.Metodo')
               ->join('orden_envio as oe','oe.OrdenID','op.OrdenID')
               ->where('op.OrdenID','=',$OrdenID)
-              ->select('mp.MetodoID','op.Cantidad as Total','mp.Tipo','oe.Costo as CostoEnvio')
+              ->select('mp.MetodoID','op.TotalProductos','op.Total','op.Descuento','mp.Tipo','oe.Costo as CostoEnvio')
               ->first();
     $orden_envio = DB::table('orden_envio as oe')
               ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
@@ -53,6 +54,7 @@ class OrdersController extends Controller
               ->where('OrdenID','=',$OrdenID)
               ->select('eu.*','es.estado')
               ->first();
+
     $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,
     'breadcrumb'=>'Detalles del pedido','pago'=>$pago, 'orden_envio'=>$orden_envio];
     return view('ui.tienda.DetallesPedido',$data);

@@ -4,53 +4,19 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication Routes...
 Auth::routes(['verify' => true]);
-// UI Store
-Route::get('/', 'Ui\StoreController@index');
-Route::get('/contacto', function () {return view('ui.tienda.contact');});
-Route::get('/producto/{ProductosNombre}/{ProductosID}', 'Ui\StoreController@Producto');
-Route::get('/tienda','Ui\StoreController@Tienda');
-Route::post('/email/contacto','Ui\StoreController@Contacto');
-/* Cart Routes */
-Route::prefix('carrito')->group(function () {
-  Route::get('/','Ui\CartController@index');
-  Route::post('create','Ui\CartController@create');
-  Route::get('read','Ui\CartController@read');
-  Route::post('update','Ui\CartController@update');
-  Route::post('delete','Ui\CartController@delete');
-});
-/* fix email address */
-Route::post('/email/fix','Auth\VerificationController@fix');
-/* Auth views user */
-Route::middleware(['auth','verified'])->group(function () {
-  // checkout
-  Route::prefix('checkout')->group(function () {
-    Route::get('/','Ui\CheckoutController@index');
-    Route::post('/store','Ui\CheckoutController@store');
-  });
-  // shipping
-  Route::prefix('shipping')->group(function () {
-    Route::get('/','Ui\ShippingController@shipping');
-    Route::post('/shipping_action','Ui\ShippingController@shipping_action');
-  });
-  /* Mi Perfil */
-  Route::prefix('Cuenta')->group(function(){
-    Route::get('/','Ui\MiCuentaController@index');
-    // Mis Pedidos
-    Route::prefix('MisPedidos')->group(function () {
-      Route::get('/','Ui\OrdersController@index');
-      Route::get('/{NOrden}','Ui\OrdersController@detalles');
-    });
-  });
-});
+Route::post('/AjaxLogin','Auth\LoginController@AjaxLogin'); // login customers
+Route::get('/Acceso-303','Auth\LoginController@AdminLogin'); // Admin Login
+Route::get('/registro', function () {return view('ui.tienda.registro');}); // Solicitud de registro
 // # Admin Views
 Route::middleware(['auth','role.admin'])->group(function () {
   Route::get('/dashboard', 'HomeController@index')->name('home');
   //* Productos */
   Route::prefix('productos')->group(function () {
-    Route::get('index', 'Admin\ProductController@index');
+    Route::get('/', 'Admin\ProductController@index');
     Route::post('create','Admin\ProductController@create');
     Route::post('read','Admin\ProductController@read');
     Route::post('update','Admin\ProductController@update');
+    Route::post('delete','Admin\ProductController@delete');
     // Imagenes de Productos
     Route::prefix('images')->group(function () {
       Route::post('read','Admin\ProductImagesController@read');
@@ -83,4 +49,58 @@ Route::middleware(['auth','role.admin'])->group(function () {
     Route::get('/read', 'Admin\RegenerateController@read');
     Route::get('/regenerate', 'Admin\RegenerateController@regenerate');
   });
+  // Asociados
+  Route::prefix('asociados')->group(function () {
+    Route::get('/', 'Admin\AsociadosController@index');
+    Route::post('/acceso', 'Admin\AsociadosController@acceso');
+    Route::post('/acceso_tx', 'Admin\AsociadosController@acceso_tx');
+    Route::post('/action','Admin\AsociadosController@action');
+    Route::post('/detalles','Admin\AsociadosController@detalles');
+  });
 });
+/* Sitemap Routes*/
+Route::get('/sitemap.xml', 'Ui\SitemapController@index')->name('sitemap.xml');
+Route::get('/sitemap.xml/productos', 'Ui\SitemapController@productos');
+Route::get('/sitemap.xml/categorias', 'Ui\SitemapController@categorias');
+Route::get('/sitemap.xml/paginas', 'Ui\SitemapController@paginas');
+//Route::get('/sitemap.xml/subcategory', 'Ui\SitemapController@subcategories');
+/* Cart Routes */
+Route::prefix('carrito')->group(function () {
+  Route::get('/','Ui\CartController@index');
+  Route::post('create','Ui\CartController@create');
+  Route::get('read','Ui\CartController@read');
+  Route::post('update','Ui\CartController@update');
+  Route::post('delete','Ui\CartController@delete');
+});
+/* fix email address */
+Route::post('/email/fix','Auth\VerificationController@fix');
+/* Auth views user */
+Route::middleware(['auth','verified'])->group(function () {
+  // checkout
+  Route::prefix('checkout')->group(function () {
+    Route::get('/','Ui\CheckoutController@index');
+    Route::post('/store','Ui\CheckoutController@store');
+  });
+  // shipping
+  Route::prefix('shipping')->group(function () {
+    Route::get('/','Ui\ShippingController@shipping');
+    Route::post('/shipping_action','Ui\ShippingController@shipping_action');
+  });
+  /* Mi Perfil */
+  Route::prefix('Cuenta')->group(function(){
+    Route::get('/','Ui\MiCuentaController@index');
+    // Mis Pedidos
+    Route::prefix('MisPedidos')->group(function () {
+      Route::get('/','Ui\OrdersController@index');
+      Route::get('/{NOrden}','Ui\OrdersController@detalles');
+    });
+  });
+});
+// UI Store
+Route::get('/', 'Ui\StoreController@index');
+Route::get('/contacto', function () {return view('ui.tienda.contact');});
+Route::get('/producto/{ProductosNombre}/{ProductosID}', 'Ui\StoreController@Producto');
+Route::get('/{CategoriaNombre}/{CategoriaID}', 'Ui\StoreController@Categorias');
+Route::get('/tienda','Ui\StoreController@Tienda');
+Route::post('/email/contacto','Ui\StoreController@Contacto');
+Route::post('/Suggestions','Ui\StoreController@Suggestions');

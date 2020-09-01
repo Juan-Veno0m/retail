@@ -28,7 +28,7 @@
       <div class="card card-custom gutter-b">
         <div class="card-body">
           <?php setlocale(LC_TIME, "spanish");
-          $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y", strtotime($fecha));?>
+          $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y", strtotime($fecha)); $total=0;?>
           <div class="container py-4">
             <div class="row">
               <h2 class="orden-item-title">Pedido #{{$NOrden}} - {{iconv('ISO-8859-1', 'UTF-8', strftime('%A %d de %B de %Y',strtotime($newDate) ))}}</h2>
@@ -40,7 +40,7 @@
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                       <span>Subtotal</span>
-                      <span>${{$pago->Total-$pago->CostoEnvio}}</span>
+                      <span>${{$pago->TotalProductos}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                       <span>Envio</span>
@@ -48,7 +48,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                       <span>Total</span>
-                      <span>${{$pago->Total}}</span>
+                      <span>${{$pago->TotalProductos}}</span>
                     </li>
                   </ul>
                 </div>

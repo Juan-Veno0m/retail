@@ -71,4 +71,9 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return false;
     }
+    /* if the user role is asociados */
+    public function isAsociado()
+   {
+       return $this->hasRole('asociado');
+   }
 }

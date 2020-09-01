@@ -1,62 +1,17 @@
 @extends('master-ui')
-@section('title', 'Inicio')
+@section('title', 'Catálogo')
 @section('description','Tienda en linea Yolkan')
 @section('content')
-    <style>
-      .insight-title--title {
-        font-family: 'Great Vibes', cursive;
-        line-height: 1.5;
-        font-weight: 400;
-        font-size: 46px;
-        color: #5fbd74;
-      }
-      .insight-title--subtitle {
-        text-transform: uppercase;
-        font-size: 40px;
-        letter-spacing: .1em;
-        color: #392a25;
-        font-weight: 900;
-        line-height: 1.6;
-        margin-top: -10px;
-      }
-      .insight-special-title--title{
-        font-family: 'Great Vibes', cursive;
-        line-height: 1.5;
-        font-weight: 400;
-        font-size: 34px;
-        color: #5fbd74;
-      }
-      .style-default-left {
-        margin-left: -120px;
-      }
-      .ftco-services {
-        background: #5fbd74;
-        border-radius: 6px;
-      }
-      .ftco-services .media {
-        border-right: solid 1px #7fca8f;
-        margin: 8px 0px;
-      }
-      .page-item {display: none;}
-      .page-item:first-child,
-          .page-item:nth-child( 2 ),
-          .page-item:nth-child( 3 ),
-          .page-item:nth-last-child( 2 ),
-          .page-item:last-child,
-          .page-item.active,
-          .page-item.disabled {
-          display: block;
-      }
-    </style>
+    <link href="{{asset('/css/ui/tienda/main.css')}}" rel="stylesheet">
     <!-- Section Content -->
-    <section class="ftco-section pt-3">
+    <section class="ftco-section pt-5 pb-3">
       <div class="container">
         <div class="row justify-content-center pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
-            <h2 class="text-center">
-              <div class="insight-title--title">Descubre</div>
-              <div class="insight-title--subtitle">Nuestros productos</div>
-            </h2>
+            <h1 class="text-center">
+              <div class="insight-title--title">Tienda orgánica en línea</div>
+              <div class="insight-title--subtitle">Catálogo</div>
+            </h1>
           </div>
         </div>
         <div class="row justify-content-center mb-5 icon-separetor">
@@ -67,55 +22,46 @@
           <div class="col-xl-2"><hr></div>
         </div>
       </div>
-      <div class="container">
-        <form role="search" method="GET" action="{{url('tienda')}}" class="search row align-items-center mb-3 mr-1">
-          <div class="col-xl-12">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" id="q" name="q" value="{{$q}}" placeholder="Ingrese el producto a buscar" aria-label="Ingrese el producto a buscar" aria-describedby="q">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-              </div>
+      <!-- CAT -->
+      <div class="container-fluid my-4">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Despensa</h2>
+              <a href="{{url('/despensa/node1')}}" title="Categoría despensa">
+                <img src="{{asset('img/categorias/despensa.jpg')}}" class="img-fluid" alt="Despensa">
+                <p>ver más</p>
+              </a>
             </div>
           </div>
-        </form>
-        <div class="row">
-          <!-- each product -->
-          @foreach ($productos as $key => $p)
-            <?php $imagen = asset('uploads/'.$p->img); if (is_null($p->img)) { $imagen = asset('img/default-img.png'); $small =asset('img/default-img.png');}
-            $str = ['/',' '];
-            if(strpos($p->img, 'large') !== false){
-              $separate = explode('/', $p->img); $base= '/uploads'.'/'.$separate[0];  $filename = $separate[2];
-              $imagen = $base.'/mobile'.'/'.$filename.' 2x, '.
-                        $base.'/medium'.'/'.$filename.' 1x';
-              $small = $base.'/medium'.'/'.$filename;
-            }?>
-            <div class="col-lg-3 col-md-4 col-6 ftco-animate fadeInUp ftco-animated">
-              <div class="product">
-                <a href="{{url('/producto/'.str_replace($str, '-', $p->ProductosNombre).'/'.($p->ProductosID+3301))}}" class="img-prod">
-                  <img class="img-fluid cover lazyload" alt="{{$p->ProductosNombre}}"
-                  data-sizes="auto"
-                  data-srcset="{{$imagen}}"
-                  data-src="{{$small}}">
-                  <!-- <span class="status">30%</span> -->
-                  <div class="overlay"></div>
-                </a>
-                <div class="text pt-3 px-3 text-center">
-                  <h3><a href="#">{{$p->ProductosNombre}}</a></h3>
-                  <p>{{$p->CategoriaNombre}}</p>
-                  <div class="d-flex">
-                    <div class="pricing">
-                      <p class="price"><span class="price-sale">{{ '$'.number_format($p->PrecioUnitario*2,2)}}</span></p>
-                    </div>
-                  </div>
-                  <div class="row py-2  px-2 block-add">
-                    <a class="btn btn-link btn-block text-center text-dark" id="add-cart" data-id="{{$p->ID}}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
-                  </div>
-                </div>
-              </div>
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Lácteos</h2>
+              <a href="{{url('/lacteos/node46')}}" title="Categoría lácteos">
+                <img src="{{asset('img/categorias/lacteos.jpg')}}" class="img-fluid" alt="Lácteos">
+                <p>ver más</p>
+              </a>
             </div>
-          @endforeach
+          </div>
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Higiene y Belleza</h2>
+              <a href="{{url('/higiene-y-belleza/node65')}}" title="Categoría higiene y belleza">
+                <img src="{{asset('img/categorias/higiene-y-belleza.jpg')}}" class="img-fluid" alt="Higiene y Belleza">
+                <p>ver más</p>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Panadería y Tortillería</h2>
+              <a href="{{url('/panaderia-y-tortilleria/node59')}}" title="Categoría panadería y tortillería">
+                <img src="{{asset('img/categorias/panaderia-y-tortilleria.jpg')}}" class="img-fluid" alt="Panadería y Tortillería">
+                <p>ver más</p>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="row justify-content-center mt-5">{{$productos->links()}}</div>
       </div>
     </section>
 @endsection

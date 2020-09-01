@@ -7,7 +7,7 @@
                         <div class="icon mr-2 d-flex justify-content-center align-items-center">
                             <span  class="fas fa-phone-alt"></span >
                         </div>
-                        <span class="text">222-257-6431</span>
+                        <span class="text">222-960-1999</span>
                     </div>
                     <div class="col-md d-flex topper align-items-center">
                         <div class="icon mr-2 d-flex justify-content-center align-items-center">

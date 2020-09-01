@@ -181,6 +181,7 @@
       line-height: 18px;
       font-weight: 400;
     }
+    #cart-products div {font-family: 'Arial';}
   </style>
   <?php $estadosmx = [
 			'1' => 'Aguascalientes',
@@ -227,7 +228,7 @@
                         <form id="msform">
                             <!-- progressbar -->
                             <ul id="progressbar" class="pl-0">
-                                <li class="active fas" id="account">
+                                <li id="account" class="active fas">
                                   <span>Envío</span></li>
                                 <li id="personal" class="fas">
                                   <span>Revisar</span></li>
@@ -290,6 +291,7 @@
     /* global variables */
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity; let arraydata = {}; let envio=0; let sub =0; let total=0; let cont=1; let flag=false;let dev = $('.shipping');
+    let descuento=0; let fixedTotal=0;
     let action; let EnvioUID=0; let finish = $('.parent-finish');
     // function shipping ajax
     function shipping(){
@@ -308,7 +310,7 @@
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         type: 'POST',
         dataType: 'json',
-        data: {envio: envio, total:total,EnvioUID:EnvioUID}
+        data: {envio: envio, total:total,descuento:descuento,EnvioUID:EnvioUID,fixedTotal:fixedTotal}
       });
     }
     // next function
@@ -353,10 +355,15 @@
         sub = $('.review').find('.sub').data('sub'); // get subtotal
         if (arraydata['delegacion'].toLowerCase() === 'puebla') {
           if (sub<500) { envio = 100;}
-          total = parseFloat(sub) + parseFloat(envio);
+          total = parseFloat(sub);
+          descuento = parseFloat(sub*0.2);
         }else{envio=null; total = parseFloat(sub);}
         // print values
-        $('.review').find('.envio').html('$'+envio); $('.review').find('.total').html('$'+total);
+        $('.review').find('.envio').html('$'+envio); //
+        fixedTotal= total-descuento + parseFloat(envio);
+        // check if cupon exits
+        if ($('.cupon').length) {if (fixedTotal<1500) {fixedTotal=0;}else{fixedTotal=parseFloat(fixedTotal-1500).toFixed(2);}}
+         $('.review').find('.total').html('$'+(fixedTotal).toFixed(2));
       }
       if (error>0) {
         console.log(error);

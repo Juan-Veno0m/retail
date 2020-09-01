@@ -1,0 +1,1 @@
+SELECT ProductosID, ProductosNombre, COUNT(ProductosNombre) FROM productos GROUP BY ProductosNombre HAVING COUNT(ProductosNombre) > 1

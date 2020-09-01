@@ -29,6 +29,12 @@
         <div class="tab-content px-5 py-4">
           <div class="tab-pane fade show active">
             <p>Hola <b>{{Auth::user()->name}}</b></p>
+            @if ($asociado)
+              <p>N°Empresario: {{$asociado->NoEmpresario}}</p>
+              @if ($puntos)
+                <p>Puntos acumulados del mes: {{$puntos}}</p>
+              @endif
+            @endif
           </div>
         </div>
       </div>
