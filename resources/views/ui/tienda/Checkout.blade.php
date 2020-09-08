@@ -363,7 +363,7 @@
         fixedTotal= total-descuento + parseFloat(envio);
         // check if cupon exits
         if ($('.cupon').length) {if (fixedTotal<1500) {fixedTotal=0;}else{fixedTotal=parseFloat(fixedTotal-1500).toFixed(2);}}
-         $('.review').find('.total').html('$'+(fixedTotal).toFixed(2));
+         $('.review').find('.total').html('$'+(parseFloat(fixedTotal)).toFixed(2));
       }
       if (error>0) {
         console.log(error);

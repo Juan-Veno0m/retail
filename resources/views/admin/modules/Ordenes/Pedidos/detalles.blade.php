@@ -47,8 +47,18 @@
                       <span>${{$pago->CostoEnvio}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                      <span>Descuento <small>(20%)</small></span>
+                      <span class="text-danger">- ${{$pago->Descuento}}</span>
+                    </li>
+                    @if ($orden->CuponID)
+                      <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                        <span>Cupón de descuento</span>
+                        <span class="text-danger">- $1,500</span>
+                      </li>
+                    @endif
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                       <span>Total</span>
-                      <span>${{$pago->TotalProductos}}</span>
+                      <span>${{$pago->Total}}</span>
                     </li>
                   </ul>
                 </div>

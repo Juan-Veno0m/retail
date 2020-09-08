@@ -40,6 +40,9 @@ Route::middleware(['auth','role.admin'])->group(function () {
     Route::prefix('pedidos')->group(function () {
       Route::get('/', 'Admin\PedidosController@index');
       Route::get('/{NOrden}','Admin\PedidosController@read');
+      Route::post('/historialpagos','Admin\PedidosController@historialpagos');
+      Route::post('/actionpagos','Admin\PedidosController@actionpagos');
+      Route::get('/ticket/{NOrden}','Admin\PedidosController@ticketPDF');
     });
     //
   });
