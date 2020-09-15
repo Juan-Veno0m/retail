@@ -34,6 +34,6 @@
     </div>
   </div>
   <div class="input-group col-xl-1 my-2 my-md-0">
-    <button type="submit" class="btn btn-outline-dark">Buscar</button>
+    <button type="submit" class="btn btn-sm btn-secondary">Buscar</button>
   </div>
 </form>

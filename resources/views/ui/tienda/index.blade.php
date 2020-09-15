@@ -8,11 +8,11 @@
   <meta property="og:image" content="{{url('/img/label-yolkan.webp')}}" />
 @endsection
 @section('content')
-    <link href="{{asset('/css/ui/index/main.css?x=1')}}" rel="stylesheet">
+    <link href="{{asset('/css/ui/index/main.css?x=2')}}" rel="stylesheet">
     <!-- Section Carousel -->
     @include('ui.parts.main-carousel')
     <!-- Grid -->
-    @include('ui.parts.grid')
+    @include('ui.parts.featured-products')
     <!-- Section Services -->
     @include('ui.parts.services-shop')
     <!-- Section categories -->

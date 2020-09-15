@@ -48,9 +48,9 @@
                 <a class="nav-link" href="{{url('/thumbnails')}}">
                   <i class="fas fa-cogs"></i>
                     Regenerar Miniaturas</a>
-                <a class="nav-link" href="tables.html">
-                  <i class="fas fa-table"></i>
-                    Tables</a>
+                <a class="nav-link" href="{{url('/localidades')}}">
+                  <i class="fas fa-city"></i>
+                    Localidades</a>
             </div>
         </div>
     </nav>

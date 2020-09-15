@@ -51,7 +51,7 @@
         </li>
       @endforeach
     @else
-      <p class="no-items">No hay nada en el carrito de compras.</p>
+      <p class="no-items mx-2">No hay nada en el carrito de compras.</p>
     @endif
   </ul>
   <div class="col text-dark bg-light" id="money-summary">
@@ -73,12 +73,12 @@
       <a href="{{ url('/tienda') }}" class="btn btn-light btn-block btn-lg"><i class="fa fa-angle-left"></i> Continuar comprando</a>
       @if (Auth::check())
         @if (Auth::user()->hasVerifiedEmail())
-          <a href="{{url('/carrito')}}" class="btn btn-success btn-block btn-lg" {{$disabled}}>Revisar Pedido</a>
+          <a href="{{url('/carrito')}}" class="btn btn-warning btn-block btn-lg" {{$disabled}}>Revisar Pedido</a>
         @else
           <a href="{{url('/email/verify')}}" class="btn btn-success btn-block btn-lg" {{$disabled}}>Revisar Pedido</a>
         @endif
       @else
-        <a href="{{url('/login')}}" class="btn btn-success btn-block btn-lg" {{$disabled}}>Revisar Pedido</a>
+        <a href="{{url('/login')}}" class="btn btn-warning btn-block btn-lg" {{$disabled}}>Revisar Pedido</a>
       @endif
     </div>
   </div>

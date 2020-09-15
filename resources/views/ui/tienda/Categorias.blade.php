@@ -66,7 +66,11 @@
                       </div>
                     </div>
                     <div class="row py-2  px-2 block-add">
-                      <a class="btn btn-link btn-block text-center text-dark" id="add-cart" data-id="{{$p->ID}}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+                      @if ($p->UnidadesEnStock>0)
+                        <a class="btn btn-link btn-block text-center text-dark" id="add-cart" data-id="{{$p->ID}}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
+                      @else
+                        <a class="btn btn-link btn-block text-center text-dark">Producto agotado</a>
+                      @endif
                     </div>
                   </div>
                 </div>

@@ -1,18 +1,18 @@
 .insight-title--title {
   font-family: "Amatic SC", cursive;
-  line-height: 1.5;
+  line-height: 1.8;
   font-weight: 400;
-  font-size: 46px;
+  font-size: calc(1em + 1.5vw);
   color: #4b9f47;
 }
 .insight-title--subtitle {
-  text-transform: capitalize;
-  font-size: 40px;
+  text-transform: full-size-kana;
   letter-spacing: .1em;
   color: #392a25;
   font-weight: 900;
   line-height: 1.6;
   margin-top: -10px;
+  font-family: "Amatic SC", cursive;
 }
 .insight-special-title--title{
   font-family: "Amatic SC", cursive;
@@ -25,7 +25,7 @@
   margin-left: -120px;
 }
 .ftco-services {
-  background: #1d0606;
+  background: #116015;
   border-radius: 6px;
 }
 .ftco-services .media {

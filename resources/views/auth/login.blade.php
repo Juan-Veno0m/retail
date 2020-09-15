@@ -11,55 +11,13 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <!--<div class="col-md-4">
-          <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <h5>¿Eres cliente?</h5>
-            <div class="form-group row">
-              <label for="email">Correo:</label>
-              <div class="input-group">
-                <input id="email" type="email" placeholder="Dirección de correo electrónico" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                @error('email')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="password">Contraseña:</label>
-              <div class="input-group">
-                <input id="password" type="password" placeholder="Contraseña" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                @error('password')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col">
-                @if (Route::has('password.request'))
-                  <small><a href="{{ route('password.request') }}">
-                    ¿Olvidaste la contraseña?
-                  </a></small>
-                @endif
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col">
-                <button type="submit" class="btn btn-success">Iniciar Sesión</button>
-              </div>
-            </div>
-          </form>
-        </div>-->
         <div class="col-md-4 form-login">
-          <div class="form-group row">
+          <div class="form-group row mx-1">
             <label for="NoEmpresario">No. Empresario:</label>
             <input id="NoEmpresario" type="text" placeholder="Número de Empresario" class="form-control" name="NoEmpresario" required autofocus>
             <span class="invalid-feedback" role="alert"></span>
           </div>
-          <div class="form-group row">
+          <div class="form-group row mx-1">
             <label for="password">Contraseña:</label>
             <input id="password" type="password" placeholder="Contraseña" class="form-control" name="password" required autocomplete="current-password">
             <span class="invalid-feedback" role="alert"></span>
@@ -73,7 +31,7 @@
               @endif
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row mx-1">
             <button id="submit" class="btn btn-success btn-block">Iniciar Sesión</button>
           </div>
         </div>

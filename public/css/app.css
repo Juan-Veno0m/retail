@@ -12151,6 +12151,12 @@ textarea.form-control {
     object-fit: fill;
     width: 150px !important;
   }
+  #gallery-tab #main-picture {
+    padding-top: 20px;
+    height: 380px;
+    background: none;
+    max-width: 90vw;
+  }
 }
 .navbar-toggler svg {
   height: 16px;

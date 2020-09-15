@@ -1,10 +1,10 @@
-<section class="ftco-section pt-0">
+<section class="ftco-section py-3">
   <div class="container">
     <div class="row justify-content-center pb-3">
-      <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
+      <div class="col-lg-12 col-8 heading-section text-center ftco-animate fadeInUp ftco-animated">
         <h2 class="text-center">
-          <div class="insight-title--title">Descubre</div>
-          <div class="insight-title--subtitle">Nuestros productos</div>
+          <div class="insight-title--title">Productos Orgánicos</div>
+          <div class="insight-title--subtitle">y Artesanales</div>
         </h2>
       </div>
     </div>
@@ -15,7 +15,7 @@
       </div>
       <div class="col-xl-2"><hr></div>
   </div>
-  <div class="container">
+  <div class="container-fluid mt-4 grid">
     <div class="row">
       <!-- each product -->
       @foreach ($productos as $key => $p)
@@ -25,32 +25,21 @@
         $slug = str_replace($especial, '', $slug);
         if(strpos($p->img, 'large') !== false || strpos($p->img, 'original') !== false){
           $separate = explode('/', $p->img); $base= '/uploads'.'/'.$separate[0];  $filename = $separate[2];
-          $imagen = $base.'/mobile'.'/'.$filename.' 2x, '.
-                    $base.'/medium'.'/'.$filename.' 1x';
-          $small = $base.'/large'.'/'.$filename;
+          $imagen = $base.'/medium'.'/'.$filename.' 2x, '.
+                    $base.'/large'.'/'.$filename.' 1x';
+          $small = $base.'/medium'.'/'.$filename;
         }
         ?>
-        <div class="col-lg-3 col-md-4 ftco-animate fadeInUp ftco-animated">
+        <div class="col-lg-3">
           <div class="product">
             <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod">
-              <img class="img-fluid cover lazyload" alt="{{$p->ProductosNombre}}"
+              <img class="img-fluid lazyload" alt="{{$p->ProductosNombre}}"
               data-sizes="auto"
               data-srcset="{{$imagen}}"
               data-src="{{$small}}">
-              <!-- <span class="status">30%</span> -->
-              <div class="overlay"></div>
             </a>
             <div class="text pt-3 px-3 text-center">
               <h3><a href="#">{{$p->ProductosNombre}}</a></h3>
-              <p>{{$p->CategoriaNombre}}</p>
-              <div class="d-flex">
-                <div class="pricing">
-                  <p class="price"><span class="price-sale">{{ '$'.number_format($p->PrecioUnitario*2,2)}}</span></p>
-                </div>
-              </div>
-              <div class="row py-2  px-2 block-add">
-                <a class="btn btn-link btn-block text-center text-dark" id="add-cart" data-id="{{$p->ID}}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
-              </div>
             </div>
           </div>
         </div>

@@ -183,7 +183,7 @@ $('#cart-products').on('click', '.remove-from-cart', function(event) {
       alert.delay(2500).fadeOut("slow");
       /// update data from single product
       $('.btn-action').empty();
-      $('.btn-action').append('<button type="button" class="btn btn-dark btn-cart" data-id="'+btnparent.data('keygen')+'">Agregar al Carrito</button>')
+      $('.btn-action').append('<button type="button" class="btn btn-warning btn-cart" data-id="'+btnparent.data('keygen')+'">Agregar al Carrito</button>')
     }else{console.log('t',data.tipo, 'e',data.mensaje);}
   });
 

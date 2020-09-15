@@ -52,6 +52,7 @@ class CheckoutController extends Controller
         'Precio_lista'=>$details['price'],
         'Descuento'=>0.00
       ]);
+      // reducir productos del inventario
     }
     // insert orden pago
     $PagoID = DB::table('orden_pago')->insertGetId([
@@ -69,12 +70,12 @@ class CheckoutController extends Controller
       // code...
       $cupon = DB::table('asociados_cupon')->insertGetId(['CuponID'=>1,'OrdenID'=>$OrdenID]);
       $calculo= number_format($req->fixedTotal+1500/10, 2, '.', '');
-      $puntos = DB::table('orden_puntos')->insertGetId(['OrdenID'=>$OrdenID,'Puntos'=>$calculo]);
+      //$puntos = DB::table('orden_puntos')->insertGetId(['OrdenID'=>$OrdenID,'Puntos'=>$calculo]);
     }// posteriormente contar
     $user->cont = $cont+1;
     $user->save();
     $calculo = number_format($req->fixedTotal/10, 2, '.', '');
-    $puntos = DB::table('orden_puntos')->insertGetId(['OrdenID'=>$OrdenID,'Puntos'=>$calculo]);
+    //$puntos = DB::table('orden_puntos')->insertGetId(['OrdenID'=>$OrdenID,'Puntos'=>$calculo]);
     // insert orden envio
     $OEnvioID = DB::table('orden_envio')->insertGetId([
       'OrdenID'=> $OrdenID,

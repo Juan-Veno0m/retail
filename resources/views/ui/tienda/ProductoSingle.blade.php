@@ -10,16 +10,16 @@
   <meta property="product:price:currency" content="MXN"/>
 @endsection
 @section('content')
-  <link href="{{asset('/css/ui/tienda/productsingle.css?x=2')}}" rel="stylesheet">
+  <link href="{{asset('/css/ui/tienda/productsingle.css?x=4')}}" rel="stylesheet">
   <link href="{{asset('/css/ui/tienda/fixed-cart.css')}}" rel="stylesheet">
   @include('ui.parts.fixed-cart')
   <div class="col-lg-9">
     @include('ui.parts.sticky-breadcrumb')
-    <div class="row pt-5">
+    <div class="row">
       <!-- Col Slider -->
-      <div class="col-xl-6 my-4 px-0">@include('ui.parts.product-slider')</div>
+      <div class="col-xl-6 my-lg-4 px-0 d-none d-sm-block">@include('ui.parts.product-slider')</div>
       <!-- Col Description -->
-      <div class="col-xl-6 my-4 px-0">@include('ui.parts.product-description')</div>
+      <div class="col-xl-6 my-lg-4 px-1">@include('ui.parts.product-description')</div>
     </div>
   </div>
   <div class="col-lg-9 my-2">

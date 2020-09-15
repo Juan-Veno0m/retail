@@ -10364,6 +10364,8 @@ body {
 }
 .search input[type="search"] {
     text-align: center;
+    height: 34px;
+    font-size: 12px;
 }
 .icon-search span {
     top: 0;

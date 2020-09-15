@@ -43,8 +43,10 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Atentamente'),<br>
-<b>yolkan</b>
+  <p style="text:center;">
+    @lang('¡Ciudate, ayuda y gana!'),<br>
+    <b>yolkan de México</b>
+  </p>
 @endif
 
 {{-- Subcopy --}}

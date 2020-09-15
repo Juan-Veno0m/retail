@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use DB;
 
@@ -107,5 +108,67 @@ class ProductController extends Controller
       DB::table('productos')->where('ProductosID','=',$decrypted)->delete();
       return (['tipo' => 'ok', 'mensaje' => 'borrado correctamente']);
 
+    }
+    // set stock
+    public function stock(Request $req)
+    {
+      if ($req->ajax()) {
+        // decrypt
+        try {
+            $decrypted = decrypt($req['key']);
+        } catch (DecryptException $e) {
+            //
+            return (['tipo' => 'error', 'mensaje' => $e]);
+        }
+        // update
+        DB::table('productos')->where('ProductosID',$decrypted)->update(['UnidadesEnStock'=>$req['stock'],'updated_at'=>now()]);
+        // comment
+        $id = DB::table('comentarios_stock')->insertGetId(['comentario'=>$req['comentarios'],'oldstock'=>$req['oldstock'],
+        'ProductosID'=>$decrypted,'UserID'=>Auth::id(),'created_at'=>now()]);
+        return (['tipo' => 200, 'mensaje' => 'Cambios aplicados','stock'=>$req['stock']]);
+      }else{abort(404);}
+    }
+    // get localidades
+    public function localidades(Request $req)
+    {
+      if ($req->ajax()) {
+        // decrypt
+        try {
+            $decrypted = decrypt($req->id);
+        } catch (DecryptException $e) {
+            //
+            return (['tipo' => 'error', 'mensaje' => $e]);
+        }
+        $local = DB::table('localidades')->get();
+        $data = DB::table('productos_localidades')->where('ProductosID',$decrypted)->select('LocalidadID')->get();
+        return (['tipo' => 200, 'local'=>$local,'plocal'=>$data]);
+      }
+      else{abort(404);}
+    }
+    // Localidades Create // Delete
+    public function localidadesTx(Request $req)
+    {
+      if ($req->ajax()) {
+        // decrypt
+        try {
+            $decrypted = decrypt($req->id);
+        } catch (DecryptException $e) {
+            //
+            return (['tipo' => 'error', 'mensaje' => $e]);
+        }
+        /* eliminar */
+        if (is_array($req->eliminar)) {
+          for ($i=0; $i < sizeof($req->eliminar) ; $i++) {
+            DB::table('productos_localidades')->where('ProductosID',$decrypted)->where('LocalidadID',$req->eliminar[$i])->delete();
+          }
+        }
+        /* agregar */
+        if (is_array($req->agregar)) {
+          for ($i=0; $i < sizeof($req->agregar) ; $i++) {
+            $id[] = DB::table('productos_localidades')->insertGetId(['ProductosID'=>$decrypted,'LocalidadID'=>$req->agregar[$i],'created_at'=>now()]);
+          }
+        }
+        return (['tipo' => 200]);
+      }else{abort(404);}
     }
 }

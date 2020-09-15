@@ -2,30 +2,96 @@
 @section('title', 'Productos')
 @section('description','Administrador Yolkan') <!-- Meta Description -->
 @section('content')
-<style>
-  .dz-filename > span {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+  <style>
+    .dz-filename > span {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+    .selected-item > .img-thumbnail {
+      background: #358439;
+      box-shadow: 0px 0px 6px #358439;
+    }
+    .featured > .img-thumbnail {
+      border: solid 2px #f7f000;
+    }
+    .cover {
+      object-fit: cover;
+      height: 140px !important;
       width: 100%;
-  }
-  .selected-item > .img-thumbnail {
-    background: #358439;
-    box-shadow: 0px 0px 6px #358439;
-  }
-  .featured > .img-thumbnail {
-    border: solid 2px #f7f000;
-  }
-  .cover {
-    object-fit: cover;
-    height: 140px !important;
-    width: 100%;
-  }
-</style>
+    }
+    .table-select > tbody > tr.active {
+      border-left: solid 5px #036665;
+      background: #c5f2c3;
+    }
+    .table-bordered-bottom th, .table-bordered-bottom td {
+      border-bottom: 1px solid #dee2e6;
+    }
+    /* swal2 multiple select */
+    .swal2-content .dropdown-toggle {
+      border: 0;
+      background: transparent;
+      border-bottom: 1px solid #ced4da;
+    }
+    .swal2-content .dropdown-toggle.btn-light:active {
+      border-bottom: 1px solid #4285f4;
+      -webkit-box-shadow: 0 1px 0 0 #4285f4;
+      box-shadow: 0 1px 0 0 #4285f4;
+      background: transparent;
+    }
+    .swal2-content .dropdown-menu {
+      min-width: 406px !important;
+      max-height: 170px;
+      margin: 0;
+      overflow-y: auto;
+      background-color: #fff;
+      -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+      border-radius: 0em;
+    }
+    .swal2-content .bootstrap-select .dropdown-item:active {
+      background: #eee;
+      color: #000;
+    }
+    .swal2-content .dropdown-menu .selected {
+      background-color: #eee;
+    }
+    .swal2-content .dropdown-menu .text {
+      font-size: .9rem;
+      color: #4285f4;
+      margin-left: 24px;
+    }
+    .swal2-content .dropdown-menu .bs-ok-default.check-mark::after {
+      width: 12px;
+      height: 1.375rem;
+      border-top: 2px solid transparent;
+      border-right: 2px solid #4285f4;
+      border-bottom: 2px solid #4285f4;
+      border-left: 2px solid transparent;
+      -webkit-transform: rotate(40deg);
+      transform: rotate(40deg);
+      -webkit-transform-origin: 100% 100%;
+      transform-origin: 100% 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    .swal2-content .dropdown-menu .selected span.check-mark {left: 4px;}
+    .swal2-content .dropdown-menu .bs-searchbox .form-control {
+      border: 0;
+      border-radius: 0;
+      border-bottom: 1px solid #ced4da;
+    }
+    .swal2-content .dropdown-menu .bs-searchbox .form-control:focus {
+      border-bottom: 1px solid #4285f4;
+      -webkit-box-shadow: 0 1px 0 0 #4285f4;
+      box-shadow: 0 1px 0 0 #4285f4;
+    }
+  </style>
   <!-- toolkit -->
   @section('toolkit')
-    <a class="btn btn-sm btn-secondary ml-2" name="agregar-producto" data-toggle="modal" data-target="#form-producto">Agregar</a>
+    <a class="btn btn-sm btn-light ml-2" name="agregar-producto" data-toggle="modal" data-target="#form-producto">Agregar</a>
   @endsection
     <!-- Section  -->
     <div class="container-fluid">
@@ -381,6 +447,161 @@
         onDestroy: () => { }
       });
     }
+  });
+  // active tr table products
+  tblproductos.on('click', 'tr', function(event) {
+    let tr = $(this);
+    // find the one
+    tr.parents('tbody').find('.active').removeClass('active');
+    if (!tr.hasClass('active')) {
+      tr.addClass('active');
+    }else{tr.removeClass('active');}
+  });
+  // stock dialog
+  tblproductos.on('click', 'button[name="stock"]', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    let btn = $(this);
+    let btnParent = btn.parents('tr');
+    Swal.fire({
+      title: 'Cambio de Stock',
+      icon: 'warning',
+      width: 600,
+      html:
+      '<div class="container-fluid mt-4 needs-validation" id="form">'+
+        '<div class="row form-group">'+
+          '<label for="stock" class="col-sm-5 col-form-label text-left">Stock</label>'+
+          '<div class="col-sm-7">'+
+            '<input type="text" class="form-control array" name="stock" id="stock" required>'+
+          '</div>'+
+        '</div>'+
+        '<div class="row form-group">'+
+          '<label for="comentarios" class="col-sm-5 col-form-label text-left">Comentarios</label>'+
+          '<div class="col-sm-7">'+
+            '<textarea rows="2" class="form-control array" name="comentarios" id="comentarios" required></textarea>'+
+          '</div>'+
+        '</div>'+
+        '<div class="row form-group float-right">'+
+          '<button name="guardar" class="btn btn-dark">Guardar</button>'+
+        '</div>'+
+      '</div>',
+      showConfirmButton: false,
+      showCancelButton: false,
+      showCloseButton: true,
+      onRender:() => {
+        let flag=false;
+        /* click */
+        $('.swal2-container').on('click', 'button[name="guardar"]', function(event) {
+          event.preventDefault();
+          /* Act on the event */
+          let save = $(this); let error=0; let datos={};
+          let saveparent = save.parents('#form');
+          saveparent.addClass('was-validated');
+          saveparent.find('.array').each(function(index, el) {
+            if ($(this).val()=="" && $(this).prop('required')) {error++;}
+            else{
+              datos[$(this).attr("name")] = $(this).val();
+            }
+          });
+          if (error==0 && flag==false) {
+            flag=true;
+            datos['oldstock'] = btn.val(); datos['key'] = btnParent.data('id');
+            /*ajax */
+            $.ajax({
+              url: path+'/productos/stock',
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              type: 'POST',
+              dataType: 'json',
+              data: datos
+            })
+            .done(function(data) {
+              if (data.tipo==200) {
+                Swal.fire('Cambios aplicados!', '', 'success')
+                btn.html('<i class="fas fa-layer-group"></i> '+data.stock);
+                btn.val(data.stock);
+              }
+            });
+          }
+        });
+      }
+    })
+  });
+  // localidades disponibles
+  tblproductos.on('click', 'button[name="localidades"]', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    let btn = $(this); let initial;
+    let btnParent = btn.parents('tr');
+    Swal.fire({
+      title: 'Localidades disponibles',
+      width: 600,
+      html:
+      '<div class="container-fluid mt-4 needs-validation" id="form">'+
+        '<div class="row form-group">'+
+          '<label for="localidad" class="col-sm-12 col-form-label text-center" style="font-size: .8rem;color: #757575;">Localidades</label>'+
+          '<select class="selectpicker col-sm-12" width="fit" id="localidad" multiple data-live-search="true" title="Selecione localidades">'+
+          '</select>'+
+        '</div>'+
+        '<div class="row form-group justify-content-center pt-4">'+
+          '<button name="guardar" class="btn btn-sm btn-dark">Guardar</button>'+
+        '</div>'+
+      '</div>',
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        // get localidades
+        $.ajax({
+          url: path+'/productos/localidades',
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          type: 'POST',
+          dataType: 'json',
+          data: {id: btnParent.data('id')}
+        }).done(function(data) {
+          let select = $('#localidad'); let items="";
+          select.empty();
+          $.each( data.local, function( i, item ) {
+              items+='<option value="'+item.id+'">'+item.nombre+'</option>';
+          });
+          select.append(items);select.selectpicker();
+          // render select
+          initial = data.plocal.map(function(a) {return a.LocalidadID;}); // get only values from objt
+          select.selectpicker('val',initial);
+          Swal.hideLoading()
+        });
+
+      },
+      showConfirmButton: false,
+      showCancelButton: false,
+      showCloseButton: true,
+      onRender:() => {
+        let flag=false;
+        /* click */
+        $('.swal2-container').on('click', 'button[name="guardar"]', function(event) {
+          event.preventDefault();
+          /* Act on the event */
+          let localidad = $('#localidad').val();
+          if (localidad.length>0) {
+            let res =  localidad.map(function (x) {return parseInt(x, 10);});
+            //* arrays */
+            let eliminar = initial.filter(x => res.indexOf(x) === -1);
+            let agregar = res.filter(x => initial.indexOf(x) === -1);
+            /* ajax */
+            $.ajax({
+              url: path+'/productos/localidadesTx',
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              type: 'POST',
+              dataType: 'json',
+              data: {id:btnParent.data('id'),eliminar:eliminar, agregar:agregar }
+            })
+            .done(function(data) {
+              if (data.tipo==200) {
+                Swal.fire('Cambios aplicados!', '', 'success');
+              }
+            });
+          }else{$('#localidad').selectpicker('toggle');}
+
+        });
+      }
+    })
   });
 </script>
 @endsection

@@ -17,6 +17,9 @@ Route::middleware(['auth','role.admin'])->group(function () {
     Route::post('read','Admin\ProductController@read');
     Route::post('update','Admin\ProductController@update');
     Route::post('delete','Admin\ProductController@delete');
+    Route::post('stock','Admin\ProductController@stock');
+    Route::post('localidades','Admin\ProductController@localidades');
+    Route::post('localidadesTx','Admin\ProductController@localidadesTx');
     // Imagenes de Productos
     Route::prefix('images')->group(function () {
       Route::post('read','Admin\ProductImagesController@read');
@@ -51,6 +54,10 @@ Route::middleware(['auth','role.admin'])->group(function () {
     Route::get('/', 'Admin\RegenerateController@index');
     Route::get('/read', 'Admin\RegenerateController@read');
     Route::get('/regenerate', 'Admin\RegenerateController@regenerate');
+  });
+  // Localidades
+  Route::prefix('localidades')->group(function(){
+    Route::get('/', 'Admin\LocalidadesController@index');
   });
   // Asociados
   Route::prefix('asociados')->group(function () {

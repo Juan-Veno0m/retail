@@ -212,6 +212,8 @@
               switch(data.tipo) {
                 case 200:
                   //
+                  accessmodal.find('.messages').empty();
+                  accessmodal.find('.messages').append('<div class="alert alert-success col" role="alert">Credenciales generadas</div>');
                   Swal.fire(
                     'Cambios aplicados!',
                     'La información se aplico correctamente.',

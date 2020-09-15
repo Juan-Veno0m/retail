@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="row pt-3 pb-4 no-gutters">
+    <div class="row pt-3 pb-4 mx-3 mx-lg-0 no-gutters">
       @foreach ($imagenes as $key => $v)
         <?php $alt=$v->caption; if (empty($v->caption)) { $alt=$producto->ProductosNombre;}
         if(strpos($v->img, 'large') !== false || strpos($v->img, 'original') !== false){
@@ -20,7 +20,7 @@
         }?>
         <div class="d-flex mr-1">
             <a href="#" class="child-picture">
-                <img class="img-fluid thumbnail lazyload" data-src="{{asset($small)}}" data-clic="{{asset($base.'/large'.'/'.$filename)}}" alt="{{$alt}}">
+                <img class="img-fluid thumbnail lazyload" data-src="{{asset($small)}}" data-clic="{{asset($base.'/medium'.'/'.$filename)}}" alt="{{$alt}}">
             </a>
         </div>
       @endforeach

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Mail\Bienvenido;
+use app\User;
 use DB;
 
 class AsociadosController extends Controller
@@ -74,6 +76,11 @@ class AsociadosController extends Controller
           // asociados relacion
           $asociado = DB::table('asociados_usuario')->insertGetId(['AsociadosID'=> $req->array['AsociadosID'],'UsuarioID'=>$id,'created_at'=>now()]);
           if (isset($asociado)) {
+            /* send notify */
+            $user = User::find($id);
+            $empresario = DB::table('asociados')->where('AsociadosID',$req->array['AsociadosID'])->first();
+            $event = ['empresario'=>$empresario,'password'=>$req->array['password']];
+            $user->notify(new Bienvenido($event));
             return response()->json(['tipo' => 200]);
           }else{return response()->json(['tipo' => 500]);}
         }else{

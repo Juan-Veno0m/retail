@@ -1,7 +1,7 @@
-<table class="table" id="tabla-productos">
+<table class="table table-select table-bordered-bottom" id="tabla-productos">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">SKU</th>
       <th scope="col">Producto</th>
       <th scope="col">Categoria</th>
       <th scope="col">Precio</th>
@@ -16,12 +16,14 @@
         <td name="producto">{{$p->ProductosNombre.' '.$p->Cantidad.' '.$p->Unidad}}</td>
         <td name="categoria">{{$p->CategoriaNombre}}</td>
         <td name="precio">{{$p->PrecioUnitario}}</td>
-        <td name="stock">{{$p->UnidadesEnStock}}</td>
+        <?php $string='btn-light'; if ($p->UnidadesEnStock==0) {$string='btn-danger';} ?>
+        <td name="stock"><button type="button" name="stock" class="btn btn-sm {{$string}}" value="{{$p->UnidadesEnStock}}"><i class="fas fa-layer-group"></i> {{$p->UnidadesEnStock}}</button></td>
         <td>
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" name="editar" class="btn btn-sm btn-light mr-3"><i class="fas fa-edit"></i></button>
-            <button type="button" name="eliminar" class="btn btn-sm btn-light mr-3"><i class="fas fa-trash"></i></button>
-            <button type="button" name="imagenes" class="btn btn-sm btn-light"><i class="far fa-images"></i></button>
+            <button type="button" name="editar" title="editar" class="btn btn-sm btn-light mr-3"><i class="fas fa-edit"></i></button>
+            <button type="button" name="eliminar" title="eliminar" class="btn btn-sm btn-light mr-3"><i class="fas fa-trash"></i></button>
+            <button type="button" name="imagenes" title="imagenes" class="btn btn-sm btn-light mr-3"><i class="far fa-images"></i></button>
+            <button type="button" name="localidades" title="localidades" class="btn btn-sm btn-light"><i class="fas fa-city"></i></button>
           </div>
         </td>
       </tr>

@@ -20,7 +20,7 @@ class StoreController extends Controller
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.Cantidad','p.Unidad')
         ->orderBy('p.ProductosID','desc')
-        ->take(8)->get();
+        ->take(4)->get();
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
       $data = ['productos'=>$productos];
       return view('ui.tienda.index', $data);
@@ -37,7 +37,7 @@ class StoreController extends Controller
           ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.featured')
           ->where('p.ProductosID','=',$id)
           ->select('p.ProductosNombre','prov.EmpresaNombre','cat.CategoriaNombre','cat.CategoriaID',
-          'p.Descripcion','p.Cantidad','p.Unidad','p.PrecioUnitario','p.Featured','pi.img','p.ProveedorID')
+          'p.Descripcion','p.Cantidad','p.Unidad','p.PrecioUnitario','p.Featured','pi.img','p.ProveedorID','p.UnidadesEnStock')
           ->first();
       $related =  DB::table('productos as p')
         ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
@@ -81,7 +81,8 @@ class StoreController extends Controller
         ->where('cat.CategoriaID','=',$node)
         ->where('p.ProductosNombre', 'LIKE','%'.$q.'%')
         ->where('prov.Flag','=',0)
-        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad','p.PrecioUnitario','pi.img','cat.CategoriaNombre')
+        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad',
+        'p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.UnidadesEnStock')
         ->orderBy('p.ProductosID','desc')
         ->simplePaginate(16)->appends(request()->except('page'));
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
