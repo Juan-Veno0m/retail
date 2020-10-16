@@ -1,5 +1,6 @@
 <div class="row summary mt-1 mt-lg-0">
-  <div class="col-xl-12 pl-0"><h1 class="product-tittle">{{$producto->ProductosNombre.' '.$producto->Cantidad.' '.$producto->Unidad}}</h1></div>
+  <div class="col-xl-12 pl-0 pl-lg-3"><h1 class="product-tittle">{{$producto->ProductosNombre.' '.$producto->Cantidad.' '.$producto->Unidad}}</h1></div>
+  <div class="col-xl-12 pl-0 pl-lg-3"><h2 class="product-subtitle">Productor:&nbsp;{{$producto->EmpresaNombre}}</h2></div>
   <!-- Carousel -->
   <div class="col-xl-12 pl-0">
     <div id="carouselmobile" class="carousel slide carousel-fade d-block d-sm-none" data-ride="carousel">
@@ -40,24 +41,28 @@
         @if ($cantidad>=1)
           <label for="cantidad">Cantidad</label>
           <div class="quantity d-block" data-id="{{$ProductosID}}" data-keygen="{{$keygen}}">
-            <span class="input-number-decrement">–</span><input class="input-number" type="text" value="{{$cantidad}}" min="1" max="10"><span class="input-number-increment">+</span>
+            <span class="input-number-decrement">–</span><input class="input-number" type="text" value="{{$cantidad}}" min="1" max="30"><span class="input-number-increment">+</span>
           </div>
         @else
           <button type="button" class="btn btn-warning btn-cart" data-id="{{$id}}">Agregar al Carrito</button>
         @endif
       @else
-        <button type="button" class="btn btn-secondary">Este producto esta agotado</button>
+        @if ($producto->Descontinuado==true)
+          <button type="button" class="btn btn-secondary">Producto descontinuado</button>
+        @else
+          <button type="button" class="btn btn-secondary">Producto agotado</button>
+        @endif
       @endif
   </div>
   <div class="col-xl-12 mt-4">
     <div class="d-block">
-      <span><b>Porción:&nbsp;</b>{{$producto->Cantidad.' '.$producto->Unidad}}</span>
+      <span><label>Porción:&nbsp;</label>{{$producto->Cantidad.' '.$producto->Unidad}}</span>
     </div>
     <div class="d-block">
-      <span><b>SKU:&nbsp;</b>{{$ProductosID}}</span>
+      <span><label>SKU:&nbsp;</label>{{$ProductosID}}</span>
     </div>
     <div class="d-block">
-      <span><b>Categoria:&nbsp;</b>{{$producto->CategoriaNombre}}</span>
+      <span><label>Categoria:&nbsp;</label>{{$producto->CategoriaNombre}}</span>
     </div>
   </div>
 </div>

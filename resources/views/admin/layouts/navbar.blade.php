@@ -15,7 +15,7 @@
           <!--end::Svg Icon-->
         </span>
       </button>
-      <a class="navbar-brand" href="index.html"><img height="36px" src="{{asset('img/label-yolkan@36.png')}}"></a>
+      <a class="navbar-brand" href="{{url('/dashboard')}}"><img height="36px" src="{{asset('img/label-yolkan-mono-xs.png')}}"></a>
     </div>
     <!-- Navbar-->
     <div class="d-flex align-items-center ml-3">

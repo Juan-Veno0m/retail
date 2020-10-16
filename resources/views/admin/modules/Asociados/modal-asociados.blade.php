@@ -36,7 +36,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content bg-light">
       <div class="modal-header">
-        <span class="mr-3"><img src="http://localhost:8000/img/label-yolkan@36.png" height="36px"></span>
+        <span class="mr-3"><img src="{{asset('img/label-yolkan@36.png')}}" height="36px"></span>
         <h4 class="modal-title"></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -132,25 +132,6 @@
             <div class="form-group input-group-sm col-lg-4">
               <label for="Homoclave">Homoclave</label>
               <input type="text" class="form-control array" name="Homoclave" placeholder="Homoclave">
-            </div>
-          </div>
-          <!-- Presentador -->
-          <div class="form-row">
-            <div class="form-group input-group-sm col-lg-3">
-              <label for="NoPresentador">No Presentador</label>
-              <input type="text" class="form-control array" name="NoPresentador" placeholder="No Presentador">
-            </div>
-            <div class="form-group input-group-sm col-lg-2">
-              <label for="inicialesp">Iniciales</label>
-              <input type="text" class="form-control" name="inicialesp" disabled>
-            </div>
-            <div class="form-group input-group-sm col-lg-4">
-              <label for="nombrep">Nombre</label>
-              <input type="text" class="form-control" name="nombrep" disabled>
-            </div>
-            <div class="form-group input-group-sm col-lg-3">
-              <label for="telefonop">Teléfono</label>
-              <input type="text" class="form-control" name="telefonop" disabled>
             </div>
           </div>
         </div>

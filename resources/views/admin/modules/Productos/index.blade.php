@@ -88,6 +88,13 @@
       -webkit-box-shadow: 0 1px 0 0 #4285f4;
       box-shadow: 0 1px 0 0 #4285f4;
     }
+    .table thead th{
+      border-bottom: none;
+      background: #2f6766;
+      color: #fff;
+      border-radius: 12px;
+      border-right: solid 2px #fff;
+    }
   </style>
   <!-- toolkit -->
   @section('toolkit')
@@ -111,11 +118,12 @@
     @include('admin.modules.Productos.modal-images')
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.1/dist/dropzone.min.js" defer></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.7.1/dist/basic.min.css">
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css" rel="stylesheet">
 <script>
   let flag_agregar_producto = false; let modalform = $('#form-producto'); let trpadre; let tblproductos = $('#tabla-productos');
   let path = $('.root').data('path'); let modaltitle = $('#form-producto .modal-title'); let modalimages = $('#form-images');
@@ -157,7 +165,7 @@
             // get last index
             let number = $('#tabla-productos tr:last').data('index');
             $('#tabla-productos tbody').append('<tr data-id="'+data.id+'">'+
-              '<th scope="row">'+(number+1)+'</th>'+
+              '<th scope="row">'+(parseInt(number)+1)+'</th>'+
               '<td name="producto">'+arraydata['producto']+'</td>'+
               '<td name="categoria">'+modalform.find('[name ="categoria"] option:selected').text()+'</td>'+
               '<td name="precio">'+arraydata['precio']+'</td>'+
@@ -167,6 +175,7 @@
                   '<button type="button" name="editar" class="btn btn-sm btn-light mr-3"><i class="fas fa-edit"></i></button>'+
                   '<button type="button" name="eliminar" class="btn btn-sm btn-light mr-3"><i class="fas fa-trash"></i></button>'+
                   '<button type="button" name="imagenes" class="btn btn-sm btn-light"><i class="far fa-images"></i></button>'+
+                  '<button type="button" name="localidades" title="localidades" class="btn btn-sm btn-light"><i class="fas fa-city"></i></button>'+
                 '</div>'+
               '</td>'+
             '</tr>');
@@ -270,6 +279,12 @@
               'Borrado!',
               'El producto ha sido eliminado',
               'success'
+            )
+          }else if (data.tipo=='error') {
+            Swal.fire(
+              'Error!',
+              'No se puede eliminar el producto',
+              'error'
             )
           }
         });
@@ -602,6 +617,41 @@
         });
       }
     })
+  });
+  // Descontinuar / Habilitar producto
+  tblproductos.on('click', 'button[name="descontinuado"]', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    let btn = $(this);
+    let btnParent = btn.parents('tr');
+    let icon; bit = 0;
+    if (btn.val()==0) {icon='<i class="fas fa-toggle-off"></i>';bit=1;}else{icon='<i class="fas fa-toggle-on"></i>';}
+    /* confirm action */
+    Swal.fire({
+      title: '¿Esta seguro de continuar?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: `Continuar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        /*ajax */
+        $.ajax({
+          url: path+'/productos/descontinuado',
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          type: 'POST',
+          dataType: 'json',
+          data: {id: btnParent.data('id'),bit:bit}
+        })
+        .done(function(data) {
+          if (data.tipo==200) {
+            Swal.fire('Cambios aplicados', '', 'success')
+            btn.html(icon);
+            btn.val(bit);
+          }else{console.log(data.tipo)}
+        });
+      }
+    })
+
   });
 </script>
 @endsection

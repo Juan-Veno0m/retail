@@ -35,7 +35,7 @@ class AsociadosController extends Controller
           $id = DB::table('asociados')->insertGetId(['NoEmpresario'=>$req->arraydata['noasociado'],'ApellidoPaterno'=>$req->arraydata['ApellidoP'],
           'ApellidoMaterno'=>$req->arraydata['ApellidoM'],'Nombre'=>$req->arraydata['nombre'],'Iniciales'=>$req->arraydata['iniciales'],
           'Sexo'=>$req->arraydata['Sexo'],'FechaNacimiento'=>$req->arraydata['Nacimiento'],'RFC'=>$req->arraydata['RFC'],
-          'Homoclave'=>$req->arraydata['Homoclave'],'NoPresentador'=>$req->arraydata['NoPresentador'],'FechaSolicitud'=>$req->arraydata['fecha'],'created_at'=>now()]);
+          'Homoclave'=>$req->arraydata['Homoclave'],'FechaSolicitud'=>$req->arraydata['fecha'],'created_at'=>now()]);
           // foreign keys
           $tel = DB::table('asociados_telefono')->insertGetId(['AsociadosID'=>$id,'Telefono'=>$req->arraydata['telefonoh'],'Tipo'=>1,'created_at'=>now()]);
           if (!$req->arraydata['telefonop']=="") {
@@ -110,5 +110,40 @@ class AsociadosController extends Controller
       if (isset($data)) {return response()->json(['tipo' => 200,'data'=>$data,'dir'=>$dir,'tel'=>$tel]);}
       else{return response()->json(['tipo' => 500,'data'=>'not found']);}
     }
-
+    /* read, create, update */
+    public function redtx(Request $req)
+    {
+      // read
+      if ($req->action=='read') {
+        // code...
+          if ($req->key =="0000001") {
+            // code...
+            $l1 = DB::table('asociados_relacion as r')->where('r.t1',$req->id)->count();
+            $l2 = DB::table('asociados_relacion as r')->where('r.t2',$req->id)->count();
+            $l3 = DB::table('asociados_relacion as r')->where('r.t3',$req->id)->count();
+            return response()->json(['tipo' => 201,'l1'=>$l1,'l2'=>$l2,'l3'=>$l3]);
+          }else{
+            $data = DB::table('asociados_relacion as r')
+                        ->join('asociados as a','a.AsociadosID','=','r.t1')
+                        ->where('r.AsociadosID',$req->id)
+                        ->select('r.*','a.NoEmpresario',DB::raw('CONCAT(a.ApellidoMaterno," ", a.ApellidoPaterno," ", a.Nombre) as fullname'))
+                        ->first();
+            if (isset($data)) {
+              $l1 = DB::table('asociados_relacion as r')->where('r.t1',$req->id)->count();
+              $l2 = DB::table('asociados_relacion as r')->where('r.t2',$req->id)->count();
+              $l3 = DB::table('asociados_relacion as r')->where('r.t3',$req->id)->count();
+              return response()->json(['tipo' => 200,'data'=>$data,'l1'=>$l1,'l2'=>$l2,'l3'=>$l3]);
+          }else{return response()->json(['tipo' => 500,'data'=>'not found']);}
+        }
+      }elseif ($req->action=='create') {
+        // code...
+        $t = DB::table('asociados as a')
+                    ->join('asociados_relacion as r','r.AsociadosID','=','a.AsociadosID')
+                    ->where('a.NoEmpresario',$req->key)->select('r.AsociadosID as t1','r.t1 as t2','r.t2 as t3')->first();
+        if (isset($t)) {
+          $data = DB::table('asociados_relacion')->insertGetId(['AsociadosID'=>$req->id,'t1'=>$t->t1,'t2'=>$t->t2,'t3'=>$t->t3,'created_at'=>now()]);
+          return response()->json(['tipo' => 202,'data'=>$data]);
+        }else{return response()->json(['tipo' => 501,'data'=>'not found']);}
+      }
+    }
 }

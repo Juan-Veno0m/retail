@@ -17,6 +17,20 @@
       color: #343a40;
       font-weight: 700;
     }.message {font-size: 15px;}
+    .table-select > tbody > tr.active {
+      border-left: solid 5px #036665;
+      background: #c5f2c3;
+    }
+    .table-bordered-bottom th, .table-bordered-bottom td {
+      border-bottom: 1px solid #dee2e6;
+    }
+    .table thead th{
+      border-bottom: none;
+      background: #2f6766;
+      color: #fff;
+      border-radius: 12px;
+      border-right: solid 2px #fff;
+    }
   </style>
   <!-- toolkit -->
   @section('toolkit')
@@ -31,7 +45,7 @@
           <!-- tbl asociados -->
           <div class="table-responsive" style="min-height:350px;">
             <!-- tabla pedidos -->
-            <table class="table" id="tabla-proveedores">
+            <table class="table table-select table-bordered-bottom" id="tabla-proveedores">
               <thead>
                 <tr>
                   <th scope="col">No. Empresario</th>
@@ -52,6 +66,7 @@
                       <div class="btn-group" role="group" aria-label="Basic example">
                         <a type="button" name="editar" class="btn btn-sm btn-light mr-3" data-id="{{$p->id}}" data-key="{{$p->NoEmpresario}}" data-name="{{$p->Nombre}}"><i class="fas fa-eye"></i> Detalles</a>
                         <a type="button" name="acceso" class="btn btn-sm btn-light mr-3" data-id="{{$p->id}}" data-key="{{$p->NoEmpresario}}" data-name="{{$p->Nombre}}"><i class="fas fa-key"></i> Acceso</a>
+                        <a type="button" name="red" class="btn btn-sm btn-light mr-3" data-id="{{$p->id}}" data-key="{{$p->NoEmpresario}}"><i class="fas fa-network-wired"></i> Red</a>
                       </div>
                     </td>
                   </tr>
@@ -286,6 +301,90 @@
 
     });
   });
+  // network
+  TblProv.on('click', 'a[name="red"]', function(event) {
+    event.preventDefault();
+    let btn = $(this);
+    /* Act on the event */
+    Swal.fire({
+      title: 'Red del Empresario: No.'+btn.data('key'),
+      html:'<div class="container-fluid"></div>',
+      icon:'info',
+      width:1200,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+        /* ajax */
+        redtx(btn.data('id'),btn.data('key'),'read');
+      },
+      showCloseButton: true,
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      onRender:() => {
+        /* guardar */
+        let swalcontent = $('.swal2-content').find('.container-fluid');
+        swalcontent.on('click', '#guardar', function(event) {
+          event.preventDefault();
+          /* Act on the event */
+          redtx(btn.data('id'),swalcontent.find('#padre').val(),'create')
+        });
+      }
+    })
+  });
+  /* ajax redtx */
+  function redtx(id,key,action)
+  {
+    let swalcontent = $('.swal2-content').find('.container-fluid');
+    $.ajax({
+      url: path+'/asociados/redtx',
+      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      type: 'POST',
+      dataType: 'json',
+      data: {id: id,key:key,action:action}
+    })
+    .done(function(data) {
+      /*switch */
+      switch(data.tipo) {
+        case 200: // ok
+          swalcontent.append('<p>Empresario vinculado con '+data.data.fullname+' ('+data.data.NoEmpresario+')</p>');
+          swalcontent.append('<ul class="list-group list-group-flush">'+
+          '<li class="list-group-item">Cantidad en nivel(1): '+data.l1+'</li>'+
+          '<li class="list-group-item">Cantidad en nivel(2): '+data.l2+'</li>'+
+          '<li class="list-group-item">Cantidad en nivel(3): '+data.l3+'</li></ul>');
+          break;
+        case 201: // Nivel 0
+          swalcontent.append('<ul class="list-group list-group-flush">'+
+          '<li class="list-group-item">Cantidad en nivel(1): '+data.l1+'</li>'+
+          '<li class="list-group-item">Cantidad en nivel(2): '+data.l2+'</li>'+
+          '<li class="list-group-item">Cantidad en nivel(3): '+data.l3+'</li></ul>');
+          break;
+        case 202: // empresario vinculado
+          Swal.fire({
+            icon: 'success',
+            title: 'Cambios aplicados correctamente!',
+            text: 'El empresario se vinculo de manera correcta.'
+          })
+          break;
+        case 500: // not found read
+          swalcontent.append('<div class="input-group mb-3">'+
+            '<input type="text" class="form-control" placeholder="Ingrese el numero de empresario padre" id="padre">'+
+            '<div class="input-group-append">'+
+              '<button class="btn btn-secondary" type="button" id="guardar">Guardar</button>'+
+            '</div>'+
+          '</div>');
+          break;
+        case 501: // not found empresario
+          swalcontent.append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+
+            '<strong>Número de empresario no encontrado!</strong> verifique la información.'+
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+              '<span aria-hidden="true">&times;</span>'+
+            '</button>'+
+          '</div>');
+          break;
+      }
+      Swal.hideLoading()
+    });
+  }
   /* Asociados Modal */
   $('a[name="agregar-asociados"]').click(function(event) {
     /* Act on the event */
@@ -341,7 +440,7 @@
             formasociados.find('.loading .icon').attr('src', 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Dark-512.png');
             // then close div
             setTimeout(function() {
-              flag=true;formcontent.css({ opacity: 1 });formasociados.find('.loading').remove();
+              flag=false;formcontent.css({ opacity: 1 });formasociados.find('.loading').remove();
               formasociados.find('input[name="noasociado"]').val('');
             }, 3000);
           }
@@ -351,6 +450,15 @@
       else{Swal.fire('Espere un momento, mientras finaliza.');}
 
     }
+  });
+  // active tr table products
+  TblProv.on('click', 'tr', function(event) {
+    let tr = $(this);
+    // find the one
+    tr.parents('tbody').find('.active').removeClass('active');
+    if (!tr.hasClass('active')) {
+      tr.addClass('active');
+    }else{tr.removeClass('active');}
   });
 </script>
 @endsection

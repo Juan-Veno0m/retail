@@ -15,7 +15,17 @@ class CheckoutController extends Controller
   // index view
   public function index()
   {
-    $data = ['breadcrumb'=>'Checkout'];
+    $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
+    $fecha = date("Y-m-d");
+    $Mes = substr($fecha, 5,-3); // current month
+    $Mes = intval($Mes)- 1; // previus month
+    $Año = substr($fecha, 0, 4);
+    $p = DB::table('balance_puntos')
+              ->where('AsociadosID',$Empresario->AsociadosID)
+              ->where('Mes',$Mes)
+              ->where('Año',$Año)
+              ->first();
+    $data = ['breadcrumb'=>'Checkout','p'=>$p];
     return view('ui.tienda.Checkout',$data);
   }
   // Store order
@@ -61,6 +71,7 @@ class CheckoutController extends Controller
       'Total'=>$req->fixedTotal, // Total de la orden
       'TotalProductos'=>$req->total, // Total Productos
       'Descuento'=>$req->descuento, // Descuento aplicado
+      'Porcentaje' => $req->label, // Descuento %
       'Moneda'=>1, // mxn
       'created_at'=>now()
     ]);

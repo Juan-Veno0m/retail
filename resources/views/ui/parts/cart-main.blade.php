@@ -6,7 +6,15 @@
       </div>
       <h2>Bolsa de compra</h2>
       <ul class="list-group list-group-flush" id="cart-products">
-        <?php $total = 0; $descuento = 0.2; $cupon=0; ?>
+        <?php $total = 0; $descuento = 0.2; $cupon=0; $label = '20%';
+          if (isset($p)) {
+            if ($p->Puntos >=300) { // 25 %
+              $descuento = 0.25;$label = '25%';
+            } if ($p->Puntos >= 600) { // 30 %
+              $descuento = 0.30;$label = '30%';
+            }
+          }
+        ?>
         @if(session('cart'))
           @foreach(session('cart') as $id => $details)
             <?php $total += $details['price'] * $details['quantity'] ?>
@@ -36,7 +44,7 @@
                     <div class="form-group d-flex">
                       <label class="my-1 mr-2" for="quantity">Cantidad</label>
                       <select class="custom-select quantity border-0" name="quantity" data-id="{{ $id }}">
-                        @for ($i=1; $i <= 10; $i++)
+                        @for ($i=1; $i <= 40; $i++)
                           @if ($i==$details['quantity'])
                             <option value="{{$i}}" selected>{{$i}}</option>
                           @else
@@ -77,7 +85,7 @@
         <div class="col envio text-right">${{$costo_envio}}</div>
       </div>
       <div class="row px-1 descuentos">
-        <div class="col-lg-8"><p>Descuentos <small class="porcentaje">(20%)</small>:</p></div>
+        <div class="col-lg-8"><p>Descuentos <small class="porcentaje">({{$label}})</small>:</p></div>
         <div class="col money text-right text-danger">- ${{$total*$descuento}}</div>
       </div>
       @if (Auth::check())

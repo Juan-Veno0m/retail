@@ -1,10 +1,9 @@
-<section class="ftco-section py-3">
+<section class="ftco-section py-5">
   <div class="container">
     <div class="row justify-content-center pb-3">
       <div class="col-lg-12 col-8 heading-section text-center ftco-animate fadeInUp ftco-animated">
         <h2 class="text-center">
-          <div class="insight-title--title">Productos Orgánicos</div>
-          <div class="insight-title--subtitle">y Artesanales</div>
+          <div class="insight-title--subtitle">Productos Orgánicos y Artesanales</div>
         </h2>
       </div>
     </div>
@@ -32,14 +31,14 @@
         ?>
         <div class="col-lg-3">
           <div class="product">
-            <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod">
+            <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod" title="{{$p->ProductosNombre}}">
               <img class="img-fluid lazyload" alt="{{$p->ProductosNombre}}"
               data-sizes="auto"
               data-srcset="{{$imagen}}"
               data-src="{{$small}}">
             </a>
             <div class="text pt-3 px-3 text-center">
-              <h3><a href="#">{{$p->ProductosNombre}}</a></h3>
+              <h3>{{$p->ProductosNombre}}</h3>
             </div>
           </div>
         </div>

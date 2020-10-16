@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ui;
 
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
@@ -12,7 +13,17 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-      return view('ui.tienda.carrito');
+      $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
+      $fecha = date("Y-m-d");
+      $Mes = substr($fecha, 5,-3); // current month
+      $Mes = intval($Mes)- 1; // previus month
+      $Año = substr($fecha, 0, 4);
+      $p = DB::table('balance_puntos')
+                ->where('AsociadosID',$Empresario->AsociadosID)
+                ->where('Mes',$Mes)
+                ->where('Año',$Año)
+                ->first();
+      return view('ui.tienda.carrito')->with('p', $p);
     }
     /* Add to Cart */
     public function create(Request $req)

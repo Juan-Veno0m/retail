@@ -9,6 +9,7 @@
         can be of the full height and width !
         **/
         @page {
+            size: 21.59cm 27.94cm;
             margin: 0cm 0cm;
         }
 
@@ -36,7 +37,7 @@
       }
 
       .invoice-box table tr td:nth-child(2) {
-          text-align: right;
+          text-align: left;
       }
 
       .invoice-box table tr.top table td {
@@ -91,6 +92,7 @@
         border-top: 2px solid #fff;
       }
       .productos th{font-size: 12px;} .productos td{font-size: 11px;}
+      .productos .item td:nth-child(3){text-align: center;}
       @media only screen and (max-width: 600px) {
           .invoice-box table tr.top table td {
               width: 100%;
@@ -112,11 +114,11 @@
       }
 
       .rtl table {
-          text-align: right;
+          text-align: left;
       }
 
-      .rtl table tr td:nth-child(2) {
-          text-align: left;
+      .rtl table tr td:nth-child(3) {
+          text-align: center;
       }
       footer {
         position: fixed;
@@ -186,6 +188,7 @@
           </table>
           <table cellpadding="0" cellspacing="0" class="productos">
             <tr>
+                <th style="text-align:left;">SKU</th>
                 <th style="text-align:left;">Producto</th>
                 <th>Precio /U</th>
                 <th>Cantidad</th>
@@ -193,6 +196,7 @@
             </tr>
             @foreach ($items as $key => $v)
               <tr class="item">
+                <td>{{$v->ProductosID+3303}}</td>
                 <td>{{substr($v->ProductosNombre,0,20).' '.$v->Cantidad.' '.$v->Unidad}}</td>
                 <td>${{$v->Precio_lista}}</td>
                 <td class="quantity">{{$v->quantity}}</td>
@@ -200,6 +204,7 @@
               </tr>
               @if($loop->last)
                 <tr class="item last">
+                  <td>{{$v->ProductosID+3303}}</td>
                   <td>{{$v->ProductosNombre.' '.$v->Cantidad.' '.$v->Unidad}}</td>
                   <td>${{$v->Precio_lista}}</td>
                   <td class="quantity">{{$v->quantity}}</td>
@@ -222,13 +227,13 @@
             @endif
             <tr>
               <td></td>
-              <td>Descuentos</td>
+              <td>Descuentos ({{$pago->Porcentaje}}%)</td>
               <td>- ${{number_format ($pago->Descuento,2)}}</td>
             </tr>
             <tr class="total">
               <td></td>
               <td>Total</td>
-              <td>${{$pago->Total}}</td>
+              <td>${{number_format($pago->Total,2)}}</td>
             </tr>
         </table>
     </div>

@@ -286,12 +286,12 @@
   </div>
 @endsection
 @section('scripts')
-<script>
+<script type="text/javascript">
   $(document).ready(function(){
     /* global variables */
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity; let arraydata = {}; let envio=0; let sub =0; let total=0; let cont=1; let flag=false;let dev = $('.shipping');
-    let descuento=0; let fixedTotal=0;
+    let descuento=0; let fixedTotal=0; let desc; let label;
     let action; let EnvioUID=0; let finish = $('.parent-finish');
     // function shipping ajax
     function shipping(){
@@ -310,7 +310,7 @@
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         type: 'POST',
         dataType: 'json',
-        data: {envio: envio, total:total,descuento:descuento,EnvioUID:EnvioUID,fixedTotal:fixedTotal}
+        data: {envio: envio, total:total,descuento:descuento,EnvioUID:EnvioUID,fixedTotal:fixedTotal,label:label}
       });
     }
     // next function
@@ -353,11 +353,13 @@
       //
       if (arraydata!=null) {
         sub = $('.review').find('.sub').data('sub'); // get subtotal
+        desc = parseFloat($('.review').find('.porcentaje').data('desc'));
+        label = parseFloat($('.review').find('.porcentaje').data('label'));
         if (arraydata['delegacion'].toLowerCase() === 'puebla') {
           if (sub<500) { envio = 100;}
           total = parseFloat(sub);
-          descuento = parseFloat(sub*0.2);
-        }else{envio=null; total = parseFloat(sub);}
+          descuento = parseFloat(sub*desc);
+        }else{envio=null; total = parseFloat(sub);descuento = parseFloat(sub*desc);}
         // print values
         $('.review').find('.envio').html('$'+envio); //
         fixedTotal= total-descuento + parseFloat(envio);

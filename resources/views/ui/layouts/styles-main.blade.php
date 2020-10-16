@@ -5,7 +5,7 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5fbd74">
 <meta name="msapplication-TileColor" content="#5fbd74">
 <meta name="theme-color" content="#444">
-<link href="{{asset('/css/app.css?x=7')}}" rel="stylesheet">
+<link href="{{asset('/css/app.css?x=11')}}" rel="stylesheet">
 <!-- preconnect third-party -->
 <link href="https://www.googletagmanager.com" rel="preconnect" crossorigin>
 <link href="https://fonts.gstatic.com/" rel="preconnect"  crossorigin>

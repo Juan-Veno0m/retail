@@ -6,39 +6,38 @@
           <h2 class="ftco-heading-2"><img src="{{asset('/img/label-yolkan.webp')}}" class="img-fluid" alt="Tienda Yolkan"></h2>
           <p>Bienvenido a Yolkan, tú tienda orgánica. Nuestros productos son frescos y 100% naturales, listos para ser entregados a la puerta de tu casa.</p>
           <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-            <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Twitter"><span class="fab fa-twitter"></span></a></li>
-            <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Facebook"><span class="fab fa-facebook-f"></span></a></li>
-            <li class="ftco-animate fadeInUp ftco-animated"><a href="#" title="Instagram"><span class="fab fa-instagram"></span></a></li>
+            <li class="ftco-animate fadeInUp ftco-animated"><a href="https://www.facebook.com/Yolkan.net" target="_blank" title="Facebook" rel="noopener"><span class="fab fa-facebook-f"></span></a></li>
+            <li class="ftco-animate fadeInUp ftco-animated"><a href="https://www.instagram.com/yolkandemexico/" target="_blank" title="Instagram" rel="noopener"><span class="fab fa-instagram"></span></a></li>
           </ul>
         </div>
       </div>
       <div class="col-md">
         <div class="ftco-footer-widget mb-4 ml-md-5">
-          <h2 class="ftco-heading-2">Menu</h2>
+          <h2 class="ftco-heading-2">Menú</h2>
           <ul class="list-unstyled">
-            <li><a href="#" class="py-2 d-block">Shop</a></li>
-            <li><a href="#" class="py-2 d-block">About</a></li>
-            <li><a href="#" class="py-2 d-block">Journal</a></li>
-            <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+            <li><a href="{{url('/tienda')}}" title="Tienda" class="py-2 d-block">Tienda</a></li>
+            <li><a href="{{url('/acerca')}}" title="Acerca de Yolkan" class="py-2 d-block">Acerca</a></li>
+            <li><a href="{{url('/registro')}}" title="Únete a nosotros" class="py-2 d-block">Únete</a></li>
+            <li><a href="{{url('/contacto')}}" title="Contacto" class="py-2 d-block">Contacto</a></li>
           </ul>
         </div>
       </div>
       <div class="col-md">
         <div class="ftco-footer-widget mb-4">
-          <h2 class="ftco-heading-2">Help</h2>
+          <h2 class="ftco-heading-2">Información</h2>
           <div class="d-flex">
             <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-              <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-              <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-              <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-              <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+              <li><a href="{{url('/politicas-de-compra')}}" class="py-2 d-block">Políticas de compra</a></li>
+              <li><a href="{{url('/cambios-y-devoluciones')}}" class="py-2 d-block">Cambios y devoluciones</a></li>
+              <li><a href="{{url('/contrato')}}" class="py-2 d-block">Contrato Yolkan</a></li>
+              <li><a href="{{url('/politica-de-privacidad')}}" class="py-2 d-block">Política de privacidad</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="col-md">
         <div class="ftco-footer-widget mb-4">
-          <h2 class="ftco-heading-2">¿Tienes dudas?</h2>
+          <h2 class="ftco-heading-2">Contáctanos</h2>
           <div class="block-23 mb-3">
             <ul>
               <li><span class="icon fas fa-map-marker-alt"></span><span class="text">Puebla de Zaragoza, México.</span></li>

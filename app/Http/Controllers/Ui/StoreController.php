@@ -18,8 +18,10 @@ class StoreController extends Controller
         ->join('proveedores as prov','prov.ProveedorID','=','p.ProveedorID')
         ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
-        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.Cantidad','p.Unidad')
-        ->orderBy('p.ProductosID','desc')
+        ->where('p.Descontinuado',0)
+        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre',
+        'p.Cantidad','p.Unidad','p.Descontinuado')
+        ->orderBy('p.ProductosID','asc')
         ->take(4)->get();
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
       $data = ['productos'=>$productos];
@@ -37,22 +39,26 @@ class StoreController extends Controller
           ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.featured')
           ->where('p.ProductosID','=',$id)
           ->select('p.ProductosNombre','prov.EmpresaNombre','cat.CategoriaNombre','cat.CategoriaID',
-          'p.Descripcion','p.Cantidad','p.Unidad','p.PrecioUnitario','p.Featured','pi.img','p.ProveedorID','p.UnidadesEnStock')
+          'p.Descripcion','p.Cantidad','p.Unidad','p.PrecioUnitario','p.Featured','pi.img','p.ProveedorID','p.UnidadesEnStock','p.Descontinuado')
           ->first();
-      $related =  DB::table('productos as p')
-        ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
-        ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
-        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.ProveedorID','p.Cantidad','p.Unidad')
-        ->whereNotIn('p.ProductosID',[$id])
-        ->where('p..ProveedorID', 'LIKE','%'.$producto->ProveedorID.'%')
-        ->orderBy('p.ProductosID','desc')
-        ->take(4)->get();
-      foreach ($related as $k => $value) {$value->ID = encrypt($value->ID);}
-      $imagenes = DB::table('productos_imagenes')
-          ->where('ProductosID','=',$id)->take(4)->get();
-      $id = encrypt($id);
-      $data = ['producto'=>$producto,'imagenes'=>$imagenes,'ProductosID'=>$ProductosID,
-      'related'=>$related,'breadcrumb'=>$producto->ProductosNombre,'id'=>$id,'key'=>$key];
+      if (isset($producto)) {
+        $related =  DB::table('productos as p')
+          ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
+          ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
+          ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre',
+          'p.ProveedorID','p.Cantidad','p.Unidad','p.Descontinuado')
+          ->whereNotIn('p.ProductosID',[$id])
+          ->where('p.Descontinuado',0)
+          ->where('p.ProveedorID', 'LIKE','%'.$producto->ProveedorID.'%')
+          ->orderBy('p.ProductosID','desc')
+          ->take(4)->get();
+        foreach ($related as $k => $value) {$value->ID = encrypt($value->ID);}
+        $imagenes = DB::table('productos_imagenes')
+            ->where('ProductosID','=',$id)->take(4)->get();
+        $id = encrypt($id);
+        $data = ['producto'=>$producto,'imagenes'=>$imagenes,'ProductosID'=>$ProductosID,
+        'related'=>$related,'breadcrumb'=>$producto->ProductosNombre,'id'=>$id,'key'=>$key];
+      }else{$data = ['error'=>'not found'];}
       return view('ui.tienda.ProductoSingle', $data);
     }
     // Tienda Route
@@ -80,9 +86,10 @@ class StoreController extends Controller
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->where('cat.CategoriaID','=',$node)
         ->where('p.ProductosNombre', 'LIKE','%'.$q.'%')
-        ->where('prov.Flag','=',0)
+        ->where('prov.Flag',0)
+        ->where('p.Descontinuado',0)
         ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad',
-        'p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.UnidadesEnStock')
+        'p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.UnidadesEnStock','p.Descontinuado')
         ->orderBy('p.ProductosID','desc')
         ->simplePaginate(16)->appends(request()->except('page'));
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
@@ -103,9 +110,33 @@ class StoreController extends Controller
         ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->where('p.ProductosNombre', 'LIKE','%'.$req->term.'%')
-        ->where('prov.Flag','=',0)
-        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad','p.PrecioUnitario','pi.img','cat.CategoriaNombre')
+        ->where('prov.Flag',0)
+        ->where('p.Descontinuado',0)
+        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad','p.PrecioUnitario','pi.img',
+        'cat.CategoriaNombre','p.Descontinuado')
         ->take(8)->get();
       return response()->json(['data'=>$data]);
+    }
+    // search by keyword //
+    public function buscar(Request $req)
+    {
+      $k = $req->input('k');
+      if (isset($k)) {
+        // code...
+        $productos = DB::table('productos as p')
+          ->join('proveedores as prov','prov.ProveedorID','=','p.ProveedorID')
+          ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
+          ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
+          ->where('p.ProductosNombre', 'LIKE','%'.$k.'%')
+          ->where('prov.Flag',0)
+          ->where('p.Descontinuado',0)
+          ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.Cantidad','p.Unidad',
+          'p.PrecioUnitario','pi.img','cat.CategoriaNombre','p.UnidadesEnStock','p.Descontinuado')
+          ->orderBy('p.ProductosID','desc')
+          ->simplePaginate(16)->appends(request()->except('page'));
+        foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
+        $data = ['productos'=>$productos,'k'=>$k];
+        return view('ui.tienda.Busqueda', $data);
+      }else{return redirect('/');}
     }
 }

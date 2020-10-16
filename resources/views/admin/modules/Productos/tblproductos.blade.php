@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     @foreach ($productos as $key =>$p)
-      <tr data-id="{{$p->ProductosID}}" data-index="{{$loop->index+1}}">
+      <tr data-id="{{$p->ProductosID}}" data-index="{{$p->uk+3303}}">
         <th scope="row">{{$p->uk+3303}}</th>
         <td name="producto">{{$p->ProductosNombre.' '.$p->Cantidad.' '.$p->Unidad}}</td>
         <td name="categoria">{{$p->CategoriaNombre}}</td>
@@ -23,7 +23,11 @@
             <button type="button" name="editar" title="editar" class="btn btn-sm btn-light mr-3"><i class="fas fa-edit"></i></button>
             <button type="button" name="eliminar" title="eliminar" class="btn btn-sm btn-light mr-3"><i class="fas fa-trash"></i></button>
             <button type="button" name="imagenes" title="imagenes" class="btn btn-sm btn-light mr-3"><i class="far fa-images"></i></button>
-            <button type="button" name="localidades" title="localidades" class="btn btn-sm btn-light"><i class="fas fa-city"></i></button>
+            <!-- <button type="button" name="localidades" title="localidades" class="btn btn-sm btn-light mr-3"><i class="fas fa-city"></i></button> -->
+            <?php if ($p->Descontinuado== 0) {
+              // false then on
+              $icon = '<i class="fas fa-toggle-on"></i>';}else{$icon= '<i class="fas fa-toggle-off"></i>';} ?>
+            <button type="button" name="descontinuado" title="habilitar / deshabilitar" class="btn btn-sm btn-light" value="{{$p->Descontinuado}}"><?php echo $icon ?></button>
           </div>
         </td>
       </tr>

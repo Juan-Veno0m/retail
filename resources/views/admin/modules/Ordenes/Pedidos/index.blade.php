@@ -9,6 +9,12 @@
       line-height: 1;
       border-radius: .25em;
     }
+    .table .btn {
+      width: 112px;
+    }
+    .table .dropdown-toggle {
+      width: 24px;
+    }
     .table-sm th, .table-sm td {font-size: 14px;}
     .table-xs th, .table-xs td {
       padding: 0px 5px;
@@ -94,24 +100,68 @@
       top: -6px;
       outline: none;
     }
+    td>span:after {
+      content: "Primer compra";
+      font-size: 10px;
+      position: absolute;
+      color: #fff;
+      background-color: #012626;
+      height: 15px;
+      border: 1px solid #404040;
+      padding: 0px 4px;
+      border-radius: 1px;
+      left: 12px;
+      bottom: -15px;
+    }
+    .first {
+      position: relative;
+      display: flex;
+    }
+    .table-select > tbody > tr.active {
+      border-left: solid 5px #036665;
+      background: #c5f2c3;
+    }
+    .table-bordered-bottom th, .table-bordered-bottom td {
+      border-bottom: 1px solid #dee2e6;
+      text-align: center;
+    }
+    .table thead th{
+      border-bottom: none;
+      background: #2f6766;
+      color: #fff;
+      border-radius: 12px;
+      border-right: solid 2px #fff;
+      text-align: center;
+    }
+    #change .btn-outline-dark.active::before {
+      content: "\f058";
+      font-family: "Font Awesome 5 Free";
+    }
+    form .form-control {
+      width: 80%;
+      text-align: center;
+      height: 34px;
+      font-size: 12px;
+      border: 1px solid #E5EAEE;
+      border-radius: 0.85rem !important;
+    }
   </style>
-  <!-- toolkit -->
-  @section('toolkit')
-    <a class="btn btn-sm btn-secondary ml-2" name="agregar-producto" data-toggle="modal" data-target="#form-producto">Agregar</a>
-  @endsection
     <!-- Section  -->
     <div class="container-fluid">
       <div class="card card-custom gutter-b">
         <div class="card-body">
           <!-- Search Form - Filter -->
+          @include('admin.modules.Ordenes.Pedidos.search')
+          <!-- table content -->
           <div class="table-responsive" style="min-height:350px;">
             <!-- tabla pedidos -->
-            <table class="table" id="tabla-ordenes">
+            <table class="table table-select table-bordered-bottom" id="tabla-ordenes">
               <thead>
                 <tr>
                   <th scope="col">No. Pedido</th>
+                  <th scope="col">Fecha</th>
                   <th scope="col">Cliente</th>
-                  <th scope="col">Estatus</th>
+                  <th scope="col" style="width: 114px;">Estatus</th>
                   <th scope="col">Metodo de Pago</th>
                   <th scope="col">Total</th>
                   <th scope="col">Opciones</th>
@@ -119,10 +169,16 @@
               </thead>
               <tbody>
                 @foreach ($pedidos as $key =>$p)
-                  <tr data-id="{{$p->key}}" data-pedido="{{$p->OrdenID+9249582}}" data-empresario="{{$p->Nombre.' '.$p->ApellidoPaterno .' '.$p->ApellidoMaterno}}">
-                    <td name="NoPedido">{{$p->OrdenID+9249582}}</td>
+                  <tr data-id="{{$p->key}}" data-key="{{$p->AsociadosID}}" data-pedido="{{$p->OrdenID+9249582}}"
+                    data-empresario="{{$p->Nombre.' '.$p->ApellidoPaterno .' '.$p->ApellidoMaterno}}" data-u="{{$p->UsuarioID}}"
+                    data-cupon="{{$p->descuento}}" data-total="{{$p->Total}}">
+                    <td name="NoPedido">
+                      {{$p->OrdenID+9249582}}
+                      @if (isset($p->descuento))<span class="first"></span>@endif
+                    </td>
+                    <td name="fecha">{{date("d/m/Y", strtotime($p->Fecha_requerida))}}</td>
                     <td name="cliente">{{$p->Nombre}}</td>
-                    <td name="status"><a class="btn btn-xs {{$p->attribute}}">{{$p->status}}</a></td>
+                    <td name="status"><a name="status" class="btn btn-xs {{$p->attribute}}" data-class="{{$p->attribute}}" data-val="{{$p->Orden_estatus}}" data-orden="{{$p->OrdenID+9249582}}">{{$p->status}}</a></td>
                     <td name="mpago">{{$p->MetodoPago}}</td>
                     <td name="total">${{$p->Total}}</td>
                     <td>
@@ -161,8 +217,8 @@
 <script src="{{asset('/js/accounting.min.js')}}" defer></script>
 <div aria-hidden="true" class="custom-alert"></div>
 <script>
-  let path = $('.root').data('path');
-  $('#tabla-ordenes').on('click', 'a[name="pagos"]', function(event) {
+  let path = $('.root').data('path'); let tblOrd= $('#tabla-ordenes');
+  tblOrd.on('click', 'a[name="pagos"]', function(event) {
     event.preventDefault();
     let btn = $(this);
     let trPadre = btn.parents('tr');
@@ -170,8 +226,7 @@
     HistorialPagos(trPadre);
   });
   /* Sweetalert */
-  function HistorialPagos(trPadre)
-  {
+  function HistorialPagos(trPadre){
     let flag=false; let action; let OrdenID; let Historial; let saldo = 0;
     let total = 0; let precio=0; let flagAplicar=false; let tblpagos = $('#pagosclientes');
     Swal.fire({
@@ -344,6 +399,9 @@
             datos['OrdenID'] = OrdenID; formData.append("file", file);
             // liquidado ?
             datos['saldo']= parseFloat(saldo-datos['monto']).toFixed(2);
+            // key, user, cupon, total
+            datos['key'] = trPadre.data('key'); datos['u'] = trPadre.data('u'); datos['cupon'] = trPadre.data('cupon');
+            datos['total'] = trPadre.data('total');
             formData.append("datos",JSON.stringify(datos));
             // send ajax
             aplicarpago(formData,trPadre);
@@ -392,5 +450,134 @@
       }
     });
   }
+  // active tr table products
+  tblOrd.on('click', 'tr', function(event) {
+    let tr = $(this);
+    // find the one
+    tr.parents('tbody').find('.active').removeClass('active');
+    if (!tr.hasClass('active')) {
+      tr.addClass('active');
+    }else{tr.removeClass('active');}
+  });
+  /* change status */
+  tblOrd.on('click', 'a[name="status"]', function(event) {
+    event.preventDefault();
+    let btn = $(this); let flag=false;let trPadre = btn.parents('tr');
+    if (btn.data('val')!== 5 && btn.data('val')!== 6) {
+      /* Act on the event */
+      Swal.fire({
+        title:'Cambiar estatus del pedido',
+        html:
+        '<div class="container px-0 needs-validation" id="form">'+
+          '<div class="col-12 mt-1">'+
+            '<h4>No.'+btn.data('orden')+' / Estatus actual: '+btn.text()+'</h4>'+
+          '</div>'+
+          '<div class="col-12 mt-1">'+
+            '<p>Selecciona el nuevo estatus e indica en los comentarios los detalles del movimiento.</p>'+
+            '<label for="change" class="col-12 col-form-label"><b>Nuevo estatus:</b></label>'+
+          '</div>'+
+          '<div class="btn-group btn-group-toggle" data-toggle="buttons" id="change">'+
+            '<label class="btn btn-outline-dark">'+
+              '<input type="radio" name="Confirmado" value="2"> Confirmado'+
+            '</label>'+
+            '<label class="btn btn-outline-dark">'+
+              '<input type="radio" name="Entregado" value="5"> Entregado'+
+            '</label>'+
+            '<label class="btn btn-outline-dark">'+
+              '<input type="radio" name="Cancelado" value="6"> Cancelado'+
+            '</label>'+
+          '</div>'+
+          '<div class="form-row">'+
+            '<div class="col-12">'+
+              '<label for="motivo" class="col-12 col-form-label"><b>Motivo:</b></label>'+
+              '<textarea id="motivo" class="form-control" rows="3" placeholder="Describa brevemente el motivo del cambio" required></textarea>'+
+            '</div>'+
+          '</div>'+
+          '<div class="form-row mt-3 justify-content-between">'+
+            '<div class="col-8">'+
+              '<div class="input-group mb-3">'+
+                '<div class="input-group-prepend">'+
+                  '<span class="input-group-text">Fecha y Hora</span>'+
+                '</div>'+
+                '<input type="datetime-local" name="fecha_cambio" class="form-control" required>'+
+              '</div>'+
+            '</div>'+
+            '<div class="col-2"><button name="aplicar" class="btn btn-primary">Aplicar</button></div>'+
+          '</div>'+
+        '</div>',
+        onBeforeOpen: () => {
+            //Swal.showLoading()
+            $('.swal2-container').find('#change input[name="'+btn.text()+'"]').prop("disabled", true);
+            //
+            if (btn.data('val')== 1) {
+              $('.swal2-container').find('#change input[name="Entregado"]').prop("disabled", true);
+            }
+        },
+        width: 700,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        onRender:() => {
+          /* */
+          let swalcontent = $('.swal2-container');
+          swalcontent.find('button[name="aplicar"]').click(function(event) {
+            /* Act on the event */
+            let newstat = swalcontent.find('#change label.active input').val();
+            let comment = swalcontent.find('#motivo').val();
+            let fecha_hora = swalcontent.find('input[name="fecha_cambio"]').val();
+            if (!swalcontent.find('#form').hasClass('was-validated')) {
+              swalcontent.find('#form').addClass('was-validated');
+            }
+            if (newstat!== null && comment !== "" && fecha_hora !== "" && flag == false) {
+              flag=true;
+              /* ajax */
+              $.ajax({
+                url: path+'/ordenes/pedidos/status',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                type: 'POST',
+                dataType: 'json',
+                data: {id:btn.data('orden'), newstat: newstat, oldstat: btn.data('val'),comment: comment,fecha_hora:fecha_hora, key:trPadre.data('key')}
+              })
+              .done(function(data) {
+                switch (data.tipo) {
+                  case 200:
+                    /* btn changes */
+                    btn.data('val',data.status.id);
+                    btn.addClass(data.status.attribute).removeClass(btn.data('class'));
+                    btn.text(data.status.status);
+                    Swal.fire(
+                      'Cambios aplicados!',
+                      'La información se aplico correctamente.',
+                      'success'
+                    );
+                    break;
+                  //
+                  case 500:
+                    console.log('error');
+                    break;
+                  // saldo pendiente
+                  case 501:
+                    Swal.fire({
+                      title: 'Error al aplicar cambios',
+                      text: data.mensaje,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonColor: '#2f6766'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        // run pagos
+                        HistorialPagos(trPadre);
+                      }
+                    })
+                    break;
+                }
+              });
+            }
+          });
+        }
+      })
+    }
+  });
 </script>
 @endsection

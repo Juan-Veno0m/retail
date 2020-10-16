@@ -6,12 +6,6 @@ link.setAttribute("href", 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome
 document.getElementsByTagName("head")[0].appendChild(link);
 // Global
 let path = $('.main-content').data('path'); let alert = $('.notification-cart');
-/* Read Cart Number */
-$.get(path+"/carrito/read", function(data) {
-  if (data.cart!= null) {
-    $('.cart-items').html(Object.keys(data.cart).length);
-  }
-});
 // click add to cart from feactured // produts view
 $('.product').on('click', '#add-cart', function(event) {
   event.preventDefault();
@@ -46,7 +40,7 @@ function add_cart(id,quantity){
         slug = common.replace(str,'-').split(" ").join("-");
         url=path+'/producto/'+slug+'/'+parseInt(data.id);
         // options
-        for (var i = 1; i <= 10; i++) {
+        for (var i = 1; i <= 40; i++) {
           if (i==data.cart[data.id]['quantity'])
             options+= '<option value="'+i+'" selected>'+i+'</option>';
           else
@@ -102,17 +96,18 @@ function add_cart(id,quantity){
         contbtn.empty();
         htmlcont='<label for="cantidad">Cantidad</label>'+
         '<div class="quantity d-block" data-id="'+data.id+'" data-keygen="'+data.cart[data.id]['keygen']+'">'+
-          '<span class="input-number-decrement">–</span><input class="input-number" type="text" value="'+data.cart[data.id]['quantity']+'" min="1" max="10"><span class="input-number-increment">+</span>'+
+          '<span class="input-number-decrement">–</span><input class="input-number" type="text" value="'+data.cart[data.id]['quantity']+'" min="1" max="40"><span class="input-number-increment">+</span>'+
         '</div>';
         contbtn.append(htmlcont);
       }
       // Alert
       $('.cart-items').html(Object.keys(data.cart).length);
-      // Message content
+      /* Message content
       alert.find('.title').html('<span class="badge badge-success"><i class="fas fa-check"></i></span>');
       alert.find('.message').html('Agregado correctamente al carrito');
       alert.css("display", "flex").hide().fadeIn();
       alert.delay(2500).fadeOut("slow");
+      */
     }
   });
 }
@@ -140,11 +135,11 @@ function updateitem(id,quantity,keygen){
       $('#money-summary').find('.sub').html('$'+sub);
       $('#money-summary').find('.envio').html('$'+envio);
       $('#money-summary').find('.total').html('<b>$'+total+'</b>');
-      // Message content
+      /* Message content
       alert.find('.title').html('<span class="badge badge-success"><i class="fas fa-check"></i></span>');
       alert.find('.message').html('Producto actualizado del carrito');
       alert.css("display", "flex").hide().fadeIn();
-      alert.delay(2500).fadeOut("slow");
+      alert.delay(2500).fadeOut("slow");*/
     }else{console.log('t',data.tipo, 'e',data.mensaje);}
   });
 }
@@ -211,7 +206,8 @@ $('.summary').on('click','.input-number-increment ,.input-number-decrement', fun
 $('#search').val('');
 $('#search').keyup(function(event) {
   /* Act on the event */
-  let group = $(this).next('.list-group');
+  let search = $(this);
+  let group = $(this).parents('.form-suggestions').find('.list-ajax');
   $.ajax({
     url: path+'/Suggestions',
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

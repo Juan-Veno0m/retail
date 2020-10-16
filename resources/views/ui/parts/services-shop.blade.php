@@ -1,5 +1,4 @@
 <section class="ftco-section pt-0">
-  <hr>
   <div class="container my-5">
     <div class="row">
       <div class="col">

@@ -36,9 +36,9 @@
           </div>
           <div class="col-lg-3">
             <div class="categoria">
-              <h2>Lácteos</h2>
-              <a href="{{url('/lacteos/node46')}}" title="Categoría lácteos">
-                <img src="{{asset('img/categorias/lacteos.jpg')}}" class="img-fluid" alt="Lácteos">
+              <h2>Dulces y Botanas</h2>
+              <a href="{{url('/dulces-y-botanas/node5')}}" title="Dulces y Botanas">
+                <img src="{{asset('img/categorias/dulceria.jpg')}}" class="img-fluid" alt="Dulces y Botanas">
                 <p>ver más</p>
               </a>
             </div>
@@ -54,10 +54,30 @@
           </div>
           <div class="col-lg-3">
             <div class="categoria">
-              <h2>Panadería y Tortillería</h2>
-              <a href="{{url('/panaderia-y-tortilleria/node59')}}" title="Categoría panadería y tortillería">
-                <img src="{{asset('img/categorias/panaderia-y-tortilleria.jpg')}}" class="img-fluid" alt="Panadería y Tortillería">
+              <h2>Limpieza del hogar</h2>
+              <a href="{{url('/limpieza-del-hogar/node93')}}" title="Limpieza del hogar">
+                <img src="{{asset('img/categorias/limpieza.jpg')}}" class="img-fluid" alt="Limpieza del hogar">
                 <p>ver más</p>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-md-center mt-3">
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Lácteos</h2>
+              <a title="Categoría lácteos">
+                <img src="{{asset('img/categorias/lacteos.jpg')}}" class="img-fluid" alt="Lácteos">
+                <p>Próximamente</p> <!-- href="{{url('/lacteos/node46')}}" -->
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="categoria">
+              <h2>Panadería y Tortillería</h2>
+              <a title="Categoría panadería y tortillería">
+                <img src="{{asset('img/categorias/panaderia-y-tortilleria.jpg')}}" class="img-fluid" alt="Panadería y Tortillería">
+                <p>Próximamente</p> <!-- href="{{url('/panaderia-y-tortilleria/node59')}}" -->
               </a>
             </div>
           </div>

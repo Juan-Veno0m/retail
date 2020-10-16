@@ -22,7 +22,7 @@
             @include('admin.layouts.sidenav')
             <div id="layoutSidenav_content">
                 <main class="content d-flex flex-column flex-column-fluid">
-                    <div class="container">
+                    <div class="container-fluid">
                       <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap mb-3">
                         <div class="d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                           <div class="d-flex align-items-baseline">

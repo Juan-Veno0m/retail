@@ -3,9 +3,9 @@
     <div class="row justify-content-center pb-3">
       <div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">
         <h2 class="text-center">
-          <div class="insight-title--title">Descubre</div>
-          <div class="insight-title--subtitle">Nuestros productos</div>
+          <div class="insight-title--subtitle">Productos orgánicos mexicanos</div>
         </h2>
+        <p class="text-center">Alrededor del 83% de los productores orgánicos de México pertenecen a algún grupo indígena. A través de esta red de Yolkan, juntos apoyamos a los productores locales.</p>
       </div>
     </div>
     <div class="row justify-content-center mb-5 icon-separetor">
@@ -21,36 +21,36 @@
     <div class="row">
       <div class="col-lg-3">
         <div class="categoria">
-          <h3>Despensa</h3>
-          <a href="{{url('/despensa/node1')}}" title="Despensa">
-            <img data-src="{{asset('img/categorias/despensa.jpg')}}" class="img-fluid lazyload" alt="Despensa">
+          <h2>Despensa</h2>
+          <a href="{{url('/despensa/node1')}}" title="Categoría despensa">
+            <img src="{{asset('img/categorias/despensa.jpg')}}" class="img-fluid" alt="Despensa">
             <p>ver más</p>
           </a>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="categoria">
-          <h3>Lácteos</h3>
-          <a href="{{url('/lacteos/node46')}}" title="Lácteos">
-            <img data-src="{{asset('img/categorias/lacteos.jpg')}}" class="img-fluid lazyload" alt="Lácteos">
+          <h2>Dulces y Botanas</h2>
+          <a href="{{url('/dulces-y-botanas/node5')}}" title="Dulces y Botanas">
+            <img src="{{asset('img/categorias/dulceria.jpg')}}" class="img-fluid" alt="Dulces y Botanas">
             <p>ver más</p>
           </a>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="categoria">
-          <h3>Higiene y Belleza</h3>
-          <a href="{{url('/higiene-y-belleza/node65')}}" title="Higiene y Belleza">
-            <img data-src="{{asset('img/categorias/higiene-y-belleza.jpg')}}" class="img-fluid lazyload" alt="Higiene y Belleza">
+          <h2>Higiene y Belleza</h2>
+          <a href="{{url('/higiene-y-belleza/node65')}}" title="Categoría higiene y belleza">
+            <img src="{{asset('img/categorias/higiene-y-belleza.jpg')}}" class="img-fluid" alt="Higiene y Belleza">
             <p>ver más</p>
           </a>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="categoria">
-          <h3>Panadería y Tortillería</h3>
-          <a href="{{url('/panaderia-y-tortilleria/node59')}}" title="Panadería y Tortillería">
-            <img data-src="{{asset('img/categorias/panaderia-y-tortilleria.jpg')}}" class="img-fluid lazyload" alt="Panadería y Tortillería">
+          <h2>Limpieza del hogar</h2>
+          <a href="{{url('/limpieza-del-hogar/node93')}}" title="Limpieza del hogar">
+            <img src="{{asset('img/categorias/limpieza.jpg')}}" class="img-fluid" alt="Limpieza del hogar">
             <p>ver más</p>
           </a>
         </div>

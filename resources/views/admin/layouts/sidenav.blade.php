@@ -44,6 +44,20 @@
                       <i class="menu-bullet menu-bullet-dot"><span></span></i>Asociados</a>
                   </nav>
                 </div>
+                <!-- inventarios -->
+                <a class="nav-link collapsed {{ (request()->is('inventarios/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
+                  <i class="fas fa-truck"></i>
+                    Inventarios
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
+                ></a>
+                <div class="collapse" id="collapseInventory" data-parent="#sidenavAccordion">
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="{{url('inventarios')}}">
+                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Gestión</a>
+                    <a class="nav-link" href="{{url('inventarios/generar')}}">
+                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Crear Compra</a>
+                  </nav>
+                </div>
                 <div class="sb-sidenav-menu-heading">Addons</div>
                 <a class="nav-link" href="{{url('/thumbnails')}}">
                   <i class="fas fa-cogs"></i>

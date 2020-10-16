@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Image;
@@ -18,8 +19,10 @@ class PedidosController extends Controller
     {
         // Filter
         $q = $request->input('q');
-        $c = $request->input('categoria');
-        $p = $request->input('proveedor');
+        if (!$q == "") {$No = $q - 9249582;}else{$No="";}
+
+        $e = $request->input('estatus');
+        $f = $request->input('fecha');
         // pedidos
         $pedidos = DB::table('orden as o')
                   ->join('orden_status as s','s.id','=','o.Orden_estatus')
@@ -29,11 +32,17 @@ class PedidosController extends Controller
                   ->join('envio_usuarios as u','u.EnvioID','=','e.EnvioUID')
                   ->join('asociados_usuario','asociados_usuario.UsuarioID','=','o.ClienteID')
                   ->join('asociados','asociados.AsociadosID','=','asociados_usuario.AsociadosID')
+                  ->leftjoin('asociados_cupon as cp','cp.OrdenID','=','o.OrdenID')
+                  ->leftjoin('cupones as c','c.id','=','cp.CuponID')
+                  ->where('o.Orden_estatus','LIKE','%'.$e.'%')
+                  ->where('o.Fecha_requerida','LIKE','%'.$f.'%')
+                  ->where('o.OrdenID','LIKE','%'.$No.'%')
                   ->select('o.OrdenID','o.OrdenId as key','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-                  'p.TotalProductos','s.status','u.*','asociados.ApellidoPaterno','asociados.ApellidoMaterno','asociados.Nombre','s.attribute','p.Total','p.Descuento')
+                  'p.TotalProductos','s.status','u.*','asociados.ApellidoPaterno','asociados.ApellidoMaterno','asociados.Nombre','s.attribute',
+                  'p.Total','p.Descuento','asociados.AsociadosID','c.descuento','c.code','o.Orden_estatus')
                   ->paginate(15);
         foreach ($pedidos as $key => $value) {$value->key = encrypt($value->key);}
-        $data = ['pedidos'=>$pedidos];
+        $data = ['pedidos'=>$pedidos,'q'=>$q,'e'=>$e,'f'=>$f];
         return view('admin.modules.Ordenes.Pedidos.index',$data);
     }
     // Get details from order
@@ -109,6 +118,30 @@ class PedidosController extends Controller
           if ($datos->saldo=="0.00") {
             // code...
             DB::table('orden')->where('OrdenID',$OrdenID)->update(['Orden_estatus'=>2,'updated_at'=>now()]);
+            // fecha de liquidación
+            DB::table('orden_pago')->where('OrdenID',$OrdenID)->update(['FechaLiquidado'=>$datos->fecha,'updated_at'=>now()]);
+            // confirmar aquí, agregar puntos de la compra al acumulado del empresario con fecha de ultimo pago
+            /* alternativa a consulta
+            SELECT SUM(o.Total) FROM orden_pago as o INNER JOIN orden on orden.OrdenID = o.OrdenID
+            INNER JOIN asociados_usuario as u on u.UsuarioID = orden.ClienteID
+            WHERE MONTH(o.FechaLiquidado)= 08 AND Year(o.FechaLiquidado)= 2020 */
+            $Mes = substr($datos->fecha, 5,-3);
+            $Año = substr($datos->fecha, 0, 4);
+            $OrdenPuntos = (floatval($datos->total)+floatval($datos->cupon))/10;
+            $p = DB::table('balance_puntos')
+                      ->where('AsociadosID',$datos->key)
+                      ->where('Mes',$Mes)
+                      ->where('Año',$Año)
+                      ->first();
+            // si existe sumar// else crear
+            if (isset($p)) {
+              /* */
+              $sum = floatval($p->Puntos) + floatval($OrdenPuntos);
+              DB::table('balance_puntos')->where('AsociadosID',$datos->key)
+                          ->where('Mes',$Mes)
+                          ->where('Año',$Año)
+                          ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+            }else{$balance = DB::table('balance_puntos')->insertGetId(['AsociadosID'=>$datos->key,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
             return response()->json(['tipo'=>200,'mensaje'=>'saldo','estatus'=>'btn-primary']);
           }else{return response()->json(['tipo'=>200,'mensaje'=>'ok']);}
         }elseif ($datos->action=='update') {
@@ -140,6 +173,52 @@ class PedidosController extends Controller
       $view = \View::make('admin.modules.Ordenes.Pedidos.TicketPDF',compact('orden','e','pago','items'))->render();
       $pdf = \App::make('dompdf.wrapper');
       $pdf->loadHTML($view);
-      return $pdf->stream('Empresario-No.'.$e->NoEmpresario.'_Pedido#'.($OrdenID+9249582));
+      return $pdf->stream('Empresario-No.'.$e->NoEmpresario.'_Pedido#'.($OrdenID+9249582).'.pdf');
+    }
+    // cambiar estatus de orden
+    public function status(Request $req)
+    {
+      $OrdenID = $req->id - 9249582;
+      $pagado = DB::table('pagosclientes')->where('OrdenID',$OrdenID)->sum('montoPC');
+      $debe = DB::table('orden_pago')->where('OrdenID',$OrdenID)->sum('Total');
+      /* permitir cambio /confirmar/ si no hay saldo pendiente - cancelar*/
+      if (floatval($pagado) == floatval($debe) || $req->newstat == 6) {
+        // code...
+        $comment = DB::table('comentarios_status')->insertGetId(['OrdenID'=>$OrdenID,'UserID'=>Auth::id(),
+        'oldstat'=>$req->oldstat,'newstat'=>$req->newstat,'aplicado'=>$req->fecha_hora,'comentario'=>$req->comment,'created_at'=>now()]);
+        if (isset($comment)) {
+          // cuando el saldo es 0 y no requirio un pago anexo
+          if ($req->newstat == 2) { // confirmado
+            // code...
+            $cupon = DB::table('asociados_cupon as a')
+                        ->join('cupones as c','c.id','=','a.CuponID')
+                        ->where('a.OrdenID',$OrdenID)->sum('c.descuento');
+            $Mes = substr($req->fecha_hora, 5,-9);
+            $Año = substr($req->fecha_hora, 0, 4);
+            $OrdenPuntos = (floatval($debe)+floatval($cupon))/10;
+            $p = DB::table('balance_puntos')
+                      ->where('AsociadosID',$req->key)
+                      ->where('Mes',$Mes)
+                      ->where('Año',$Año)
+                      ->first();
+            // si existe sumar// else crear
+            if (isset($p)) {
+              /* */
+              $sum = floatval($p->Puntos) + floatval($OrdenPuntos);
+              DB::table('balance_puntos')->where('AsociadosID',$req->key)
+                          ->where('Mes',$Mes)
+                          ->where('Año',$Año)
+                          ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+            }else{$balance = DB::table('balance_puntos')->insertGetId(['AsociadosID'=>$req->key,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+          }
+          // code...
+          DB::table('orden')->where('OrdenID',$OrdenID)->update(['Orden_estatus'=>$req->newstat,'updated_at'=>now()]);
+          $status = DB::table('orden_status')->where('id',$req->newstat)->first();
+          return response()->json(['tipo'=>200,'mensaje'=>'ok','status'=>$status]);
+        }else{
+          return response()->json(['tipo'=>500,'mensaje'=>'Error al guardar cambios']);
+        }
+      }else{return response()->json(['tipo'=>501,'mensaje'=>'Pago pendiente del pedido.']);}
+
     }
 }

@@ -132,7 +132,7 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" defer></script>
         <script src="{{asset('js/lazysizes.min.js')}}" async></script>
-        <script src="{{asset('js/ui/main.js')}}" defer></script>
+        <script src="{{asset('js/ui/main.js?x=9')}}" defer></script>
         @yield('scripts')
     </body>
 </html>

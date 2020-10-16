@@ -27,7 +27,7 @@ class ProductController extends Controller
           ->where('p.ProveedorID','LIKE','%'.$p.'%') // Filtro Proveedor
           ->wherenull('p.deleted_at')
           ->select('p.ProductosID','p.ProductosID as uk','p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock',
-          'p.Cantidad','p.Unidad')
+          'p.Cantidad','p.Unidad','p.Descontinuado')
           ->paginate(15);
         foreach ($productos as $key => $value) {$value->ProductosID = encrypt($value->ProductosID);}
         // categorias
@@ -97,16 +97,19 @@ class ProductController extends Controller
           //
           return (['tipo' => 'error', 'mensaje' => $e]);
       }
-      // then check images product stored
-      $files = DB::table('productos_imagenes')->where('ProductosID',$decrypted)->first();
-      if (isset($files)) {
-        $separate = explode('/', $files->img); $base= $separate[0];  $filename = $separate[2];
-        Storage::disk('public')->deleteDirectory($base); // delete Directory
-        // delete record database
-        DB::table('productos_imagenes')->where('ProductosID','=',$decrypted)->delete();
-      }
-      DB::table('productos')->where('ProductosID','=',$decrypted)->delete();
-      return (['tipo' => 'ok', 'mensaje' => 'borrado correctamente']);
+      $check = DB::table('orden_items')->where('ProductosID',$decrypted)->first();
+      if (!isset($check)) {
+        // then check images product stored
+        $files = DB::table('productos_imagenes')->where('ProductosID',$decrypted)->first();
+        if (isset($files)) {
+          $separate = explode('/', $files->img); $base= $separate[0];  $filename = $separate[2];
+          Storage::disk('public')->deleteDirectory($base); // delete Directory
+          // delete record database
+          DB::table('productos_imagenes')->where('ProductosID','=',$decrypted)->delete();
+        }
+        DB::table('productos')->where('ProductosID','=',$decrypted)->delete();
+        return (['tipo' => 'ok', 'mensaje' => 'borrado correctamente']);
+      }else{return (['tipo' => 'error', 'mensaje' => 'no se puede borrar el producto']);}
 
     }
     // set stock
@@ -168,6 +171,22 @@ class ProductController extends Controller
             $id[] = DB::table('productos_localidades')->insertGetId(['ProductosID'=>$decrypted,'LocalidadID'=>$req->agregar[$i],'created_at'=>now()]);
           }
         }
+        return (['tipo' => 200]);
+      }else{abort(404);}
+    }
+    // descontinuar / habilitar producto
+    public function descontinuado(Request $req)
+    {
+      if ($req->ajax()) {
+        // decrypt
+        try {
+            $decrypted = decrypt($req->id);
+        } catch (DecryptException $e) {
+            //
+            return (['tipo' => 500, 'mensaje' => $e]);
+        }
+        // update
+        DB::table('productos')->where('ProductosID',$decrypted)->update(['Descontinuado'=>$req->bit,'updated_at'=>now()]);
         return (['tipo' => 200]);
       }else{abort(404);}
     }
