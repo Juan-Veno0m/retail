@@ -1,0 +1,86 @@
+.subtitle {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #222;
+  line-height: 1.6rem;
+}
+.product-thumbnail {
+  object-fit: cover;
+  height: 88px;
+  border-radius: 8px;
+}
+.title-product {
+  font-size: 20px;
+  color: #222;
+  line-height: 1.25;
+}
+.price-tag-symbol {margin-right: .2em;}
+.price-tag * {float: left;}
+.item__price .price-tag {
+  -webkit-font-smoothing: antialiased;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.price-tag {
+  overflow: visible;
+  display: inline-block;
+  vertical-align: text-bottom;
+  line-height: 1em;
+}
+.fs-title {
+  font-size: 25px;
+  color: #2C3E50;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left
+}
+.nav-tabs .nav-link {border: none !important;}
+.nav-tabs .nav-link.active {border-bottom: solid 2px !important;}
+.media-loader.warning {padding: 0px 20%;}
+.table >tbody > tr .hour {
+  background: #ffe455;
+  position: absolute;
+  width: 80px;
+  height: 75px;
+  padding: 20px;
+  border-left: solid 1px #000;
+  z-index: 1;
+}
+.day {
+  display: block;
+  text-align: center;
+}
+.long {
+  display: none;
+}
+.short {
+  display: block;
+  text-align: center;
+}
+tbody tr > td {
+  height: 74px;
+  border-top: none !important;
+  border-bottom: solid 1px #000;
+  border-right: solid 1px;
+}
+.table > thead > tr th {
+  min-width: 74px;
+}
+
+.table > tbody > tr {
+  position: relative;
+}
+.table tbody .item:hover, .selected {
+  background: #38c172;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.table > tbody > tr .disabled {
+  background: #dddada;
+  opacity: 0.7;
+}
+.table > tbody > tr .full {
+  background: #fb6363;
+  opacity: 0.7;
+}

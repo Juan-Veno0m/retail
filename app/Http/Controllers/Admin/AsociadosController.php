@@ -19,7 +19,8 @@ class AsociadosController extends Controller
         $q = $request->input('q');
         $asociados = DB::table('asociados as a')
                 ->where('a.NoEmpresario','LIKE','%'.$q.'%') // Filtro
-                ->select('a.AsociadosID as id','a.NoEmpresario','a.ApellidoPaterno','a.ApellidoMaterno','a.Nombre','a.FechaSolicitud','a.Iniciales')
+                ->select('a.AsociadosID as id','a.NoEmpresario','a.ApellidoPaterno','a.ApellidoMaterno',
+                'a.Nombre','a.FechaSolicitud','a.Iniciales')
                 ->paginate(10)->appends(request()->except('page'));
 
         $data = ['asociados'=>$asociados,'q'=>$q];
@@ -145,5 +146,49 @@ class AsociadosController extends Controller
           return response()->json(['tipo' => 202,'data'=>$data]);
         }else{return response()->json(['tipo' => 501,'data'=>'not found']);}
       }
+    }
+    // red de consumo
+    public function consumo(Request $req)
+    {
+      //Filter
+      $q = $req->input('q');
+      $f = $req->input('f');
+      //
+      $Mes = substr($f, 5,7); // get month
+      $Año = substr($f, 0, 4); // get Year
+      $balance = DB::table('asociados as a')
+              ->join('balance_puntos as b','b.AsociadosID','a.AsociadosID')
+              ->where('a.NoEmpresario','LIKE','%'.$q.'%') // Filtro
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)
+              ->select('a.AsociadosID as id','a.NoEmpresario','a.ApellidoPaterno','a.ApellidoMaterno','a.Nombre','b.Puntos','b.Mes','b.Año')
+              ->paginate(10)->appends(request()->except('page'));
+
+      $l1 = DB::table('balance_puntos as b')
+              ->join('asociados_relacion as n','n.AsociadosID','b.AsociadosID')
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)
+              ->whereNotNull('n.t1')
+              ->select('n.AsociadosID as Child','n.t1 as Parent','b.Puntos')
+              ->get();
+      $l2 = DB::table('balance_puntos as b')
+              ->join('asociados_relacion as n','n.AsociadosID','b.AsociadosID')
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)
+              ->whereNotNull('n.t2')
+              ->select('n.AsociadosID as Child','n.t2 as Parent','b.Puntos')
+              ->get();
+      $l3 = DB::table('balance_puntos as b')
+              ->join('asociados_relacion as n','n.AsociadosID','b.AsociadosID')
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)
+              ->whereNotNull('n.t3')
+              ->select('n.AsociadosID as Child','n.t3 as Parent','b.Puntos')
+              ->get();
+      $red = $l1->merge($l2);
+      $red = $red->merge($l3);
+      $red->all();
+      $data = ['balance'=>$balance,'q'=>$q,'red'=>$red,'f'=>$f];
+      return view('admin.modules.Asociados.consumo.index',$data);
     }
 }

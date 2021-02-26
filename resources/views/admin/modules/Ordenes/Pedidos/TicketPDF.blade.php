@@ -202,15 +202,6 @@
                 <td class="quantity">{{$v->quantity}}</td>
                 <td class="totalp">${{$v->Precio_lista*$v->quantity}}</td>
               </tr>
-              @if($loop->last)
-                <tr class="item last">
-                  <td>{{$v->ProductosID+3303}}</td>
-                  <td>{{$v->ProductosNombre.' '.$v->Cantidad.' '.$v->Unidad}}</td>
-                  <td>${{$v->Precio_lista}}</td>
-                  <td class="quantity">{{$v->quantity}}</td>
-                  <td class="totalp">${{$v->Precio_lista*$v->quantity}}</td>
-                </tr>
-              @endif
             @endforeach
           </table>
           <table cellpadding="0" cellspacing="0" class="summary">

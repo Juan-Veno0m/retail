@@ -19,38 +19,38 @@
   <!-- CAT -->
   <div class="container-fluid my-4">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="categoria">
           <h2>Despensa</h2>
           <a href="{{url('/despensa/node1')}}" title="Categoría despensa">
-            <img src="{{asset('img/categorias/despensa.jpg')}}" class="img-fluid" alt="Despensa">
+            <img data-src="{{asset('img/categorias/despensa.webp')}}" class="img-fluid lazyload" alt="Despensa">
             <p>ver más</p>
           </a>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="categoria">
           <h2>Dulces y Botanas</h2>
           <a href="{{url('/dulces-y-botanas/node5')}}" title="Dulces y Botanas">
-            <img src="{{asset('img/categorias/dulceria.jpg')}}" class="img-fluid" alt="Dulces y Botanas">
+            <img data-src="{{asset('img/categorias/dulceria.webp')}}" class="img-fluid lazyload" alt="Dulces y Botanas">
             <p>ver más</p>
           </a>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="categoria">
           <h2>Higiene y Belleza</h2>
           <a href="{{url('/higiene-y-belleza/node65')}}" title="Categoría higiene y belleza">
-            <img src="{{asset('img/categorias/higiene-y-belleza.jpg')}}" class="img-fluid" alt="Higiene y Belleza">
+            <img data-src="{{asset('img/categorias/higiene-y-belleza.webp')}}" class="img-fluid lazyload" alt="Higiene y Belleza">
             <p>ver más</p>
           </a>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="categoria">
           <h2>Limpieza del hogar</h2>
           <a href="{{url('/limpieza-del-hogar/node93')}}" title="Limpieza del hogar">
-            <img src="{{asset('img/categorias/limpieza.jpg')}}" class="img-fluid" alt="Limpieza del hogar">
+            <img data-src="{{asset('img/categorias/limpieza.webp')}}" class="img-fluid lazyload" alt="Limpieza del hogar">
             <p>ver más</p>
           </a>
         </div>

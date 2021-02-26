@@ -42,6 +42,8 @@
                   <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{url('asociados/')}}">
                       <i class="menu-bullet menu-bullet-dot"><span></span></i>Asociados</a>
+                    <a class="nav-link" href="{{url('asociados/consumo')}}">
+                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Consumo</a>
                   </nav>
                 </div>
                 <!-- inventarios -->

@@ -179,11 +179,8 @@
             </tr>
         </table>
         <table cellpadding="0" cellspacing="0">
-            <!-- Factura -->
             <tr class="heading">
-                <td rowspan="2">Factura</td>
-                <td rowspan="2"><span>Metodo de pago</span> //<br> <span></span></td>
-                <td rowspan="2"><span>Total</span> //<br></td>
+                <td rowspan="2" colspan="3">Pedido</td>
             </tr>
             <!-- -->
           </table>
@@ -218,13 +215,14 @@
               <td>${{number_format($sub,2)}}</td>
             <tr>
               <td></td>
-              <td></td>
-              <td>- $</td>
+              <td>Envío</td>
+              <?php $envio='N.A'; if ($compras_envio->Costo!==null) {$envio = '$'.number_format($compras_envio->Costo,2);} ?>
+              <td>{{$envio}}</td>
             </tr>
             <tr class="total">
               <td></td>
               <td>Total</td>
-              <td>$</td>
+              <td>${{number_format($compras->Total,2)}}</td>
             </tr>
         </table>
     </div>

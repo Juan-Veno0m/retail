@@ -181,7 +181,8 @@
           data: {arraydata:arraydata,items:items,keys: Object.keys(items).length}
         }).done(function(data) {
           if (data.tipo==200) {Swal.fire('Compra cargada correctamente!');
-            setTimeout(function(){window.location=”path+'/inventarios'”;}, 1500)
+            setTimeout(function(){
+              window.location=path+'/inventarios';}, 1500)
           }
           else if (data.tipo==500) {}
         });

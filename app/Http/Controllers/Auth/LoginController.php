@@ -57,10 +57,13 @@ class LoginController extends Controller
                 ->join('asociados as a','a.AsociadosID','=','s.AsociadosID')
                 ->join('users','users.id','=','s.UsuarioID')
                 ->where('a.NoEmpresario',$req->NoEmpresario)->first();
-      if (Auth::attempt(['email' => $user->email, 'password' => $req->Password])) {
-        // The user is active, not suspended, and exists.
-        return response()->json(['tipo' => 200,'mensaje'=>'ok.']);
-      }return response()->json(['tipo' => 500,'mensaje'=>'La contraseña es inválida.']);
+      if (isset($user)) {
+        if (Auth::attempt(['email' => $user->email, 'password' => $req->Password])) {
+          // The user is active, not suspended, and exists.
+          return response()->json(['tipo' => 200,'mensaje'=>'ok.']);
+        }return response()->json(['tipo' => 500,'mensaje'=>'La contraseña es inválida.']);
+      }else{return response()->json(['tipo' => 500,'mensaje'=>'Usuario no existe.']);}
+
     }
     // Login Form View GET (UI)
     public function showLoginForm()

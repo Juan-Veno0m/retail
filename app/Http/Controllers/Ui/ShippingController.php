@@ -14,7 +14,7 @@ class ShippingController extends Controller
   public function shipping()
   {
     $id = Auth::id();
-    $envio = DB::table('envio_usuarios')->where('UsuarioID','=',$id)->first();
+    $envio = DB::table('envio_usuarios as u')->join('estados as e','e.id','u.EstadoID')->where('u.UsuarioID','=',$id)->get();
     return (['envio'=>$envio]);
   }
   // shipping action {create:update}
@@ -33,7 +33,8 @@ class ShippingController extends Controller
           'Interior'=>$req->arraydata['interior'],'Calle1'=>$req->arraydata['Calle1'],
           'Calle2'=>$req->arraydata['Calle2'],'Adicional'=>$req->arraydata['adicional'],'created_at'=>now()
         ]);
-      return (['respuesta'=>'ok','EnvioID'=>$EnvioID]);
+      $envio = DB::table('envio_usuarios as u')->join('estados as e','e.id','u.EstadoID')->where('u.EnvioID','=',$EnvioID)->first();
+      return (['respuesta'=>'ok','envio'=>$envio]);
     }else{
       return (['respuesta'=>'ok']);
     }

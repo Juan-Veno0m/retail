@@ -2,6 +2,7 @@
 @section('title', $CategoriaNombre)
 @section('description','Tienda en linea Yolkan')
 @section('content')
+    
     <link href="{{asset('/css/ui/tienda/main.css')}}" rel="stylesheet">
     <link href="{{asset('/css/ui/tienda/fixed-cart.css')}}" rel="stylesheet">
     <!-- Section Content -->
@@ -48,7 +49,7 @@
                           $base.'/medium'.'/'.$filename.' 1x';
                 $small = $base.'/medium'.'/'.$filename;
               }?>
-              <div class="col-lg-3 col-md-4 ftco-animate fadeInUp ftco-animated">
+              <div class="col-lg-3 col-md-4 col-6">
                 <div class="product">
                   <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod">
                     <img class="img-fluid cover lazyload" alt="{{$p->ProductosNombre}}"
@@ -57,20 +58,17 @@
                     data-src="{{$small}}">
                     <div class="overlay"></div>
                   </a>
-                  <div class="text pt-3 px-3 text-center">
+                  <div class="text pt-3 px-3 text-left">
                     <h3><a href="#">{{$p->ProductosNombre.' '.$p->Cantidad.' '.$p->Unidad}}</a></h3>
-                    <p>{{$p->CategoriaNombre}}</p>
                     <div class="d-flex">
                       <div class="pricing">
-                        <p class="price"><span class="price-sale">{{ '$'.number_format($p->PrecioUnitario*2,2)}}</span></p>
+                        <p class="price"><span class="price-sale">
+                          @if ($p->UnidadesEnStock>0)
+                            {{ '$'.number_format($p->PrecioUnitario*2,2)}}</span></p>
+                          @else
+                            Agotado
+                          @endif
                       </div>
-                    </div>
-                    <div class="row py-2  px-2 block-add">
-                      @if ($p->UnidadesEnStock>0)
-                        <a class="btn btn-link btn-block text-center text-dark" id="add-cart" data-id="{{$p->ID}}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</a>
-                      @else
-                        <a class="btn btn-link btn-block text-center text-dark">Producto agotado</a>
-                      @endif
                     </div>
                   </div>
                 </div>

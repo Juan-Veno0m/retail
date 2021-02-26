@@ -1,7 +1,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-light bg-white">
   <div class="container d-flex align-items-stretch justify-content-between">
     <div class="d-lg-flex align-items-center ml-3">
-      <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+      <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">Menú
         <span class="svg-icon svg-icon-xxl svg-icon-dark-75">
           <!--begin::Svg Icon | path:assets/media/svg/icons/Text/Align-left.svg-->
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -21,16 +21,19 @@
     <div class="d-flex align-items-center ml-3">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-              <i class="fas fa-user fa-fw"></i></a>  <span class="caret"></span>
+            <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+              Cuenta
+              <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" height="24px">
+                <path fill="currentColor" d="M192 256c0 17.7-14.3 32-32 32s-32-14.3-32-32 14.3-32 32-32 32 14.3 32 32zm88-32c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-240 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"></path>
+              </svg>
             </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu dropdown-menu-right rounded border shadow-sm" aria-labelledby="navbarDropdown">
               <h6 class="dropdown-header">{{ Auth::user()->name }}</h6>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('logout') }}"
                  onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">
-                  {{ __('Logout') }}
+                  <i class="fas fa-sign-out-alt"></i> Cerrar sesión
               </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   @csrf

@@ -27,4 +27,29 @@ class MiCuentaController extends Controller
                   ->sum('puntos.Puntos');
       return view('ui.tienda.Cuenta',['asociado'=>$asociado,'puntos'=>$puntos]);
     }
+    /* Red */
+    public function Red(Request $req)
+    {
+      //Filter
+      $q = $req->input('q');
+      $f = $req->input('f');
+      ///
+      $Mes = substr($f, 5,7); // get month
+      $Año = substr($f, 0, 4); // get Year
+      $asociado = DB::table('asociados_usuario as u')
+                    ->where('u.UsuarioID',Auth::id())
+                    ->select('u.AsociadosID')->first();
+      $red = DB::table('asociados as a')
+              ->join('asociados_relacion as l1','l1.AsociadosID','a.AsociadosID')
+              ->leftjoin('asociados_relacion as l2','l2.AsociadosID','a.AsociadosID')
+              ->leftjoin('asociados_relacion as l3','l3.AsociadosID','a.AsociadosID')
+              ->where('l1.t1',$asociado->AsociadosID)
+              ->orWhere('l2.t2',$asociado->AsociadosID)
+              ->orWhere('l3.t3',$asociado->AsociadosID)
+              ->select('l1.t1','l2.t2','l3.t3','a.*')->paginate(10);
+      $consumo = DB::table('balance_puntos as b')
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)->get();
+      return view('ui.tienda.Red',['red'=>$red,'asociado'=>$asociado,'consumo'=>$consumo,'q'=>$q,'f'=>$f]);
+    }
 }

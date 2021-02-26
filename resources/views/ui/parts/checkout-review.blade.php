@@ -2,7 +2,7 @@
     <div class="card-body review">
         <h2 class="fs-title">Tú pedido</h2>
         <ul class="list-group list-group-flush" id="cart-products">
-          <?php $total = 0; $descuento = 0.2; $label = '20%'; 
+          <?php $total = 0; $descuento = 0.2; $label = '20%';
             if (isset($p)) {
               if ($p->Puntos >=300) { // 25 %
                 $descuento = 0.25;$label = '25%';
@@ -13,7 +13,7 @@
           ?>
           @if(session('cart'))
             @foreach(session('cart') as $id => $details)
-              <?php $total += $details['price'] * $details['quantity'] ?>
+              <?php $total += $details['price'] * $details['quantity']; ?>
               <li class="list-group-item" data-keygen="{{$details['keygen']}}">
                 <div class="row align-items-center">
                   <div class="col-xl-10">

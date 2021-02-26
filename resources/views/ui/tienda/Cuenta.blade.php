@@ -2,43 +2,55 @@
 @section('title', 'Mi Cuenta')
 @section('description','Tienda en linea Yolkan')
 @section('content')
-  <div class="container pt-5">
-    <div class="row text-center mt-2"><h1 class="col custom-font font-lg">Mi Cuenta</h1></div>
-    <div class="row justify-content-center mt-2">
-      <div class="col-lg-10">
-        <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('/Cuenta/MisPedidos')}}">Pedidos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">Direcciones</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">Detalles de la cuenta</a>
-          </li>
-          <li class="nav-item">
-            <form id="logout-form" action="{{ url('logout') }}" method="POST">
-              {{ csrf_field() }}
-              <button class="nav-link" type="submit">Cerrar Sesión</button>
-            </form>
-          </li>
-        </ul>
-        <div class="tab-content px-5 py-4">
-          <div class="tab-pane fade show active">
-            <p>Hola <b>{{Auth::user()->name}}</b></p>
-            @if ($asociado)
-              <p>N°Empresario: {{$asociado->NoEmpresario}}</p>
-              @if ($puntos)
-                <p>Puntos acumulados del mes: {{$puntos}}</p>
-              @endif
-            @endif
-          </div>
-        </div>
-      </div>
+  <style>
+    .font-sm {
+      font-size: 17px;
+      font-weight: 400;
+      color: #111;
+      line-height: 1.3;
+    }
+    .box > .icon {
+      font-size: 28px;
+      width: 86.75px;
+      text-align: center;
+      display: table-cell;
+    }
+    .box > .icon > i {vertical-align: bottom;}
+    .box {
+      border: 1px #ddd solid;
+      border-radius: 4px;
+      height: 84px;
+      display: table;
+      margin: 5px;
+    }
+    @media only screen and (max-width: 600px) {
+      .box{width: 100%;}
+    }
+    .box > .body {
+      display: table-cell;
+      padding: 4px;
+    }
+    .box > .body > p {
+      color: #555 !important;
+      font-size: 13px;
+      line-height: 19px;
+    }
+    .box:hover, .box:active, .box:focus {
+      color: #000;
+      background: #bfbfbf;
+    }
+    .sub-heading {
+      line-height: 4.2rem;
+      margin: 0;
+      font-size: 17px;
+    }
+  </style>
+  <div class="container pt-4">
+    <div class="row mx-4 text-left">
+      <h1 class="custom-font">Mi Cuenta</h1>
+      <p class="sub-heading ml-lg-3">Hola <b>{{Auth::user()->name}}</b>, Empresario #{{$asociado->NoEmpresario}}</p>
     </div>
+    @include('ui.parts.account-grid')
   </div>
 @endsection
 @section('scripts')

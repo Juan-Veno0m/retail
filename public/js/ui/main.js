@@ -2,7 +2,7 @@ var link = document.createElement('link');
 link.setAttribute("rel", "stylesheet");
 link.setAttribute("type", "text/css");
 link.onload = function(){ }
-link.setAttribute("href", 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css');
+link.setAttribute("href", 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
 document.getElementsByTagName("head")[0].appendChild(link);
 // Global
 let path = $('.main-content').data('path'); let alert = $('.notification-cart');
@@ -40,7 +40,7 @@ function add_cart(id,quantity){
         slug = common.replace(str,'-').split(" ").join("-");
         url=path+'/producto/'+slug+'/'+parseInt(data.id);
         // options
-        for (var i = 1; i <= 40; i++) {
+        for (var i = 1; i <= data.cart[data.id]['stock']; i++) {
           if (i==data.cart[data.id]['quantity'])
             options+= '<option value="'+i+'" selected>'+i+'</option>';
           else
@@ -96,7 +96,7 @@ function add_cart(id,quantity){
         contbtn.empty();
         htmlcont='<label for="cantidad">Cantidad</label>'+
         '<div class="quantity d-block" data-id="'+data.id+'" data-keygen="'+data.cart[data.id]['keygen']+'">'+
-          '<span class="input-number-decrement">–</span><input class="input-number" type="text" value="'+data.cart[data.id]['quantity']+'" min="1" max="40"><span class="input-number-increment">+</span>'+
+          '<span class="input-number-decrement">–</span><input class="input-number" type="text" value="'+data.cart[data.id]['quantity']+'" min="1" max="'+data.stock+'"><span class="input-number-increment">+</span>'+
         '</div>';
         contbtn.append(htmlcont);
       }
@@ -123,6 +123,8 @@ function updateitem(id,quantity,keygen){
   })
   .done(function(data) {
     if (data.tipo=='success') {
+      // sync value
+      $("#cart-products [data-keygen='" + keygen + "']").find('.quantity ').val(quantity);
       // code
       let sub=0; let = sump=0; envio=0; let total=0;
       $.each(data.cart,function(index, el) {
@@ -198,7 +200,6 @@ $('.summary').on('click','.input-number-increment ,.input-number-decrement', fun
   /* Act on the event */
   let btn = $(this).parents('.quantity');
   if (!$(this).data('lock') == true) {
-    $("#cart-products [data-keygen='" + btn.data('keygen') + "']").find('.quantity ').val(btn.find('.input-number').val()); // sync value
     updateitem(btn.data('id'),btn.find('.input-number').val(),btn.data('keygen'));
   }
 });

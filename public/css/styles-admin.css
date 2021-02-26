@@ -3273,6 +3273,7 @@ input[type=button].btn-block {
   padding: 0.25rem 1.5rem;
   clear: both;
   font-weight: 400;
+  font-size: 13px;
   color: #212529;
   text-align: inherit;
   white-space: nowrap;
@@ -10103,7 +10104,7 @@ body {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
-
+aa
 #layoutAuthentication {
   display: flex;
   flex-direction: column;

@@ -34,7 +34,7 @@
               <div class="form-group d-flex">
                 <label class="my-1 mr-2" for="quantity">Cantidad</label>
                 <select class="custom-select quantity border-0" name="quantity" data-id="{{ $id }}">
-                  @for ($i=1; $i <= 40; $i++)
+                  @for ($i=1; $i <= $details['stock']; $i++)
                     @if ($i==$details['quantity'])
                       <option value="{{$i}}" selected>{{$i}}</option>
                     @else

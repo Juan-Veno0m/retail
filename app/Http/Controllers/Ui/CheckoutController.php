@@ -40,6 +40,7 @@ class CheckoutController extends Controller
       'Orden_estatus'=>1, // initial
       'Fecha_requerida'=>now(),
       'TiendaID'=>1, // Tienda en linea
+      'TipoEnvio'=>$req->tipoenvio, // Tipo de Envio .-1 Envio Local .-2 Pickup
       'created_at'=>now()
     ]);
     // get session
@@ -87,13 +88,23 @@ class CheckoutController extends Controller
     $user->save();
     $calculo = number_format($req->fixedTotal/10, 2, '.', '');
     //$puntos = DB::table('orden_puntos')->insertGetId(['OrdenID'=>$OrdenID,'Puntos'=>$calculo]);
-    // insert orden envio
-    $OEnvioID = DB::table('orden_envio')->insertGetId([
-      'OrdenID'=> $OrdenID,
-      'EnvioUID'=> $req->EnvioUID,
-      'Costo'=>$req->envio, // Costo envío separado
-      'created_at'=>now()
-    ]);
+    // insert orden envio local si es necesario
+    if($req->tipoenvio == 1 ){
+      $OEnvioID = DB::table('orden_envio')->insertGetId([
+        'OrdenID'=> $OrdenID,
+        'EnvioUID'=> $req->EnvioUID,
+        'Costo'=>$req->envio, // Costo envío separado
+        'created_at'=>now()
+      ]);
+    }elseif ($req->tipoenvio == 2) {
+      // Pickup
+      $PickupID = DB::table('orden_pickup')->insertGetId([
+        'OrdenID'=>$OrdenID,
+        'Fecha'=> $req->fechaPick,
+        'Hora'=>$req->horaPick,
+        'created_at'=>now()
+      ]);
+    }
     $OrdenID = $OrdenID + 9249582;
     $event = ['OrdenID'=>$OrdenID];
     $user->notify(new ConfirmacionPedido($event));

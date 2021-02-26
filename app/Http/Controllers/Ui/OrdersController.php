@@ -15,14 +15,12 @@ class OrdersController extends Controller
     $id = Auth::id();
     $pedidos = DB::table('orden as o')
               ->join('orden_status as s','s.id','=','o.Orden_estatus')
-              ->join('orden_envio as e','e.OrdenID','=','o.OrdenID')
               ->join('orden_pago as p','p.OrdenID','=','o.OrdenID')
               ->join('metodo_pago as mp','mp.MetodoID','=','p.Metodo')
-              ->join('envio_usuarios as u','u.EnvioID','=','e.EnvioUID')
               ->where('o.ClienteID','=',$id)
               ->orderBy('o.OrdenID','desc')
-              ->select('o.OrdenID','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-              'p.TotalProductos','p.Total','s.status','s.attribute','u.*')
+              ->select('o.OrdenID','o.Fecha_entrega','o.Fecha_requerida','mp.Tipo as MetodoPago',
+              'p.TotalProductos','p.Total','s.status','s.attribute')
               ->paginate(15);
     $data = ['pedidos'=>$pedidos];
     return view('ui.tienda.MisPedidos',$data);
@@ -40,23 +38,26 @@ class OrdersController extends Controller
               ->join('orden_status as os','os.id','=','o.Orden_estatus')
               ->leftjoin('asociados_cupon as ac','ac.OrdenID','=','o.OrdenID')
               ->where('o.OrdenID','=',$OrdenID)
-              ->select('o.Fecha_requerida','os.status','ac.CuponID')
+              ->select('o.Fecha_requerida','os.status','ac.CuponID','o.TipoEnvio')
               ->first();
     $pago = DB::table('orden_pago as op')
               ->join('metodo_pago as mp','mp.MetodoID','=','op.Metodo')
-              ->join('orden_envio as oe','oe.OrdenID','op.OrdenID')
+              ->leftjoin('orden_envio as oe','oe.OrdenID','op.OrdenID')
               ->where('op.OrdenID','=',$OrdenID)
               ->select('mp.MetodoID','op.TotalProductos','op.Total','op.Descuento','mp.Tipo','oe.Costo as CostoEnvio')
               ->first();
-    $orden_envio = DB::table('orden_envio as oe')
-              ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
-              ->join('estados as es','es.id','=','eu.EstadoID')
-              ->where('OrdenID','=',$OrdenID)
-              ->select('eu.*','es.estado')
-              ->first();
+    if ($orden->TipoEnvio == 1) {
+      // code...
+      $TipoEnvio = DB::table('orden_envio as oe')
+                ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
+                ->join('estados as es','es.id','=','eu.EstadoID')
+                ->where('OrdenID','=',$OrdenID)
+                ->select('eu.*','es.estado')
+                ->first();
+    }else{$TipoEnvio = DB::table('orden_pickup')->where('OrdenID',$OrdenID)->first();}
 
     $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,
-    'breadcrumb'=>'Detalles del pedido','pago'=>$pago, 'orden_envio'=>$orden_envio];
+    'breadcrumb'=>'Detalles del pedido','pago'=>$pago, 'TipoEnvio'=>$TipoEnvio];
     return view('ui.tienda.DetallesPedido',$data);
   }
 }

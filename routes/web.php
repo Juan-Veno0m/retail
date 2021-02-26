@@ -69,6 +69,9 @@ Route::middleware(['auth','role.admin'])->group(function () {
     Route::post('/action','Admin\AsociadosController@action');
     Route::post('/detalles','Admin\AsociadosController@detalles');
     Route::post('/redtx','Admin\AsociadosController@redtx');
+    Route::prefix('consumo')->group(function () {
+      Route::get('/', 'Admin\AsociadosController@consumo');
+    });
   });
   // Inventarios
   Route::prefix('inventarios')->group(function () {
@@ -118,10 +121,16 @@ Route::middleware(['auth','verified'])->group(function () {
   /* Mi Perfil */
   Route::prefix('Cuenta')->group(function(){
     Route::get('/','Ui\MiCuentaController@index');
+    Route::get('/Red','Ui\MiCuentaController@Red');
     // Mis Pedidos
     Route::prefix('MisPedidos')->group(function () {
       Route::get('/','Ui\OrdersController@index');
       Route::get('/{NOrden}','Ui\OrdersController@detalles');
+    });
+    // Seguridad
+    Route::prefix('Seguridad')->group(function(){
+      Route::get('/','Ui\SeguridadController@index');
+      Route::post('/update','Ui\SeguridadController@update');
     });
   });
 });

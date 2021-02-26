@@ -14,7 +14,7 @@
         <!-- Favicon -->
         @include('admin.layouts.favicon')
     </head>
-    <body class="sb-nav-fixed root" data-path="{{url('/')}}">
+    <body class="sb-nav-fixed root sb-sidenav-toggled" data-path="{{url('/')}}">
         <!-- Navbar -->
         @include('admin.layouts.navbar')
         <div id="layoutSidenav">

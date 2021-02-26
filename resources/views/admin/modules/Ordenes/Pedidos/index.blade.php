@@ -110,7 +110,6 @@
       border: 1px solid #404040;
       padding: 0px 4px;
       border-radius: 1px;
-      left: 12px;
       bottom: -15px;
     }
     .first {
@@ -162,7 +161,7 @@
                   <th scope="col">Fecha</th>
                   <th scope="col">Cliente</th>
                   <th scope="col" style="width: 114px;">Estatus</th>
-                  <th scope="col">Metodo de Pago</th>
+                  <th scope="col">Tipo de pedido</th>
                   <th scope="col">Total</th>
                   <th scope="col">Opciones</th>
                 </tr>
@@ -170,7 +169,7 @@
               <tbody>
                 @foreach ($pedidos as $key =>$p)
                   <tr data-id="{{$p->key}}" data-key="{{$p->AsociadosID}}" data-pedido="{{$p->OrdenID+9249582}}"
-                    data-empresario="{{$p->Nombre.' '.$p->ApellidoPaterno .' '.$p->ApellidoMaterno}}" data-u="{{$p->UsuarioID}}"
+                    data-empresario="{{$p->Nombre.' '.$p->ApellidoPaterno .' '.$p->ApellidoMaterno}}"
                     data-cupon="{{$p->descuento}}" data-total="{{$p->Total}}">
                     <td name="NoPedido">
                       {{$p->OrdenID+9249582}}
@@ -178,8 +177,11 @@
                     </td>
                     <td name="fecha">{{date("d/m/Y", strtotime($p->Fecha_requerida))}}</td>
                     <td name="cliente">{{$p->Nombre}}</td>
-                    <td name="status"><a name="status" class="btn btn-xs {{$p->attribute}}" data-class="{{$p->attribute}}" data-val="{{$p->Orden_estatus}}" data-orden="{{$p->OrdenID+9249582}}">{{$p->status}}</a></td>
-                    <td name="mpago">{{$p->MetodoPago}}</td>
+                    <td name="status"><a name="status" class="btn btn-xs {{$p->attribute}}" data-class="{{$p->attribute}}"
+                      data-val="{{$p->Orden_estatus}}" data-orden="{{$p->OrdenID+9249582}}">{{$p->status}}</a></td>
+                    <td name="tipoenvio">
+                      @if ($p->TipoEnvio== 1) Online @else Pickup {{date("d/m/Y", strtotime($p->Fecha)).' ('.$p->Hora.' Hrs)'}}@endif
+                    </td>
                     <td name="total">${{$p->Total}}</td>
                     <td>
                       <div class="btn-group">
@@ -215,9 +217,12 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9" defer></script>
 <script src="{{asset('/js/accounting.min.js')}}" defer></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" defer></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <div aria-hidden="true" class="custom-alert"></div>
 <script>
-  let path = $('.root').data('path'); let tblOrd= $('#tabla-ordenes');
+  let path = $('.root').data('path'); let tblOrd= $('#tabla-ordenes'); secure=false;
   tblOrd.on('click', 'a[name="pagos"]', function(event) {
     event.preventDefault();
     let btn = $(this);
@@ -379,7 +384,7 @@
           }
         });
         // aplicar button
-        $('body').on('click', 'button[name="aplicar"]', function(event) {
+        $('.swal2-container').on('click', 'button[name="aplicar"]', function(event) {
           event.preventDefault();
           /* Act on the event */
           let Trform = $(this).parents('tr');
@@ -428,27 +433,33 @@
   }
   // save pago ajax function
   function aplicarpago(formData,trPadre){
-    $.ajax({
-      url: path+'/ordenes/pedidos/actionpagos',
-      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-      type: 'POST',
-      dataType: 'json',
-      data:formData,
-      contentType: false,
-      processData: false,
-    })
-    .done(function(data) {
-      if (data.tipo==200) {
-        if (data.mensaje=='saldo') {
-          trPadre.find('td[name="status"] a').addClass(data.estatus).removeClass('btn-info');
-          trPadre.find('td[name="status"] a').text('Confirmado');
+    //#
+    if (secure==false) {
+      // #flag
+      secure=true;
+      $.ajax({
+        url: path+'/ordenes/pedidos/actionpagos',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        type: 'POST',
+        dataType: 'json',
+        data:formData,
+        contentType: false,
+        processData: false,
+      })
+      .done(function(data) {
+        if (data.tipo==200) {
+          if (data.mensaje=='saldo') {
+            trPadre.find('td[name="status"] a').addClass(data.estatus).removeClass('btn-info');
+            trPadre.find('td[name="status"] a').text('Confirmado');
+          }
+          Swal.close();
+          secure=false;
+          setTimeout(function() {
+                HistorialPagos(trPadre);
+          }, 400);
         }
-        Swal.close()
-        setTimeout(function() {
-              HistorialPagos(trPadre);
-        }, 400);
-      }
-    });
+      });
+    }
   }
   // active tr table products
   tblOrd.on('click', 'tr', function(event) {
@@ -578,6 +589,49 @@
         }
       })
     }
+  });
+  // data range calendar
+  $("input[name^=daterange]" ).on( "focus", function() {
+    if($(this).data('released')==null){
+      $(this).data('released','open');
+      $(this).daterangepicker({
+          "showCustomRangeLabel": false,
+          "locale": {
+            "format": "YYYY/MM/DD",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "a",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 1
+          }
+      }, function(start, end, label) {});
+    }
+
   });
 </script>
 @endsection

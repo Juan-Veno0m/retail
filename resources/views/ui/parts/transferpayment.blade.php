@@ -19,7 +19,7 @@
     <div class="row justify-content-center mt-3">
       <img src="{{asset('/img/send_money_app.png')}}" alt="Envio dinero seguro">
     </div>
-    <p class="mt-2">Realiza el pago correspondiente y adjunta la captura / foto desde los detalles de tu compra para poder confirmar tu pedido.</p>
+    <p class="mt-2">Realiza el pago correspondiente y envía el comprobante de pago al whatsapp 222-260-8932 indicanndo tu número de pedido.</p>
     <p class="font-italic">Podrás consultar esta información en cualquier momento desde los detalles de tu compra.</p>
   </div>
 </div>

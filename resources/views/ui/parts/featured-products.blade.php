@@ -29,7 +29,7 @@
           $small = $base.'/medium'.'/'.$filename;
         }
         ?>
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-6">
           <div class="product">
             <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod" title="{{$p->ProductosNombre}}">
               <img class="img-fluid lazyload" alt="{{$p->ProductosNombre}}"

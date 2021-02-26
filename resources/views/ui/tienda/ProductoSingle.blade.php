@@ -54,6 +54,16 @@
   @section('content')
     <link href="{{asset('/css/ui/tienda/productsingle.css?x=4')}}" rel="stylesheet">
     <link href="{{asset('/css/ui/tienda/fixed-cart.css')}}" rel="stylesheet">
+    <style>
+      img.lazyload {
+        background: white;
+        opacity: 0;
+      }img.lazyloaded {
+        background: none;
+        transition: fadeIn;
+        opacity: 1;
+      }
+    </style>
     @include('ui.parts.fixed-cart')
     <div class="col-lg-9">
       @include('ui.parts.sticky-breadcrumb')
@@ -93,24 +103,26 @@
   @endsection
   @section('scripts')
   <script>
-    // on click input number
-    $('.summary').on('click', '.quantity > span', function(event) {
-      event.preventDefault();
-      /* Act on the event */
-      let inp = $('.input-number'); let span = $(this); let number = parseInt(inp.val());
-      if (span.hasClass('input-number-decrement')&& number>=2) {
-        inp.val(number-1);span.data('lock',false);
-      }else if (span.hasClass('input-number-increment') && number <=39) {
-        inp.val(number+1);span.data('lock',false);
-      }else{ span.data('lock',true);}
-    });
-    // Change img src
-    $('#gallery-tab').on('click', '.child-picture > img ', function(event) {
-      event.preventDefault();
-      /* Act on the event */
-      let img = $(this);
-      let src = img.data('clic');
-      $('#gallery-tab').find('#main-picture > img').attr('src',src);
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      // on click input number
+      $('.summary').on('click', '.quantity > span', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        let inp = $('.input-number'); let span = $(this); let number = parseInt(inp.val());
+        if (span.hasClass('input-number-decrement')&& number>=2) {
+          inp.val(number-1);span.data('lock',false);
+        }else if (span.hasClass('input-number-increment') && number < inp.attr('max')) {
+          inp.val(number+1);span.data('lock',false);
+        }else{ span.data('lock',true);}
+      });
+      // Change img src
+      $('#gallery-tab').on('click', '.child-picture > img ', function(event) {
+        event.preventDefault();
+        /* Act on the event */
+        let img = $(this);
+        let src = img.data('clic');
+        $('#gallery-tab').find('#main-picture > img').attr('src',src);
+      });
     });
   </script>
   @endsection

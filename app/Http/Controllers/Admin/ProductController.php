@@ -28,7 +28,7 @@ class ProductController extends Controller
           ->wherenull('p.deleted_at')
           ->select('p.ProductosID','p.ProductosID as uk','p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock',
           'p.Cantidad','p.Unidad','p.Descontinuado')
-          ->paginate(15);
+          ->paginate(15)->appends(request()->except('page'));
         foreach ($productos as $key => $value) {$value->ProductosID = encrypt($value->ProductosID);}
         // categorias
         $categorias = DB::table('categorias')->wherenull('Parent')->get();

@@ -69,7 +69,7 @@ class InventariosController extends Controller
     public function create(Request $req)
     {
       // compra
-      $ComprasID = DB::table('compras')->insertGetId(['ProveedorID'=>$req->arraydata['proveedor'],'FechaCompra'=>$req->arraydata['fecha'],
+      $ComprasID = DB::table('compras')->insertGetId(['Compra_Status'=>1,'ProveedorID'=>$req->arraydata['proveedor'],'FechaCompra'=>$req->arraydata['fecha'],
       'Total'=>$req->arraydata['Total'],'Autoriza'=>Auth::id(),'created_at'=>now()]);
       // pago
       $PagoID = DB::table('compras_pago')->insertGetId(['ComprasID'=>$ComprasID,'Monto'=>$req->arraydata['Total']]);
@@ -202,13 +202,15 @@ class InventariosController extends Controller
               ->join('compras_status as s','s.id','c.Compra_Status')
               ->select('c.Total','c.FechaCompra','s.status','p.EmpresaNombre','p.Telefono')
               ->where('ComprasID',$id)->first();
+      $compras_envio = DB::table('compras_envio as c')
+              ->where('ComprasID',$id)->first();
       $items = DB::table('compras_items as c')
               ->join('productos as p','p.ProductosID','c.ProductosID')
               ->where('c.ComprasID',$id)
               ->select('c.Cantidad as quantity','c.CostoUnitario','p.ProductosNombre','p.ProductosID','p.Cantidad','p.Unidad')->get();
       $label = preg_replace('/\s+/', '_', $compras->EmpresaNombre);
       // share data to view
-      $view = \View::make('admin.modules.Inventarios.OrdenPDF',compact('NOrden','compras','label','items'))->render();
+      $view = \View::make('admin.modules.Inventarios.OrdenPDF',compact('NOrden','compras','compras_envio','label','items'))->render();
       $pdf = \App::make('dompdf.wrapper');
       $pdf->loadHTML($view);
       return $pdf->stream('OrdenNo.'.$NOrden.'-'.$label.'.pdf');

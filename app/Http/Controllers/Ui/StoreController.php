@@ -19,10 +19,12 @@ class StoreController extends Controller
         ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
         ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
         ->where('p.Descontinuado',0)
+        ->where('p.UnidadesEnStock','>=',1)
+        ->where('pi.img','!=',null)
         ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre',
         'p.Cantidad','p.Unidad','p.Descontinuado')
-        ->orderBy('p.ProductosID','asc')
-        ->take(4)->get();
+        ->orderBy('p.ProductosID','desc')
+        ->limit(4)->get();
       foreach ($productos as $key => $value) {$value->ID = encrypt($value->ID);}
       $data = ['productos'=>$productos];
       return view('ui.tienda.index', $data);

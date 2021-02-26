@@ -16,7 +16,8 @@ $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y"
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
               <span>Costo de envío</span>
-              <span>${{$pago->CostoEnvio}}</span>
+              @if ($orden->TipoEnvio == 1 )<span>${{$pago->CostoEnvio}}</span>
+              @else <span>$0.00</span>@endif
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
               <span>Descuento <small>(20%)</small></span>
@@ -83,13 +84,29 @@ $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y"
           <div class="card bg-light">
             <div class="card-body">
               <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex  bg-transparent">
-                  <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
-                  <span class="mt-1">{{$orden_envio->Calle.', Nº exterior: '.$orden_envio->Exterior.', '.$orden_envio->Colonia.','.
-                  $orden_envio->Municipio.' ('.$orden_envio->Codigopostal.')'.', '.$orden_envio->estado}}<br>
-                  Recibe {{$orden_envio->NombreCompleto.' '.$orden_envio->Telefono}}
-                  </span>
-                </li>
+                @if ($orden->TipoEnvio == 1 )
+                  <li class="list-group-item d-flex  bg-transparent">
+                    <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="mt-1">{{$TipoEnvio->Calle.', Nº exterior: '.$TipoEnvio->Exterior.', '.$TipoEnvio->Colonia.','.
+                    $TipoEnvio->Municipio.' ('.$orden_envio->Codigopostal.')'.', '.$TipoEnvio->estado}}<br>
+                    Recibe {{$TipoEnvio->NombreCompleto.' '.$TipoEnvio->Telefono}}
+                    </span>
+                  </li>
+                @else
+                  <li class="list-group-item d-flex  bg-transparent">
+                    <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="mt-1">Pickup</span>
+                  </li>
+                  <li class="list-group-item d-flex  bg-transparent">
+                    <label class="form-check-label" for="pickup">
+                      <span class="d-block" name="Fullname">Yolkan Puebla</span>
+                      <span class="d-block" name="address">Privada 37 Sur No.2115, Belisario Dominguez</span>
+                      <span class="d-block" name="city">CP: 72180 ,Puebla, Puebla.</span>
+                    </label>
+                  </li>
+                  <li class="list-group-item d-flex  bg-transparent"><span class="mt-1">Fecha: {{date("d/m/Y", strtotime($TipoEnvio->Fecha))}},
+                    Hora: {{$TipoEnvio->Hora}} Hrs</span></li>
+                @endif
               </ul>
             </div>
           </div>

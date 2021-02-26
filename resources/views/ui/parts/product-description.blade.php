@@ -41,7 +41,7 @@
         @if ($cantidad>=1)
           <label for="cantidad">Cantidad</label>
           <div class="quantity d-block" data-id="{{$ProductosID}}" data-keygen="{{$keygen}}">
-            <span class="input-number-decrement">–</span><input class="input-number" type="text" value="{{$cantidad}}" min="1" max="30"><span class="input-number-increment">+</span>
+            <span class="input-number-decrement">–</span><input class="input-number" type="text" value="{{$cantidad}}" min="1" max="{{$producto->UnidadesEnStock}}"><span class="input-number-increment">+</span>
           </div>
         @else
           <button type="button" class="btn btn-warning btn-cart" data-id="{{$id}}">Agregar al Carrito</button>

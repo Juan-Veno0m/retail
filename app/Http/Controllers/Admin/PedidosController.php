@@ -22,27 +22,35 @@ class PedidosController extends Controller
         if (!$q == "") {$No = $q - 9249582;}else{$No="";}
 
         $e = $request->input('estatus');
-        $f = $request->input('fecha');
+        $f = str_replace("/", "-", $request->input('daterange'));
+        if (!$f) {
+          // code...
+          $from = date("Y-m-d");
+          $to = date('Y-m-d', strtotime('-30 days'));
+        }else{$from = substr($f, 0, 10);
+          $to = substr($f,13,22);}
         // pedidos
         $pedidos = DB::table('orden as o')
                   ->join('orden_status as s','s.id','=','o.Orden_estatus')
-                  ->join('orden_envio as e','e.OrdenID','=','o.OrdenID')
                   ->join('orden_pago as p','p.OrdenID','=','o.OrdenID')
                   ->join('metodo_pago as mp','mp.MetodoID','=','p.Metodo')
-                  ->join('envio_usuarios as u','u.EnvioID','=','e.EnvioUID')
                   ->join('asociados_usuario','asociados_usuario.UsuarioID','=','o.ClienteID')
                   ->join('asociados','asociados.AsociadosID','=','asociados_usuario.AsociadosID')
                   ->leftjoin('asociados_cupon as cp','cp.OrdenID','=','o.OrdenID')
                   ->leftjoin('cupones as c','c.id','=','cp.CuponID')
+                  ->leftjoin('orden_pickup as op','op.OrdenID','o.OrdenID')
                   ->where('o.Orden_estatus','LIKE','%'.$e.'%')
-                  ->where('o.Fecha_requerida','LIKE','%'.$f.'%')
                   ->where('o.OrdenID','LIKE','%'.$No.'%')
-                  ->select('o.OrdenID','o.OrdenId as key','o.Fecha_entrega','o.Fecha_requerida','e.Costo as CostoEnvio','mp.Tipo as MetodoPago',
-                  'p.TotalProductos','s.status','u.*','asociados.ApellidoPaterno','asociados.ApellidoMaterno','asociados.Nombre','s.attribute',
-                  'p.Total','p.Descuento','asociados.AsociadosID','c.descuento','c.code','o.Orden_estatus')
+                  ->whereBetween('o.Fecha_requerida',[$from,$to])
+                  ->select('o.OrdenID','o.OrdenId as key','o.Fecha_entrega','o.Fecha_requerida','mp.Tipo as MetodoPago',
+                  'p.TotalProductos','s.status','asociados.ApellidoPaterno','asociados.ApellidoMaterno','asociados.Nombre','s.attribute',
+                  'p.Total','p.Descuento','asociados.AsociadosID','c.descuento','c.code','o.Orden_estatus','o.TipoEnvio','op.Fecha','op.Hora')
+                  ->orderBy('o.OrdenID','desc')
                   ->paginate(15);
         foreach ($pedidos as $key => $value) {$value->key = encrypt($value->key);}
-        $data = ['pedidos'=>$pedidos,'q'=>$q,'e'=>$e,'f'=>$f];
+        $from = str_replace("-", "/", $from);
+        $to = str_replace("-", "/", $to);
+        $data = ['pedidos'=>$pedidos,'q'=>$q,'e'=>$e,'from'=>$from,'to'=>$to];
         return view('admin.modules.Ordenes.Pedidos.index',$data);
     }
     // Get details from order
@@ -58,21 +66,24 @@ class PedidosController extends Controller
                 ->join('orden_status as os','os.id','=','o.Orden_estatus')
                 ->leftjoin('asociados_cupon as ac','ac.OrdenID','=','o.OrdenID')
                 ->where('o.OrdenID','=',$OrdenID)
-                ->select('o.Fecha_requerida','os.status','ac.CuponID')
+                ->select('o.Fecha_requerida','os.status','ac.CuponID','o.TipoEnvio')
                 ->first();
       $pago = DB::table('orden_pago as op')
                 ->join('metodo_pago as mp','mp.MetodoID','=','op.Metodo')
-                ->join('orden_envio as oe','oe.OrdenID','op.OrdenID')
+                ->leftjoin('orden_envio as oe','oe.OrdenID','op.OrdenID')
                 ->where('op.OrdenID','=',$OrdenID)
                 ->select('op.TotalProductos','op.Total','op.Descuento','op.Descuento','mp.Tipo','oe.Costo as CostoEnvio')
                 ->first();
-      $orden_envio = DB::table('orden_envio as oe')
-                ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
-                ->join('estados as es','es.id','=','eu.EstadoID')
-                ->where('OrdenID','=',$OrdenID)
-                ->select('eu.*','es.estado')
-                ->first();
-      $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,'pago'=>$pago, 'orden_envio'=>$orden_envio];
+      if ($orden->TipoEnvio == 1) {
+        // code...
+        $TipoEnvio = DB::table('orden_envio as oe')
+                  ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
+                  ->join('estados as es','es.id','=','eu.EstadoID')
+                  ->where('OrdenID','=',$OrdenID)
+                  ->select('eu.*','es.estado')
+                  ->first();
+      }else{$TipoEnvio = DB::table('orden_pickup')->where('OrdenID',$OrdenID)->first();}
+      $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,'pago'=>$pago, 'TipoEnvio'=>$TipoEnvio];
       return view('admin.modules.Ordenes.Pedidos.detalles',$data);
     }
     // get historial de pagos
@@ -121,10 +132,6 @@ class PedidosController extends Controller
             // fecha de liquidación
             DB::table('orden_pago')->where('OrdenID',$OrdenID)->update(['FechaLiquidado'=>$datos->fecha,'updated_at'=>now()]);
             // confirmar aquí, agregar puntos de la compra al acumulado del empresario con fecha de ultimo pago
-            /* alternativa a consulta
-            SELECT SUM(o.Total) FROM orden_pago as o INNER JOIN orden on orden.OrdenID = o.OrdenID
-            INNER JOIN asociados_usuario as u on u.UsuarioID = orden.ClienteID
-            WHERE MONTH(o.FechaLiquidado)= 08 AND Year(o.FechaLiquidado)= 2020 */
             $Mes = substr($datos->fecha, 5,-3);
             $Año = substr($datos->fecha, 0, 4);
             $OrdenPuntos = (floatval($datos->total)+floatval($datos->cupon))/10;
@@ -133,6 +140,63 @@ class PedidosController extends Controller
                       ->where('Mes',$Mes)
                       ->where('Año',$Año)
                       ->first();
+            /* relación de la red */
+            $r = DB::table('asociados_relacion')->where('AsociadosID',$datos->key)->first();
+            // reportar puntos a los 3 niveles de la red
+            if (isset($r)) {
+              // code...
+              if ($r->t1 !== null) {
+                // Padre...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t1)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  // si existe registro...
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t1)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t1 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t1,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+              }
+              if ($r->t2 !== null) {
+                // Abuelo...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t2)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t2)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t2 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t2,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+
+              }
+              if ($r->t3 !== null) {
+                // Bisabuelo...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t3)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t3)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t3 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t3,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+
+              }
+            }
             // si existe sumar// else crear
             if (isset($p)) {
               /* */
@@ -141,7 +205,13 @@ class PedidosController extends Controller
                           ->where('Mes',$Mes)
                           ->where('Año',$Año)
                           ->update(['Puntos'=>$sum,'updated_at'=>now()]);
-            }else{$balance = DB::table('balance_puntos')->insertGetId(['AsociadosID'=>$datos->key,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+            }
+            else{
+              $balance = DB::table('balance_puntos')
+                        ->insertGetId(['AsociadosID'=>$datos->key,
+                        'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,
+                        'created_at'=>now()]);
+            }
             return response()->json(['tipo'=>200,'mensaje'=>'saldo','estatus'=>'btn-primary']);
           }else{return response()->json(['tipo'=>200,'mensaje'=>'ok']);}
         }elseif ($datos->action=='update') {
@@ -201,6 +271,62 @@ class PedidosController extends Controller
                       ->where('Mes',$Mes)
                       ->where('Año',$Año)
                       ->first();
+            $r = DB::table('asociados_relacion')->where('AsociadosID',$req->key)->first();
+            // reportar puntos a los 3 niveles de la red
+            if (isset($r)) {
+              // code...
+              if ($r->t1 !== null) {
+                // Padre...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t1)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  // si existe registro...
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t1)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t1 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t1,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+              }
+              if ($r->t2 !== null) {
+                // Abuelo...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t2)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t2)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t2 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t2,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+
+              }
+              if ($r->t3 !== null) {
+                // Bisabuelo...
+                $check = DB::table('balance_red as b')
+                        ->where('b.Mes',$Mes)
+                        ->where('b.Año',$Año)
+                        ->where('b.AsociadosID',$r->t3)
+                        ->select('b.Puntos')
+                        ->first();
+                if (isset($check)) {
+                  $sum = floatval($check->Puntos) + floatval($OrdenPuntos);
+                  DB::table('balance_red')->where('AsociadosID',$r->t3)
+                              ->where('Mes',$Mes)
+                              ->where('Año',$Año)
+                              ->update(['Puntos'=>$sum,'updated_at'=>now()]);
+                }else{$t3 = DB::table('balance_red')->insertGetId(['AsociadosID'=>$r->t3,'Mes'=>$Mes,'Año'=>$Año,'Puntos'=>$OrdenPuntos,'created_at'=>now()]);}
+
+              }
+            }
             // si existe sumar// else crear
             if (isset($p)) {
               /* */

@@ -13,17 +13,20 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-      $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
-      $fecha = date("Y-m-d");
-      $Mes = substr($fecha, 5,-3); // current month
-      $Mes = intval($Mes)- 1; // previus month
-      $Año = substr($fecha, 0, 4);
-      $p = DB::table('balance_puntos')
-                ->where('AsociadosID',$Empresario->AsociadosID)
-                ->where('Mes',$Mes)
-                ->where('Año',$Año)
-                ->first();
-      return view('ui.tienda.carrito')->with('p', $p);
+      if (Auth::check()) {
+        $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
+        $fecha = date("Y-m-d");
+        $Mes = substr($fecha, 5,-3); // current month
+        $Mes = intval($Mes)- 1; // previus month
+        $Año = substr($fecha, 0, 4);
+        $p = DB::table('balance_puntos')
+                  ->where('AsociadosID',$Empresario->AsociadosID)
+                  ->where('Mes',$Mes)
+                  ->where('Año',$Año)
+                  ->first();
+        return view('ui.tienda.carrito')->with('p', $p);
+      }else{return view('ui.tienda.carrito');}
+
     }
     /* Add to Cart */
     public function create(Request $req)
@@ -40,10 +43,15 @@ class CartController extends Controller
       $product = DB::table('productos as p')
             ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
             ->where('p.ProductosID','=',$decrypted)
-            ->select('p.ProductosID as keygen','p.ProductosNombre','p.PrecioUnitario','pi.img','p.Cantidad','p.Unidad')
+            ->select('p.ProductosID as keygen','p.ProductosNombre','p.PrecioUnitario','pi.img','p.Cantidad','p.Unidad','p.UnidadesEnStock')
             ->first();
       if(!$product) {
             abort(404);
+        }
+        // if has stock product
+        if (!$product->UnidadesEnStock>=1) {
+          // code...
+          return (['tipo' => 'error', 'mensaje' => 'out of stock']);
         }
         $price = $product->PrecioUnitario*2; $unidad = $product->Cantidad.' '.$product->Unidad;
         $cart = session()->get('cart');
@@ -58,13 +66,14 @@ class CartController extends Controller
         $cart[$id] = [
             "name" => $product->ProductosNombre,
             "quantity" => $req->quantity,
+            "stock" => $product->UnidadesEnStock,
             "price" => $price,
             "photo" => $product->img,
             "keygen" => $keygen,
             "unidad"=>$unidad
         ];
         session()->put('cart', $cart);
-        return (['tipo' => 'success', 'mensaje' => 'Product added to cart successfully!','cart'=>$cart,'id'=>$id]);
+        return (['tipo' => 'success', 'mensaje' => 'Product added to cart successfully!','cart'=>$cart,'id'=>$id,'stock'=>$product->UnidadesEnStock]);
     }
     /* Get Cart Number */
     public function read()
@@ -83,7 +92,16 @@ class CartController extends Controller
           //
           return (['tipo' => 'error', 'mensaje' => $e]);
       }
-      //
+      // Find Product
+      $product = DB::table('productos as p')
+            ->where('p.ProductosID','=',$decrypted)
+            ->select('p.UnidadesEnStock')
+            ->first();
+      // if has stock product
+      if (intval($req->quantity) > $product->UnidadesEnStock ) {
+        // code...
+        return (['tipo' => 'error', 'mensaje' => 'out of stock']);
+      }
       $cart = session()->get('cart');
       if(isset($cart[$req->id])) {
           $cart[$req->id]['quantity'] = $req->quantity;
