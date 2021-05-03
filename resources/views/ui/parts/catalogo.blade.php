@@ -23,7 +23,7 @@
         <div class="categoria">
           <h2>Despensa</h2>
           <a href="{{url('/despensa/node1')}}" title="Categoría despensa">
-            <img data-src="{{asset('img/categorias/despensa.webp')}}" class="img-fluid lazyload" alt="Despensa">
+            <img data-src="{{asset('img/categorias/despensa.webp')}}" class="img-fluid lazyload" alt="Despensa" width="300px" height="380px">
             <p>ver más</p>
           </a>
         </div>
@@ -32,7 +32,7 @@
         <div class="categoria">
           <h2>Dulces y Botanas</h2>
           <a href="{{url('/dulces-y-botanas/node5')}}" title="Dulces y Botanas">
-            <img data-src="{{asset('img/categorias/dulceria.webp')}}" class="img-fluid lazyload" alt="Dulces y Botanas">
+            <img data-src="{{asset('img/categorias/dulceria.webp')}}" class="img-fluid lazyload" alt="Dulces y Botanas" width="300px" height="380px">
             <p>ver más</p>
           </a>
         </div>
@@ -41,7 +41,7 @@
         <div class="categoria">
           <h2>Higiene y Belleza</h2>
           <a href="{{url('/higiene-y-belleza/node65')}}" title="Categoría higiene y belleza">
-            <img data-src="{{asset('img/categorias/higiene-y-belleza.webp')}}" class="img-fluid lazyload" alt="Higiene y Belleza">
+            <img data-src="{{asset('img/categorias/higiene-y-belleza.webp')}}" class="img-fluid lazyload" alt="Higiene y Belleza" width="300px" height="380px">
             <p>ver más</p>
           </a>
         </div>
@@ -50,7 +50,7 @@
         <div class="categoria">
           <h2>Limpieza del hogar</h2>
           <a href="{{url('/limpieza-del-hogar/node93')}}" title="Limpieza del hogar">
-            <img data-src="{{asset('img/categorias/limpieza.webp')}}" class="img-fluid lazyload" alt="Limpieza del hogar">
+            <img data-src="{{asset('img/categorias/limpieza.webp')}}" class="img-fluid lazyload" alt="Limpieza del hogar" width="300px" height="380px">
             <p>ver más</p>
           </a>
         </div>

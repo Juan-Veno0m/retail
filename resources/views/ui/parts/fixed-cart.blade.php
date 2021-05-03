@@ -1,4 +1,4 @@
-<div class="fixed-cart">
+<div class="fixed-cart" id="cart-content">
   <h3 class="text-center">Carrito de compra</h3>
   <ul class="list-group list-group-flush" id="cart-products">
     <?php $total = 0 ?>

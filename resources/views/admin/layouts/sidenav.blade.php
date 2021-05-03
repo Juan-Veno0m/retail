@@ -15,7 +15,11 @@
                 <div class="collapse" id="collapseOrders" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{url('ordenes/pedidos')}}">
-                        <i class="menu-bullet menu-bullet-dot"><span></span></i>Pedidos</a>
+                        <i class="menu-bullet menu-bullet-dot"></i>Pedidos
+                      </a>
+                      <a class="nav-link" href="{{url('ordenes/generar')}}">
+                        <i class="menu-bullet menu-bullet-dot"></i>Generar
+                      </a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed {{ (request()->is('productos/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -26,11 +30,11 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{url('productos/')}}">
-                        <i class="menu-bullet menu-bullet-dot"><span></span></i>Productos</a>
+                        <i class="menu-bullet menu-bullet-dot"></i>Productos</a>
                       <a class="nav-link" href="{{url('productos/proveedores')}}">
-                        <i class="menu-bullet menu-bullet-dot"><span></span></i>Proveedores</a>
+                        <i class="menu-bullet menu-bullet-dot"></i>Proveedores</a>
                       <a class="nav-link" href="{{url('productos/categorias')}}">
-                        <i class="menu-bullet menu-bullet-dot"><span></span></i>Categorías</a>
+                        <i class="menu-bullet menu-bullet-dot"></i>Categorías</a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -41,23 +45,23 @@
                 <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                   <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{url('asociados/')}}">
-                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Asociados</a>
+                      <i class="menu-bullet menu-bullet-dot"></i>Asociados</a>
                     <a class="nav-link" href="{{url('asociados/consumo')}}">
-                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Consumo</a>
+                      <i class="menu-bullet menu-bullet-dot"></i>Consumo</a>
                   </nav>
                 </div>
                 <!-- inventarios -->
                 <a class="nav-link collapsed {{ (request()->is('inventarios/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
                   <i class="fas fa-truck"></i>
                     Inventarios
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div
-                ></a>
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
                 <div class="collapse" id="collapseInventory" data-parent="#sidenavAccordion">
                   <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{url('inventarios')}}">
-                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Gestión</a>
+                      <i class="menu-bullet menu-bullet-dot"></i>Gestión</a>
                     <a class="nav-link" href="{{url('inventarios/generar')}}">
-                      <i class="menu-bullet menu-bullet-dot"><span></span></i>Crear Compra</a>
+                      <i class="menu-bullet menu-bullet-dot"></i>Crear Compra</a>
                   </nav>
                 </div>
                 <div class="sb-sidenav-menu-heading">Addons</div>

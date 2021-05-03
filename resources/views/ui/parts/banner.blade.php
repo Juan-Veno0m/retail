@@ -18,7 +18,7 @@
         data-sizes="auto"
         data-srcset="{{'/img/gallery/farmer-background_small.jpg 2x, '.
                   '/img/gallery/farmer-background_large.jpg 1x'}}"
-        data-src="{{asset('/img/gallery/farmer-background_small.jpg')}}">
+        data-src="{{asset('/img/gallery/farmer-background_small.jpg')}}" width="1140px" height="739px">
     </div>
   </div>
 </div>

@@ -8,7 +8,7 @@
   <div class="form-group col-xl-4 my-2 my-md-0">
     <div class="d-flex align-items-center">
       <label class="mr-3 mb-0 d-none d-md-block">Fecha:</label>
-      <input type="month" name="f" class="form-control" value="{{$f}}">
+      <input type="month" name="f" class="form-control" value="{{$f}}" max="{{date('Y-m')}}">
     </div>
   </div>
   <div class="input-group col-xl-1 my-2 my-md-0">

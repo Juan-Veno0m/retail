@@ -88,7 +88,7 @@ $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y"
                   <li class="list-group-item d-flex  bg-transparent">
                     <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
                     <span class="mt-1">{{$TipoEnvio->Calle.', Nº exterior: '.$TipoEnvio->Exterior.', '.$TipoEnvio->Colonia.','.
-                    $TipoEnvio->Municipio.' ('.$orden_envio->Codigopostal.')'.', '.$TipoEnvio->estado}}<br>
+                    $TipoEnvio->Municipio.' ('.$TipoEnvio->Codigopostal.')'.', '.$TipoEnvio->estado}}<br>
                     Recibe {{$TipoEnvio->NombreCompleto.' '.$TipoEnvio->Telefono}}
                     </span>
                   </li>

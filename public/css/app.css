@@ -2882,10 +2882,33 @@ fieldset:disabled a.btn {
 
 .btn-warning {
   color: #212529;
-  background-color: #ffed4a;
-  border-color: #ffed4a;
+  background-color: #ffe924;
+  border-color: #ffe924;
+  position:relative;
 }
-
+.btn.btn-warning:after {
+    display: block;
+    content: "";
+    padding: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    -webkit-transform: translate(0.46667rem, 0.46667rem);
+    -moz-transform: translate(0.46667rem, 0.46667rem);
+    -ms-transform: translate(0.46667rem, 0.46667rem);
+    transform: translate(0.46667rem, 0.46667rem);
+    width: calc(100% + 0.13333rem);
+    height: calc(100% + 0.13333rem);
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ffe924;
+    pointer-events: none;
+    transition-property: opacity,transform;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+}
 .btn-warning:hover {
   color: #212529;
   background-color: #ffe924;
@@ -4752,7 +4775,6 @@ input[type=button].btn-block {
     position: relative;
     background: #fff;
     margin-bottom: 510px;
-    margin-top: 97px;
   }
   .ftco-footer {
       position: fixed !important;
@@ -5734,8 +5756,8 @@ a.badge-dark.focus {
   overflow: hidden;
   line-height: 0;
   font-size: 0.675rem;
-  background-color: #e9ecef;
-  border-radius: 0.25rem;
+  background-color: #ffffff;
+  border: solid 1px #e8e8e8;
 }
 
 .progress-bar {
@@ -5746,7 +5768,7 @@ a.badge-dark.focus {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  background-color: #3490dc;
+  background-color: #ffb61a;
   transition: width 0.6s ease;
 }
 
@@ -6925,7 +6947,7 @@ a.close.disabled {
 .carousel-caption {
   position: absolute;
   right: 15%;
-  top: 94px;
+  top: 194px;
   left: 15%;
   z-index: 10;
   padding-top: 20px;
@@ -8448,7 +8470,7 @@ button.bg-dark:focus {
 }
 
 .vh-100 {
-  height: 82vh!important;
+  height: 100vh!important;
 }
 
 .m-0 {
@@ -11068,7 +11090,7 @@ h5,
   position: fixed;
   left: 0;
   right: 0;
-  top: 26.8px;
+  top: 0;
 }
 
 @media (max-width: 991.98px) {
@@ -11772,10 +11794,11 @@ h5,
 }
 .carousel-title {
   font-size: calc(1.4em + 4vw);
-  color: #444;
+  color: #fff;
   line-height: 1.3;
   font-weight: 400;
   font-family: "Amatic SC", cursive;
+  text-shadow: 4px 2px 1px #5b7c26;
 }
 
 .carousel-subtitle {
@@ -11784,8 +11807,9 @@ h5,
   letter-spacing: 4px;
   text-transform: capitalize;
   display: inline-block;
-  color: #367744;
-  background: #efefef;
+  color: #2f6013;
+  background: #efefefd9;
+  padding: 0px 16px;
 }
 
 .overlay {
@@ -11857,7 +11881,7 @@ h5,
 }
 #main-picture > img {
   object-fit: cover;
-  max-height: 100%;
+  max-height: 532px;
 }
 .thumbnail{
   height: 78px;
@@ -11917,18 +11941,20 @@ h5,
     position: absolute;
 }
 .ftco-footer .ftco-footer-widget h2 {
-  font-weight: normal;
+  font-weight: 600 !important;
   margin-bottom: 20px;
   font-size: 16px;
-  font-weight: 500;
 }
 
 .ftco-footer .ftco-footer-widget ul li a {
   color: #444;
 }
-
-.ftco-footer .ftco-footer-widget ul li {
-  font-size: 14px;
+.ftco-footer .ftco-footer-widget ul li{padding: 0px 6px;}
+.ftco-footer-social p {
+    font-size: 13px;
+    font-family: 'Source Sans Pro';
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .block-23 ul li,
@@ -11942,10 +11968,10 @@ h5,
   padding: 0;
 }
 
-.block-23 ul li .icon,
 .block-23 ul li .text {
   display: table-cell;
-  vertical-align: top;
+  vertical-align: middle;
+  padding-left: 6px;
 }
 
 .ftco-footer-social li {
@@ -11955,28 +11981,35 @@ h5,
 }
 
 .block-23 ul li .icon {
-  width: 40px;
-  font-size: 18px;
-  padding-top: 2px;
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  background: #444;
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  display: table-cell;
 }
-
+.ftco-footer-widget .icon > svg {
+    width: 12px; height: 12px;
+}
 .ftco-footer-social li a {
-  height: 50px;
-  width: 50px;
+  height: 32px;
+  width: 32px;
   display: block;
-  float: left;
-  background: rgba(0, 0, 0, 0.02);
+  margin-left: 12px;
+  background: rgb(68 68 68);
   border-radius: 50%;
-  position: relative;
 }
 
-.ftco-footer-social li a span {
+.ftco-footer-social svg {
+  height: 16px;
   position: absolute;
   font-size: 18px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: #444;
+  transform: translate(-50%,-50%);
+  color: #fff;
 }
 .copyright p {
     font-weight: 400;

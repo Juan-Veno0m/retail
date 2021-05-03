@@ -5,8 +5,6 @@
         <h2 class="mb-4">Productos Relacionados</h2>
       </div>
     </div>
-  </div>
-  <div class="container">
     <div class="row">
       <!-- each product -->
       @foreach ($related as $key => $p)
@@ -20,7 +18,7 @@
                     $base.'/medium'.'/'.$filename.' 1x';
           $small = $base.'/medium'.'/'.$filename;
         }?>
-        <div class="col-lg-3 col-md-4 ftco-animate fadeInUp ftco-animated">
+        <div class="col-lg-3 col-md-4 col-6 ftco-animate fadeInUp ftco-animated">
           <div class="product">
             <a href="{{url('/producto/'.$slug.'/'.($p->ProductosID+3301))}}" class="img-prod">
               <img class="img-fluid cover lazyload" alt="{{$p->ProductosNombre}}"

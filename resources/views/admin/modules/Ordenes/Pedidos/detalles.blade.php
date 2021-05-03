@@ -35,17 +35,21 @@
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                      <span>Subtotal</span>
+                      <span>Total productos</span>
                       <span>${{$pago->TotalProductos}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                      <span>Descuento <small>({{$pago->Porcentaje}}%)</small></span>
+                      <span class="text-danger">- ${{$pago->Descuento}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                      <span>Subtotal <small></small></span>
+                      <span class="text-dark"> ${{$pago->TotalProductos-$pago->Descuento}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                       <span>Envio</span>
                       @if ($orden->TipoEnvio == 1 )<span>${{$pago->CostoEnvio}}</span>
                       @else <span>$0.00</span>@endif
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                      <span>Descuento <small>(20%)</small></span>
-                      <span class="text-danger">- ${{$pago->Descuento}}</span>
                     </li>
                     @if ($orden->CuponID)
                       <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
@@ -92,7 +96,7 @@
                       <li class="list-group-item d-flex  bg-transparent">
                         <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
                         <span class="mt-1">{{$TipoEnvio->Calle.', Nº exterior: '.$TipoEnvio->Exterior.', '.$TipoEnvio->Colonia.','.
-                        $TipoEnvio->Municipio.' ('.$orden_envio->Codigopostal.')'.', '.$TipoEnvio->estado}}<br>
+                        $TipoEnvio->Municipio.' ('.$TipoEnvio->Codigopostal.')'.', '.$TipoEnvio->estado}}<br>
                         Recibe {{$TipoEnvio->NombreCompleto.' '.$TipoEnvio->Telefono}}
                         </span>
                       </li>

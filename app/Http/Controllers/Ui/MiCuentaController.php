@@ -37,6 +37,29 @@ class MiCuentaController extends Controller
       $Mes = substr($f, 5,7); // get month
       $Año = substr($f, 0, 4); // get Year
       $asociado = DB::table('asociados_usuario as u')
+                    ->join('asociados as a','a.AsociadosID','u.AsociadosID')
+                    ->where('u.UsuarioID',Auth::id())
+                    ->select('a.*')->first();
+      $red = DB::table('asociados as a')
+              ->join('asociados_relacion as l1','l1.AsociadosID','a.AsociadosID')
+              ->where('l1.t1',$asociado->AsociadosID)
+              ->orWhere('l1.t2',$asociado->AsociadosID)
+              ->orWhere('l1.t3',$asociado->AsociadosID)
+              ->select('l1.t1','a.*')
+              ->orderBy('l1.t2','asc')
+              ->orderBy('l1.t2','asc')
+              ->orderBy('l1.t3','asc')
+              ->get();
+      $consumo = DB::table('balance_puntos as b')
+              ->where('b.Mes',$Mes)
+              ->where('b.Año',$Año)
+              ->get();
+      return view('ui.tienda.Red',['red'=>$red,'asociado'=>$asociado,'consumo'=>$consumo,'q'=>$q,'f'=>$f]);
+    }
+    // Tree relationship
+    public function Tree()
+    {
+      $asociado = DB::table('asociados_usuario as u')
                     ->where('u.UsuarioID',Auth::id())
                     ->select('u.AsociadosID')->first();
       $red = DB::table('asociados as a')
@@ -46,10 +69,8 @@ class MiCuentaController extends Controller
               ->where('l1.t1',$asociado->AsociadosID)
               ->orWhere('l2.t2',$asociado->AsociadosID)
               ->orWhere('l3.t3',$asociado->AsociadosID)
-              ->select('l1.t1','l2.t2','l3.t3','a.*')->paginate(10);
-      $consumo = DB::table('balance_puntos as b')
-              ->where('b.Mes',$Mes)
-              ->where('b.Año',$Año)->get();
-      return view('ui.tienda.Red',['red'=>$red,'asociado'=>$asociado,'consumo'=>$consumo,'q'=>$q,'f'=>$f]);
+              ->select('a.AsociadosID as key','l1.t1 as parent','a.Nombre','a.ApellidoPaterno','a.ApellidoPaterno')
+              ->get();
+      return (['red'=>$red,'parent'=>$asociado]);
     }
 }

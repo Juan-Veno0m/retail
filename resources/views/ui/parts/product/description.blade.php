@@ -1,6 +1,4 @@
-<div class="row summary mt-1 mt-lg-0">
-  <div class="col-xl-12 pl-0 pl-lg-3"><h1 class="product-tittle">{{$producto->ProductosNombre.' '.$producto->Cantidad.' '.$producto->Unidad}}</h1></div>
-  <div class="col-xl-12 pl-0 pl-lg-3"><h2 class="product-subtitle">Productor:&nbsp;{{$producto->EmpresaNombre}}</h2></div>
+<div class="summary container-fluid px-0">
   <!-- Carousel -->
   <div class="col-xl-12 pl-0">
     <div id="carouselmobile" class="carousel slide carousel-fade d-block d-sm-none" data-ride="carousel">
@@ -19,12 +17,14 @@
           <?php $indicators .='<li data-target="#carouselmobile" data-slide-to="'.$loop->index.'"></li>'; ?>
         @endforeach
       </div>
+      <!--
       <ol class="carousel-indicators">
         <?php echo $indicators ?>
-      </ol>
+      </ol> -->
     </div>
   </div>
-  <!-- end -->
+  <div class="col-xl-12 pt-3"><h1 class="product-tittle">{{$producto->ProductosNombre.' '.$producto->Cantidad.' '.$producto->Unidad}}</h1></div>
+  <div class="col-xl-12"><h2 class="product-subtitle">Productor:&nbsp;{{$producto->EmpresaNombre}}</h2></div>
   <div class="product-seperator-line pt-1"></div>
   <div class="col-xl-12">
     <span class="label">Precio: </span><span class="product-price">{{ '$'.number_format($producto->PrecioUnitario*2,2)}}</span>
@@ -59,7 +59,10 @@
       <span><label>Porción:&nbsp;</label>{{$producto->Cantidad.' '.$producto->Unidad}}</span>
     </div>
     <div class="d-block">
-      <span><label>SKU:&nbsp;</label>{{$ProductosID}}</span>
+      <span><label>SKU:&nbsp;</label>{{strtoupper($SKU)}}</span>
+    </div>
+    <div class="d-block">
+      <span><label>Code:&nbsp;</label>{{$ProductosID}}</span>
     </div>
     <div class="d-block">
       <span><label>Categoria:&nbsp;</label>{{$producto->CategoriaNombre}}</span>

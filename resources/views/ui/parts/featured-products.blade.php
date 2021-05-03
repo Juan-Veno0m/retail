@@ -35,7 +35,7 @@
               <img class="img-fluid lazyload" alt="{{$p->ProductosNombre}}"
               data-sizes="auto"
               data-srcset="{{$imagen}}"
-              data-src="{{$small}}">
+              data-src="{{$small}}" width="239" height="318">
             </a>
             <div class="text pt-3 px-3 text-center">
               <h3>{{$p->ProductosNombre}}</h3>
@@ -43,6 +43,9 @@
           </div>
         </div>
       @endforeach
+    </div>
+    <div class="row mt-4 justify-content-center">
+      <p><a href="{{url('/tienda')}}" class="btn btn-warning btn-lg" title="tienda"><b>Ver tienda</b></a></p>
     </div>
   </div>
 </section>

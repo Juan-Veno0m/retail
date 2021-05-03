@@ -221,7 +221,7 @@ $(document).ready(function(){
     if (input.data('type') == 1 ) {
       sub = cartresume.find('.sub').data('sub'); // get subtotal
       if (input.data('city') == 'Puebla') {
-        if (sub<500) { envio = 100;}
+        if (sub<500) { envio = 100;}else{envio=0;}
       }else{envio=299; total = parseFloat(sub);descuento = parseFloat(sub*desc);}
     }else{envio = 0;}
     /* */

@@ -48,6 +48,15 @@ Route::middleware(['auth','role.admin'])->group(function () {
       Route::post('/actionpagos','Admin\PedidosController@actionpagos');
       Route::get('/ticket/{NOrden}','Admin\PedidosController@ticketPDF');
       Route::post('/status','Admin\PedidosController@status');
+      Route::post('/getcliente','Admin\PedidosController@getcliente');
+    });
+    /* Generar */
+    Route::prefix('generar')->group(function(){
+      Route::get('/', 'Admin\PedidosController@generar');
+      Route::post('/puntos', 'Admin\PedidosController@puntos');
+      Route::post('/address','Admin\PedidosController@address');
+      Route::post('/shipping_action','Admin\PedidosController@shipping_action');
+      Route::post('/store','Admin\PedidosController@store');
     });
     //
   });
@@ -122,6 +131,7 @@ Route::middleware(['auth','verified'])->group(function () {
   Route::prefix('Cuenta')->group(function(){
     Route::get('/','Ui\MiCuentaController@index');
     Route::get('/Red','Ui\MiCuentaController@Red');
+    Route::get('/Tree','Ui\MiCuentaController@Tree');
     // Mis Pedidos
     Route::prefix('MisPedidos')->group(function () {
       Route::get('/','Ui\OrdersController@index');

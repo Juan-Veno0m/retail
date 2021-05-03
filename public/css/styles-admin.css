@@ -10350,7 +10350,8 @@ aa
     align-items: center;
     line-height: 0;
 }
-.menu-bullet > span {
+.menu-bullet::after {
+    content: '';
     width: 4px;
     height: 4px;
     border-radius: 100%;

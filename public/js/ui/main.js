@@ -1,9 +1,3 @@
-var link = document.createElement('link');
-link.setAttribute("rel", "stylesheet");
-link.setAttribute("type", "text/css");
-link.onload = function(){ }
-link.setAttribute("href", 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
-document.getElementsByTagName("head")[0].appendChild(link);
 // Global
 let path = $('.main-content').data('path'); let alert = $('.notification-cart');
 // click add to cart from feactured // produts view

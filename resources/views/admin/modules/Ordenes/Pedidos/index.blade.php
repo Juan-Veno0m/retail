@@ -3,6 +3,17 @@
 @section('description','Administrador Yolkan') <!-- Meta Description -->
 @section('content')
   <style>
+    .list-ajax {
+      position: absolute;
+      top: 40px;
+      max-height: 420px;
+      width: 250px;
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    }
+    .list-ajax > li {
+      border: none;
+      font-size: 13px;
+    }
     .btn-xs {
       padding: .2em .6em .3em;
       font-size: 14px;
@@ -170,7 +181,7 @@
                 @foreach ($pedidos as $key =>$p)
                   <tr data-id="{{$p->key}}" data-key="{{$p->AsociadosID}}" data-pedido="{{$p->OrdenID+9249582}}"
                     data-empresario="{{$p->Nombre.' '.$p->ApellidoPaterno .' '.$p->ApellidoMaterno}}"
-                    data-cupon="{{$p->descuento}}" data-total="{{$p->Total}}">
+                    data-cupon="{{$p->descuento}}" data-total="{{$p->Total}}" data-subtotal="{{$p->TotalProductos}}" data-descuento="{{$p->Descuento}}">
                     <td name="NoPedido">
                       {{$p->OrdenID+9249582}}
                       @if (isset($p->descuento))<span class="first"></span>@endif
@@ -222,7 +233,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <div aria-hidden="true" class="custom-alert"></div>
 <script>
-  let path = $('.root').data('path'); let tblOrd= $('#tabla-ordenes'); secure=false;
+  let path = $('.root').data('path'); let tblOrd= $('#tabla-ordenes'); secure=false; let group = $('.list-ajax');
   tblOrd.on('click', 'a[name="pagos"]', function(event) {
     event.preventDefault();
     let btn = $(this);
@@ -406,7 +417,7 @@
             datos['saldo']= parseFloat(saldo-datos['monto']).toFixed(2);
             // key, user, cupon, total
             datos['key'] = trPadre.data('key'); datos['u'] = trPadre.data('u'); datos['cupon'] = trPadre.data('cupon');
-            datos['total'] = trPadre.data('total');
+            datos['total'] = trPadre.data('total'); datos['subtotal'] = trPadre.data('subtotal'); datos['descuento'] = trPadre.data('descuento');
             formData.append("datos",JSON.stringify(datos));
             // send ajax
             aplicarpago(formData,trPadre);
@@ -632,6 +643,40 @@
       }, function(start, end, label) {});
     }
 
+  });
+  // buscar empresario
+  $("input[name^=cliente]").keyup(function(event) {
+    /* Act on the event */
+    let input = $(this);
+    if (isNaN(input.val())) {
+      //
+      if (input.val().length>=4) {
+        // ajax
+        $.ajax({
+          url: path+'/ordenes/pedidos/getcliente',
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          type: 'POST',
+          dataType: 'json',
+          data: {query: input.val()}
+        })
+        .done(function(data) {
+          let list=''; group.empty();
+          $.each(data.data, function(index, el) {
+            list+='<li class="list-group-item item" data-id="'+el.NoEmpresario+'"><small>('+el.NoEmpresario+') '+el.Full+'</small></li>';
+          });
+          group.append(list); group.show();
+        });
+
+      }
+    }
+  });
+  // on click element of list ajax
+  $('.list-ajax').on('click', '.item', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    let text = $(this).data('id');
+    $("input[name^=cliente]").val(text);
+    group.fadeOut(500); group.empty();
   });
 </script>
 @endsection

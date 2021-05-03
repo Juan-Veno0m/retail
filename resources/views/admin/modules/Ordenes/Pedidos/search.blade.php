@@ -3,7 +3,12 @@
     <span><i class="fas fa-search"></i></span>
     <input type="search" name="q" value="{{$q}}" class="form-control" placeholder="Ingrese No. de Pedido a buscar">
   </div>
-  <div class="form-group col-xl-3 my-2 my-md-0">
+  <div class="input-group icon-search col-xl-2 my-2 my-md-0">
+    <span><i class="fas fa-user"></i></span>
+    <input type="search" name="cliente" value="{{$cliente}}" class="form-control" placeholder="No. Cliente">
+    <ul class="list-group list-ajax list-group-flush" style="display:none;"></ul>
+  </div>
+  <div class="form-group col-xl-2 my-2 my-md-0">
     <div class="d-flex align-items-center">
       <label class="mr-3 mb-0 d-none d-md-block">Estatus:</label>
       <?php $options = [1=>'Recibido',2 => 'Confirmado',3 => 'Enviado',4 => 'Devuelto',5 => 'Entregado', 6 => 'Cancelado']; ?>
@@ -19,7 +24,7 @@
       </select>
     </div>
   </div>
-  <div class="form-group col-xl-4 my-2 my-md-0">
+  <div class="form-group col-xl-3 my-2 my-md-0">
     <div class="d-flex align-items-center">
       <label class="mr-3 mb-0 d-none d-md-block">Fecha:</label>
       <input type="text" name="daterange" class="form-control" value="{{$from.' - '.$to}}"/>
