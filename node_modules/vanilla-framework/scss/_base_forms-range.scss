@@ -1,0 +1,140 @@
+@mixin vf-b-range {
+  $thumb-shadow: 0 0 $bar-thickness 1px rgba(0, 0, 0, 0.2);
+  $thumb-size: 24px;
+  $thumb-radius: $bar-thickness;
+  $track-height: 5px;
+  $track-border-size: 1px;
+  $track-border: $track-border-size solid $colors--light-theme--border-high-contrast;
+  $track-radius: $bar-thickness;
+
+  // stylelint-disable selector-max-type -- base styles can use type selectors
+  input[type='range'] {
+    // stylelint-disable property-no-vendor-prefix
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    // stylelint-enable property-no-vendor-prefix
+    border-radius: $track-radius + 1;
+    margin: $sp-small 0;
+    padding: 0;
+    width: 100%;
+
+    // Chrome
+    &::-webkit-slider-runnable-track {
+      border: $track-border;
+      border-radius: $track-radius + 1;
+      height: $track-height + 1;
+    }
+
+    &::-webkit-slider-thumb {
+      // stylelint-disable property-no-vendor-prefix
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      // stylelint-enable property-no-vendor-prefix
+      background: $color-x-light;
+      border: 0;
+      border-radius: $thumb-radius;
+      box-shadow: $thumb-shadow;
+      height: $thumb-size;
+      margin-top: ((-$thumb-size + $track-height) / 2) - $track-border-size;
+      width: $thumb-size;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    // Firefox
+    &::-moz-range-track {
+      background: $color-x-light;
+      border: $track-border;
+      border-radius: $track-radius;
+      height: $track-height - 1;
+    }
+
+    &::-moz-range-progress {
+      background-color: $color-information;
+      border-radius: $track-radius;
+      height: $track-height - 1;
+    }
+
+    &::-moz-range-thumb {
+      background: $color-x-light;
+      border: 0;
+      border-radius: $thumb-radius;
+      box-shadow: $thumb-shadow;
+      height: $thumb-size;
+      width: $thumb-size;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &::-moz-focus-outer {
+      border: 0;
+    }
+
+    // IE
+    &::-ms-track {
+      background: transparent;
+      border-color: transparent;
+      border-width: $thumb-size / 2;
+      color: transparent;
+      height: $track-height + 1;
+      width: calc(100% - (#{$thumb-size} / 2));
+    }
+
+    &::-ms-fill-lower {
+      background: $color-information;
+      border: $track-border;
+      border-radius: $track-radius;
+    }
+
+    &::-ms-fill-upper {
+      background: $color-x-light;
+      border: $track-border;
+      border-radius: $track-radius;
+    }
+
+    &::-ms-thumb {
+      background: $color-x-light;
+      border: 0;
+      border-radius: $thumb-radius;
+      box-shadow: $thumb-shadow;
+      height: $thumb-size;
+      margin: 0 $bar-thickness;
+      width: $thumb-size;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &::-ms-tooltip {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+
+      &::-webkit-slider-thumb {
+        outline: $bar-thickness solid $color-focus;
+      }
+
+      &::-moz-range-thumb {
+        outline: $bar-thickness solid $color-focus;
+      }
+
+      &::-ms-thumb {
+        outline: $bar-thickness solid $color-focus;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+    // stylelint-enable selector-max-type
+  }
+}
