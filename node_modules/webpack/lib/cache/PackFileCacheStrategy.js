@@ -8,6 +8,7 @@
 const FileSystemInfo = require("../FileSystemInfo");
 const ProgressPlugin = require("../ProgressPlugin");
 const { formatSize } = require("../SizeFormatHelpers");
+const SerializerMiddleware = require("../serialization/SerializerMiddleware");
 const LazySet = require("../util/LazySet");
 const makeSerializable = require("../util/makeSerializable");
 const memoize = require("../util/memoize");
@@ -677,7 +678,7 @@ class PackContent {
 	 */
 	constructor(items, usedItems, dataOrFn, logger, lazyName) {
 		this.items = items;
-		/** @type {function(): PackContentItems | Promise<PackContentItems>} */
+		/** @type {function(): Promise<PackContentItems> | PackContentItems } */
 		this.lazy = typeof dataOrFn === "function" ? dataOrFn : undefined;
 		/** @type {Map<string, any>} */
 		this.content = typeof dataOrFn === "function" ? undefined : dataOrFn.map;
@@ -715,6 +716,7 @@ class PackContent {
 					this.logger.timeEnd(timeMessage);
 				}
 				this.content = map;
+				this.lazy = SerializerMiddleware.unMemoizeLazy(this.lazy);
 				return map.get(identifier);
 			});
 		} else {
@@ -723,6 +725,7 @@ class PackContent {
 				this.logger.timeEnd(timeMessage);
 			}
 			this.content = map;
+			this.lazy = SerializerMiddleware.unMemoizeLazy(this.lazy);
 			return map.get(identifier);
 		}
 	}
@@ -1041,7 +1044,8 @@ class PackFileCacheStrategy {
 					if (newBuildDependencies)
 						this.newBuildDependencies.addAll(newBuildDependencies);
 					this.resolveResults = resolveResults;
-					this.resolveBuildDependenciesSnapshot = resolveBuildDependenciesSnapshot;
+					this.resolveBuildDependenciesSnapshot =
+						resolveBuildDependenciesSnapshot;
 					return pack;
 				}
 				return new Pack(logger, this.maxAge);
@@ -1163,10 +1167,11 @@ class PackFileCacheStrategy {
 											);
 										}
 										if (this.resolveBuildDependenciesSnapshot) {
-											this.resolveBuildDependenciesSnapshot = this.fileSystemInfo.mergeSnapshots(
-												this.resolveBuildDependenciesSnapshot,
-												snapshot
-											);
+											this.resolveBuildDependenciesSnapshot =
+												this.fileSystemInfo.mergeSnapshots(
+													this.resolveBuildDependenciesSnapshot,
+													snapshot
+												);
 										} else {
 											this.resolveBuildDependenciesSnapshot = snapshot;
 										}
@@ -1194,10 +1199,11 @@ class PackFileCacheStrategy {
 												this.logger.debug("Captured build dependencies");
 
 												if (this.buildSnapshot) {
-													this.buildSnapshot = this.fileSystemInfo.mergeSnapshots(
-														this.buildSnapshot,
-														snapshot
-													);
+													this.buildSnapshot =
+														this.fileSystemInfo.mergeSnapshots(
+															this.buildSnapshot,
+															snapshot
+														);
 												} else {
 													this.buildSnapshot = snapshot;
 												}
