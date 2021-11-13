@@ -13,7 +13,7 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-      if (Auth::check()) {
+      if (Auth::user()->isAsociado()) {
         $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
         $fecha = date("Y-m-d");
         $Mes = substr($fecha, 5,-3); // current month

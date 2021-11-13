@@ -66,7 +66,19 @@ class StoreController extends Controller
     // Tienda Route
     public function Tienda(Request $request)
     {
-      return view('ui.tienda.Tienda');
+      $productos = DB::table('productos as p')
+        ->join('proveedores as prov','prov.ProveedorID','=','p.ProveedorID')
+        ->join('categorias as cat','cat.CategoriaID','=','p.CategoriaID')
+        ->leftjoin('productos_imagenes as pi','pi.ImagenesPID','=','p.Featured')
+        ->where('p.Descontinuado',0)
+        ->where('p.UnidadesEnStock','>=',1)
+        ->where('pi.img','!=',null)
+        ->select('p.ProductosID','p.ProductosID as ID','p.ProductosNombre','p.PrecioUnitario','pi.img','cat.CategoriaNombre',
+        'p.Cantidad','p.Unidad','p.Descontinuado')
+        ->orderBy('p.ProductosID','desc')
+        ->paginate(16);
+      $data = ['productos'=>$productos];
+      return view('ui.tienda.Tienda',$data);
     }
     // Email Contacto
     public function Contacto(Request $req)

@@ -3,6 +3,7 @@
         <h2 class="fs-title">Tú pedido</h2>
         <ul class="list-group list-group-flush" id="cart-products">
           <?php $total = 0; $descuento = 0.2; $label = '20%';
+            if (!Auth::user()->isAsociado()) { $descuento=0;$label='Solo Empresarios';}
             if (isset($p)) {
               if ($p->Puntos >=300) { // 25 %
                 $descuento = 0.25;$label = '25%';

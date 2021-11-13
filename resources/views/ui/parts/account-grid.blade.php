@@ -18,16 +18,18 @@
       <p>Edita tu inicio de sesión.</p>
     </div>
   </a>
-  <!-- column -->
-  <a href="{{url('/Cuenta/Red')}}" class="box">
-    <div class="icon bg-light">
-      <i class="fas fa-project-diagram"></i>
-    </div>
-    <div class="body">
-      <h2 class="font-sm">Mi red</h2>
-      <p>Visualiza tu red de empresarios Yolkan.</p>
-    </div>
-  </a>
+  @if(Auth::user()->isAsociado())
+    <!-- column -->
+    <a href="{{url('/Cuenta/Red')}}" class="box">
+      <div class="icon bg-light">
+        <i class="fas fa-project-diagram"></i>
+      </div>
+      <div class="body">
+        <h2 class="font-sm">Mi red</h2>
+        <p>Visualiza tu red de empresarios Yolkan.</p>
+      </div>
+    </a>
+  @endif
 </div>
 <!-- row -->
 <div class="row justify-content-center mx-4 mb-3">

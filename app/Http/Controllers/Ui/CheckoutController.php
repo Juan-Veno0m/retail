@@ -15,18 +15,20 @@ class CheckoutController extends Controller
   // index view
   public function index()
   {
-    $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
-    $fecha = date("Y-m-d");
-    $Mes = substr($fecha, 5,-3); // current month
-    $Mes = intval($Mes)- 1; // previus month
-    $Año = substr($fecha, 0, 4);
-    $p = DB::table('balance_puntos')
-              ->where('AsociadosID',$Empresario->AsociadosID)
-              ->where('Mes',$Mes)
-              ->where('Año',$Año)
-              ->first();
-    $data = ['breadcrumb'=>'Checkout','p'=>$p];
-    return view('ui.tienda.Checkout',$data);
+    if (Auth::user()->isAsociado()) {
+      $Empresario = DB::table('asociados_usuario')->where('UsuarioID',Auth::id())->first();
+      $fecha = date("Y-m-d");
+      $Mes = substr($fecha, 5,-3); // current month
+      $Mes = intval($Mes)- 1; // previus month
+      $Año = substr($fecha, 0, 4);
+      $p = DB::table('balance_puntos')
+                ->where('AsociadosID',$Empresario->AsociadosID)
+                ->where('Mes',$Mes)
+                ->where('Año',$Año)
+                ->first();
+      $data = ['breadcrumb'=>'Checkout','p'=>$p];
+      return view('ui.tienda.Checkout',$data);
+    }else{return view('ui.tienda.Checkout');}
   }
   // Store order
   public function store(Request $req)
@@ -78,7 +80,7 @@ class CheckoutController extends Controller
     ]);
     // Si es la primer compra
     $cont = Auth::user()->cont;
-    if (!$cont>0) {
+    if (!$cont>0 && Auth::user()->isAsociado()) {
       // code...
       $cupon = DB::table('asociados_cupon')->insertGetId(['CuponID'=>1,'OrdenID'=>$OrdenID]);
       $calculo= number_format($req->fixedTotal+1500/10, 2, '.', '');

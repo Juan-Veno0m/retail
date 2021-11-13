@@ -295,6 +295,7 @@
                         <h2 class="fs-title mx-2">Resumen del pedido</h2>
                         <ul class="list-group list-group-flush">
                           <?php $total = 0; $descuento = 0.2; $label = '20%'; $items=0;
+                            if (!Auth::user()->isAsociado()) { $descuento=0;$label='Solo Empresarios';}
                             if (isset($p)) {
                               if ($p->Puntos >=300) { // 25 %
                                 $descuento = 0.25;$label = '25%';
@@ -338,7 +339,7 @@
                               </div>
                             </div>
                           </li>
-                          @if (!Auth::user()->cont>0)
+                          @if (!Auth::user()->cont>0 && Auth::user()->isAsociado())
                             <li class="list-group-item cupon">
                               <div class="row align-items-center">
                                 <div class="col">

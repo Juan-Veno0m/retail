@@ -76,4 +76,9 @@ class User extends Authenticatable implements MustVerifyEmail
    {
        return $this->hasRole('asociado');
    }
+   /* if the user role is only user */
+   public function isUser()
+  {
+      return $this->hasRole('user');
+  }
 }

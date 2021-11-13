@@ -3,6 +3,13 @@
 @section('description','Administrador Yolkan') <!-- Meta Description -->
 @section('content')
   <style>
+      td.member {position: relative;}
+      td.member:after {
+        content: url({{asset('img/diamond.svg')}}); width: 18px;
+        color: #2f6766;
+        position: absolute;
+        right: 6px;
+    }
     .list-ajax {
       position: absolute;
       top: 40px;
@@ -187,11 +194,12 @@
                       @if (isset($p->descuento))<span class="first"></span>@endif
                     </td>
                     <td name="fecha">{{date("d/m/Y", strtotime($p->Fecha_requerida))}}</td>
-                    <td name="cliente">{{$p->Nombre}}</td>
+                    <td name="cliente" @if(isset($p->Nombre)) class="member" title="Empresario" @else title="Usuario" @endif>@if(isset($p->Nombre)){{$p->Nombre}}@else {{$p->name}} @endif</td>
                     <td name="status"><a name="status" class="btn btn-xs {{$p->attribute}}" data-class="{{$p->attribute}}"
                       data-val="{{$p->Orden_estatus}}" data-orden="{{$p->OrdenID+9249582}}">{{$p->status}}</a></td>
                     <td name="tipoenvio">
-                      @if ($p->TipoEnvio== 1) Online @else Pickup {{date("d/m/Y", strtotime($p->Fecha)).' ('.$p->Hora.' Hrs)'}}@endif
+                      @if ($p->TipoEnvio== 1) Online @elseif($p->TipoEnvio == 2) Pickup {{date("d/m/Y", strtotime($p->Fecha)).' ('.$p->Hora.' Hrs)'}}
+                      @elseif ($p->TipoEnvio == 4) Tienda Local @endif
                     </td>
                     <td name="total">${{$p->Total}}</td>
                     <td>

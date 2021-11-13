@@ -8,7 +8,7 @@
                     Dashboard</a>
                 <div class="sb-sidenav-menu-heading">Interface</div>
                 <a class="nav-link collapsed {{ (request()->is('ordenes/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseOrders" aria-expanded="false" aria-controls="collapseOrders">
-                  <i class="fas fa-shopping-cart"></i>
+                  <i class="fas fa-file-invoice-dollar"></i>
                   Ordenes
                   <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
@@ -19,6 +19,22 @@
                       </a>
                       <a class="nav-link" href="{{url('ordenes/generar')}}">
                         <i class="menu-bullet menu-bullet-dot"></i>Generar
+                      </a>
+                    </nav>
+                </div>
+                <!-- Ventas -->
+                <a class="nav-link collapsed {{ (request()->is('ventas/*')) ? 'active' : '' }}" href="#" data-toggle="collapse" data-target="#collapseVentas" aria-expanded="false" aria-controls="collapseOrders">
+                  <i class="fas fa-dollar-sign"></i>
+                  Ventas
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseVentas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{url('ventas/POS')}}">
+                        <i class="menu-bullet menu-bullet-dot"></i>Terminal
+                      </a>
+                      <a class="nav-link" href="{{url('ventas/ventas')}}">
+                        <i class="menu-bullet menu-bullet-dot"></i>Ventas
                       </a>
                     </nav>
                 </div>

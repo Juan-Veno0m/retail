@@ -38,6 +38,15 @@ Route::middleware(['auth','role.admin'])->group(function () {
       //
     });
   });
+  //Ventas
+  Route::prefix('ventas')->group(function () {
+    Route::get('/ventas', 'Admin\VentasController@index');
+    Route::get('/POS', 'Admin\VentasController@POS');
+    Route::post('/search', 'Admin\VentasController@search');
+    Route::post('/puntos', 'Admin\VentasController@puntos');
+    Route::post('/generar', 'Admin\VentasController@generar');
+    Route::get('/ticket/{No}','Admin\VentasController@ticket');
+    });
   //* Ordenes */
   Route::prefix('ordenes')->group(function () {
     // * Pedidos */
@@ -58,7 +67,6 @@ Route::middleware(['auth','role.admin'])->group(function () {
       Route::post('/shipping_action','Admin\PedidosController@shipping_action');
       Route::post('/store','Admin\PedidosController@store');
     });
-    //
   });
   // Regenerar Miniaturas
   Route::prefix('thumbnails')->group(function () {

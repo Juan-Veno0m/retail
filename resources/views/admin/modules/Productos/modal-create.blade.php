@@ -78,9 +78,17 @@
           <div class="col-xl-12">
             <div class="form-group row">
               <label class="col-xl-12 col-form-label text-left" for="precio">Precio Unitario:</label>
-              <div class="col-xl-12">
+              <div class="col-xl-6">
                 <div class="input-group input-group-solid">
                   <input type="number" step="0.5" min="1" required name="precio" class="form-control form-control-solid validated" placeholder="Precio del Producto" aria-label="producto" aria-describedby="producto">
+                </div>
+              </div>
+              <div class="col-xl-6">
+                <div class="input-group input-group-solid">
+                  <select name="precioby" required class="custom-select form-control-solid validated">
+                    <option value="0" selected>Precio por Unidad</option>
+                    <option value="1">Precio por Peso<option>
+                  </select>
                 </div>
               </div>
             </div>

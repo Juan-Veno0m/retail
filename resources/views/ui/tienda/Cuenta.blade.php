@@ -48,7 +48,7 @@
   <div class="container pt-4">
     <div class="row mx-4 text-left">
       <h1 class="custom-font">Mi Cuenta</h1>
-      <p class="sub-heading ml-lg-3">Hola <b>{{Auth::user()->name}}</b>, Empresario #{{$asociado->NoEmpresario}}</p>
+      <p class="sub-heading ml-lg-3">Hola <b>{{Auth::user()->name}}</b>@if(Auth::user()->isAsociado()), Empresario #{{$asociado->NoEmpresario}}@endif</p>
     </div>
     @include('ui.parts.account-grid')
   </div>

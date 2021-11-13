@@ -237,6 +237,7 @@
       modalform.find('[name ="unidad"]').val(data.productos.Unidad);
       modalform.find('[name ="cantidad"]').val(data.productos.Cantidad);
       modalform.find('[name ="precio"]').val(data.productos.PrecioUnitario);
+      modalform.find('[name ="precioby"]').val(data.productos.PrecioBy);
       $('.selectpicker').selectpicker('refresh')
     })
     .fail(function() {

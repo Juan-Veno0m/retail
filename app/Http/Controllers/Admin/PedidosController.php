@@ -37,18 +37,25 @@ class PedidosController extends Controller
                   ->join('orden_status as s','s.id','=','o.Orden_estatus')
                   ->join('orden_pago as p','p.OrdenID','=','o.OrdenID')
                   ->join('metodo_pago as mp','mp.MetodoID','=','p.Metodo')
-                  ->join('asociados_usuario','asociados_usuario.UsuarioID','=','o.ClienteID')
-                  ->join('asociados','asociados.AsociadosID','=','asociados_usuario.AsociadosID')
+                  ->join('users as u','u.id','=','o.ClienteID')
+                  ->leftjoin('asociados_usuario','asociados_usuario.UsuarioID','=','o.ClienteID')
+                  ->leftjoin('asociados','asociados.AsociadosID','=','asociados_usuario.AsociadosID')
                   ->leftjoin('asociados_cupon as cp','cp.OrdenID','=','o.OrdenID')
                   ->leftjoin('cupones as c','c.id','=','cp.CuponID')
                   ->leftjoin('orden_pickup as op','op.OrdenID','o.OrdenID')
                   ->where('o.Orden_estatus','LIKE','%'.$e.'%')
                   ->where('o.OrdenID','LIKE','%'.$No.'%')
-                  ->where('asociados.NoEmpresario','LIKE','%'.$cliente.'%')
                   ->whereBetween('o.Fecha_requerida',[$from,$to])
+                  ->orwhere(function($query) use($cliente,$e,$No,$from,$to){
+                    $query->where('asociados.NoEmpresario','LIKE','%'.$cliente.'%')
+                    ->where('o.Orden_estatus','LIKE','%'.$e.'%')
+                    ->where('o.OrdenID','LIKE','%'.$No.'%')
+                    ->whereBetween('o.Fecha_requerida',[$from,$to]);
+                  })
                   ->select('o.OrdenID','o.OrdenId as key','o.Fecha_entrega','o.Fecha_requerida','mp.Tipo as MetodoPago',
                   'p.TotalProductos','s.status','asociados.ApellidoPaterno','asociados.ApellidoMaterno','asociados.Nombre','s.attribute',
-                  'p.Total','p.Descuento','asociados.AsociadosID','c.descuento','c.code','o.Orden_estatus','o.TipoEnvio','op.Fecha','op.Hora')
+                  'p.Total','p.Descuento','asociados.AsociadosID','c.descuento','c.code','o.Orden_estatus','o.TipoEnvio','op.Fecha','op.Hora',
+                  'u.name')
                   ->orderBy('o.OrdenID','desc')
                   ->paginate(15)->appends(request()->except('page'));
 
@@ -80,15 +87,22 @@ class PedidosController extends Controller
                 ->select('op.TotalProductos','op.Total','op.Descuento','op.Porcentaje','mp.Tipo','oe.Costo as CostoEnvio')
                 ->first();
       if ($orden->TipoEnvio == 1) {
-        // code...
+        // Envio paquetería
         $TipoEnvio = DB::table('orden_envio as oe')
                   ->join('envio_usuarios as eu','eu.EnvioID','=','oe.EnvioUID')
                   ->join('estados as es','es.id','=','eu.EstadoID')
                   ->where('OrdenID','=',$OrdenID)
                   ->select('eu.*','es.estado')
                   ->first();
-      }else{$TipoEnvio = DB::table('orden_pickup')->where('OrdenID',$OrdenID)->first();}
-      $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,'pago'=>$pago, 'TipoEnvio'=>$TipoEnvio];
+      }
+      else if ($orden->TipoEnvio == 2) {
+        // Pickup
+        $TipoEnvio = DB::table('orden_pickup')->where('OrdenID',$OrdenID)->first();
+      }
+      if (isset($TipoEnvio)) {
+        $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,'pago'=>$pago, 'TipoEnvio'=>$TipoEnvio];
+      }
+      $data = ['items'=>$items,'NOrden'=>$NOrden,'orden'=>$orden,'pago'=>$pago];
       return view('admin.modules.Ordenes.Pedidos.detalles',$data);
     }
     // get historial de pagos
@@ -137,7 +151,7 @@ class PedidosController extends Controller
             // fecha de liquidación
             DB::table('orden_pago')->where('OrdenID',$OrdenID)->update(['FechaLiquidado'=>$datos->fecha,'updated_at'=>now()]);
             // confirmar aquí, agregar puntos de la compra al acumulado del empresario con fecha de ultimo pago
-            $Mes = substr($datos->fecha, 5,-3);
+            $Mes = substr($datos->fecha, 5, 7);
             $Año = substr($datos->fecha, 0, 4);
             $OrdenPuntos = ((floatval($datos->subtotal) - floatval($datos->descuento))+floatval($datos->cupon))/10;
             $p = DB::table('balance_puntos')
@@ -231,7 +245,7 @@ class PedidosController extends Controller
       $orden = DB::table('orden')->join('orden_status','orden_status.id','orden.Orden_estatus')->where('OrdenID',$OrdenID)->first();
       $e = DB::table('asociados')
             ->join('asociados_usuario as a','a.AsociadosID','asociados.AsociadosID')
-            ->join('asociados_telefono as tel','tel.AsociadosID','asociados.AsociadosID')
+            ->leftjoin('asociados_telefono as tel','tel.AsociadosID','asociados.AsociadosID')
             ->where('a.UsuarioID',$orden->ClienteID)->first();
       $pago = DB::table('orden_pago')
             ->join('metodo_pago','metodo_pago.MetodoID','orden_pago.Metodo')

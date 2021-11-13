@@ -100,7 +100,7 @@
                         Recibe {{$TipoEnvio->NombreCompleto.' '.$TipoEnvio->Telefono}}
                         </span>
                       </li>
-                    @else
+                    @elseif($orden->TipoEnvio == 2 )
                       <li class="list-group-item d-flex  bg-transparent">
                         <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
                         <span class="mt-1">Pickup</span>
@@ -114,6 +114,11 @@
                       </li>
                       <li class="list-group-item d-flex  bg-transparent"><span class="mt-1">Fecha: {{date("d/m/Y", strtotime($TipoEnvio->Fecha))}},
                         Hora: {{$TipoEnvio->Hora}} Hrs</span></li>
+                    @elseif($orden->TipoEnvio == 4)
+                      <li class="list-group-item d-flex  bg-transparent">
+                        <span class="media-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <span class="mt-1">Venta en Tienda</span>
+                      </li>
                     @endif
                   </ul>
                 </div>

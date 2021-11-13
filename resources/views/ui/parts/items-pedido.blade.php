@@ -19,15 +19,17 @@ $fecha = str_replace("/", "-", $orden->Fecha_requerida);	$newDate = date("d-m-Y"
               @if ($orden->TipoEnvio == 1 )<span>${{$pago->CostoEnvio}}</span>
               @else <span>$0.00</span>@endif
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-              <span>Descuento <small>(20%)</small></span>
-              <span class="text-danger">- ${{$pago->Descuento}}</span>
-            </li>
-            @if ($orden->CuponID)
+            @if(Auth::user()->isAsociado())
               <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                <span>Cupón de descuento</span>
-                <span class="text-danger">- $1,500</span>
+                <span>Descuento <small>(20%)</small></span>
+                <span class="text-danger">- ${{$pago->Descuento}}</span>
               </li>
+              @if ($orden->CuponID)
+                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                  <span>Cupón de descuento</span>
+                  <span class="text-danger">- $1,500</span>
+                </li>
+              @endif
             @endif
             <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
               <span>Total</span>

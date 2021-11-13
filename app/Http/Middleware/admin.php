@@ -10,7 +10,7 @@ class admin
 
     public function handle($request, Closure $next)
     {
-      if (Auth::user()->hasAnyRole('admin')) {
+      if (Auth::user()->hasAnyRole(['admin','local'])) {
         return $next($request);
       }
       return redirect('/');

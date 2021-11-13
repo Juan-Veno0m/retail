@@ -19,7 +19,7 @@
         @include('admin.layouts.navbar')
         <div id="layoutSidenav">
             <!-- SideNav -->
-            @include('admin.layouts.sidenav')
+            @if(Auth::user()->hasAnyRole('admin'))@include('admin.layouts.sidenav')@endif
             <div id="layoutSidenav_content">
                 <main class="content d-flex flex-column flex-column-fluid">
                     <div class="container-fluid">

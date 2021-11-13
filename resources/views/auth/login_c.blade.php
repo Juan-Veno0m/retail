@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <!--<div class="col-md-4">
+        <div class="col-md-4">
           <form method="POST" action="{{ route('login') }}">
             @csrf
             <h5>¿Eres cliente?</h5>
@@ -52,7 +52,7 @@
               </div>
             </div>
           </form>
-        </div>-->
+        </div>
         <div class="col-md-4 form-login">
           <div class="form-group row">
             <label for="NoEmpresario">No. Empresario:</label>

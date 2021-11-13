@@ -43,6 +43,7 @@ class LoginController extends Controller
                       : Redirect::route($redirectToRoute ?: 'verification.notice');
           } else {
             if (Auth::user()->hasAnyRole('admin')) {return redirect('/dashboard');}
+            if (Auth::user()->hasAnyRole('local')) {return redirect('/ordenes/ventas');}
             if (url()->current()!='/login') {return redirect('/carrito');}
             return redirect()->intended('/');
           }

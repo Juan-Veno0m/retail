@@ -27,7 +27,8 @@ class ProductController extends Controller
           ->where('p.ProveedorID','LIKE','%'.$p.'%') // Filtro Proveedor
           ->wherenull('p.deleted_at')
           ->select('p.ProductosID','p.ProductosID as uk','p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock',
-          'p.Cantidad','p.Unidad','p.Descontinuado')
+          'p.Cantidad','p.Unidad','p.Descontinuado','p.PrecioBy')
+          ->orderBy('p.ProductosID','desc')
           ->paginate(15)->appends(request()->except('page'));
         foreach ($productos as $key => $value) {$value->ProductosID = encrypt($value->ProductosID);}
         // categorias
@@ -45,7 +46,7 @@ class ProductController extends Controller
         $id = DB::table('productos')->insertGetId(
           ['ProductosNombre' => $req->data['producto'],'ProveedorID' => $req->data['proveedor'],
               'CategoriaID'=> $req->data['categoria'],'Descripcion'=>$req->data['descripcion'] ,'Cantidad'=> $req->data['cantidad'],'Unidad'=> $req->data['unidad'],
-              'PrecioUnitario'=> $req->data['precio'],'created_at'=> now()]);
+              'PrecioUnitario'=> $req->data['precio'],'PrecioBy'=>$req->data['precioby'],'created_at'=> now()]);
         $id = encrypt($id);
         return (['tipo' => 'success','mensaje'=>'Producto agregado correctamente','id'=>$id]);
     }
@@ -64,7 +65,8 @@ class ProductController extends Controller
           ->join('categorias as c','p.CategoriaID','=','c.CategoriaID')
           ->join('proveedores as prov','p.ProveedorID','=','prov.ProveedorID')
           ->where('p.ProductosID','=',$decrypted)
-          ->select('p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.Descripcion','p.Cantidad','p.Unidad','p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock')
+          ->select('p.ProductosNombre','p.CategoriaID','c.CategoriaNombre','p.Descripcion','p.Cantidad','p.Unidad',
+          'p.ProveedorID','p.PrecioUnitario','p.UnidadesEnStock','p.PrecioBy')
           ->first();
 
         return (['tipo' => 'success', 'mensaje' => 'ok','productos'=>$productos]);
@@ -84,7 +86,7 @@ class ProductController extends Controller
               ->where('ProductosID', $decrypted)
               ->update(['ProductosNombre' => $req->data['producto'],'ProveedorID' => $req->data['proveedor'],
               'CategoriaID'=> $req->data['categoria'],'Descripcion'=>$req->data['descripcion'],'Cantidad'=> $req->data['cantidad'],'Unidad'=>$req->data['unidad'],
-              'PrecioUnitario'=> $req->data['precio'],'updated_at'=> now()]);
+              'PrecioUnitario'=> $req->data['precio'],'PrecioBy'=>$req->data['precioby'],'updated_at'=> now()]);
         return (['tipo' => 'success','mensaje'=>'Producto actualizado correctamente']);
     }
 

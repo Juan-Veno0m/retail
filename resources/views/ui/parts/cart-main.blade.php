@@ -7,6 +7,7 @@
       <h2>Bolsa de compra</h2>
       <ul class="list-group list-group-flush" id="cart-products">
         <?php $total = 0; $descuento = 0.2; $cupon=0; $label = '20%';
+          if (!Auth::user()->isAsociado()) { $descuento=0;$label='Solo Empresarios';}
           if (isset($p)) {
             if ($p->Puntos >=300) { // 25 %
               $descuento = 0.25;$label = '25%';
@@ -66,7 +67,7 @@
       </ul>
     </div>
     <div class="col-xl-4 text-dark" id="money-summary">
-      @if (Auth::check())
+      @if (Auth::user()->isAsociado())
         @if (!Auth::user()->cont>0)
           <div class="alert alert-success" role="alert">
             ¡Felicidades! Estas a punto de completar tu primer compra. Hemos aplicado un cupón con un descuento de $1,500, válido en tu primer pedido.
@@ -88,7 +89,7 @@
         <div class="col-lg-8"><p>Descuentos <small class="porcentaje">({{$label}})</small>:</p></div>
         <div class="col money text-right text-danger">- ${{$total*$descuento}}</div>
       </div>
-      @if (Auth::check())
+      @if (Auth::user()->isAsociado())
         @if (!Auth::user()->cont>0)
           <div class="row px-1 cupon">
             <div class="col-lg-8">
